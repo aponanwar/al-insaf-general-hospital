@@ -18,6 +18,14 @@ const options = {
   socketTimeoutMS: 30000,
 };
 
+/**
+ * ============================================================================
+ * মঙ্গোডিবি ক্লায়েন্ট কানেকশন ও ক্যাশিং (MongoDB Client Connection & Caching)
+ * ============================================================================
+ * Next.js-এর সার্ভারলেস (Serverless) ফাংশন প্রতি রিকোয়েস্টে নতুন করে রান হতে পারে।
+ * বারবার কানেকশন খোলা ও বন্ধ করা ঠেকাতে `global._mongoClientPromise` ব্যবহার করে
+ * কানেকশন ক্যাশ বা পুলিং (Connection Pooling) করা হয়।
+ */
 export async function getConnectedClient(): Promise<MongoClient> {
   if (!global._mongoClientPromise) {
     client = new MongoClient(uri, options);
@@ -26,14 +34,15 @@ export async function getConnectedClient(): Promise<MongoClient> {
   try {
     return await global._mongoClientPromise;
   } catch (err) {
-    // Reset cached promise so next attempt can reconnect cleanly
+    // কোনো কারণে কানেকশন ফেইল করলে ক্যাশ রিসেট করা হয় যাতে পরের বার পুনরায় চেষ্টা করতে পারে
     global._mongoClientPromise = undefined;
     throw err;
   }
 }
 
 /**
- * Direct helper to get raw database instance (Vercel serverless safe)
+ * সরাসরি ডাটাবেজ ইন্সট্যান্স রিটার্ন করার হেল্পার
+ * এটি Vercel বা লোকাল সার্ভারে নিরাপদে ডেটাবেজের রেফারেন্স দেয়
  */
 export async function getDatabase(): Promise<Db> {
   try {
@@ -46,7 +55,8 @@ export async function getDatabase(): Promise<Db> {
 }
 
 /**
- * Direct collection accessor with typed generics
+ * নির্দিষ্ট কালেকশন অ্যাক্সেস করার ফাংশন (Generic Type সহ)
+ * উদাহরণ: const doctorsCol = await getCollection<Doctor>('doctors');
  */
 export async function getCollection<T extends Record<string, any>>(collectionName: string) {
   const db = await getDatabase();

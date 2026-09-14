@@ -18,17 +18,25 @@ const CATEGORIES = [
 export default function RateChartsPage() {
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [searchQuery, setSearchQuery] = useState('');
+  
+  // প্রাথমিক স্টেট হিসেবে সিড ডাটা রাখা হয়েছে, যাতে পেজ লোড হওয়ার সময় কোনো ফাঁকা স্ক্রিন বা ফ্লিকার না হয়
   const [rates, setRates] = useState<RateItem[]>(INITIAL_RATES);
 
+  /**
+   * পেজটি ব্রাউজারে মাউন্ট (Mount) হওয়ার সাথে সাথে useEffect স্বয়ংক্রিয়ভাবে রান হয়।
+   * এটি ব্যাকএন্ড API (/api/rates)-এ কল করে MongoDB-র লাইভ এবং আপডেটেড ডাটা নিয়ে এসে স্টেট আপডেট করে।
+   */
   useEffect(() => {
     fetch('/api/rates')
       .then((res) => res.json())
       .then((data) => {
         if (data?.rates && data.rates.length > 0) {
+          // ডাটাবেজ থেকে পাওয়া ডাটা দিয়ে স্টেট আপডেট
           setRates(data.rates);
         }
       })
       .catch((err) => {
+        // কোনো কারণে নেটওয়ার্ক বা ব্যাকএন্ডে সমস্যা হলেও ডিফল্ট ডাটা প্রদর্শিত থাকবে
         console.warn('Could not load live rates, using defaults:', err);
       });
   }, []);

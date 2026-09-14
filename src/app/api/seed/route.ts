@@ -16,42 +16,57 @@ export async function POST(req: NextRequest) {
     const adminEmail = process.env.ADMIN_DEFAULT_EMAIL || 'admin@hospital.com';
     const adminPass = process.env.ADMIN_DEFAULT_PASSWORD || 'AdminHospital@2026#Secure';
 
-    // 1. Seed Departments
+    // =========================================================================
+    // ১. ডিপার্টমেন্টস সিডিং (Departments Seeding)
+    // ডেটাবেজে যদি আগে কোনো ডিপার্টমেন্ট না থাকে, তবে প্রাথমিক ডিপার্টমেন্ট ডাটা ইনসার্ট করা হয়
+    // =========================================================================
     const deptCol = await getCollection('departments');
     const deptCount = await deptCol.countDocuments();
     if (deptCount === 0) {
       await deptCol.insertMany(INITIAL_DEPARTMENTS as any[]);
     }
 
-    // 2. Seed Doctors
+    // =========================================================================
+    // ২. ডাক্তারদের তালিকা সিডিং (Doctors Seeding)
+    // =========================================================================
     const docCol = await getCollection('doctors');
     const docCount = await docCol.countDocuments();
     if (docCount === 0) {
       await docCol.insertMany(INITIAL_DOCTORS as any[]);
     }
 
-    // 3. Seed Rate Charts
+    // =========================================================================
+    // ৩. হাসপাতাল রেট চার্ট ও ট্যারিফ সিডিং (Hospital Tariffs Seeding)
+    // বিভিন্ন টেস্ট, কেবিন ও আইসিইউর ফি 'rates' কালেকশনে সেভ করা হয়
+    // =========================================================================
     const rateCol = await getCollection('rates');
     const rateCount = await rateCol.countDocuments();
     if (rateCount === 0) {
       await rateCol.insertMany(INITIAL_RATES as any[]);
     }
 
-    // 4. Seed News
+    // =========================================================================
+    // ৪. হাসপাতাল নিউজ ও নোটিশ সিডিং (Hospital News Seeding)
+    // =========================================================================
     const newsCol = await getCollection('news');
     const newsCount = await newsCol.countDocuments();
     if (newsCount === 0) {
       await newsCol.insertMany(INITIAL_NEWS as any[]);
     }
 
-    // 5. Seed Testimonials
+    // =========================================================================
+    // ৫. রোগী ও স্বজনদের রিভিউ বা টেস্টিমোনিয়াল সিডিং (Testimonials Seeding)
+    // =========================================================================
     const testCol = await getCollection('testimonials');
     const testCount = await testCol.countDocuments();
     if (testCount === 0) {
       await testCol.insertMany(INITIAL_TESTIMONIALS as any[]);
     }
 
-    // 6. Seed Admin User
+    // =========================================================================
+    // ৬. মাস্টার অ্যাডমিন ইউজার সিডিং (Super Admin User Seeding)
+    // পাসওয়ার্ড bcrypt দিয়ে সিকিউর হ্যাশ করে 'users' কালেকশনে সংরক্ষণ করা হয়
+    // =========================================================================
     const userCol = await getCollection('users');
     const existingAdmin = await userCol.findOne({ email: adminEmail });
     if (!existingAdmin) {

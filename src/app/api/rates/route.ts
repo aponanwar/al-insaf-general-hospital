@@ -8,8 +8,12 @@ import { ObjectId } from 'mongodb';
 export const dynamic = 'force-dynamic';
 
 /**
- * GET /api/rates
- * Returns all tariffs / rate chart items with search and category filtering
+ * ============================================================================
+ * GET /api/rates (ট্যারিফ ও রেট চার্ট ডাটা ফেচিং)
+ * ============================================================================
+ * ১. URL সার্চ প্যারামিটার (category, search) গ্রহণ করা হয়।
+ * ২. MongoDB 'rates' কালেকশনে কোয়েরি ফিল্টার তৈরি করা হয়।
+ * ৩. যদি ডেটাবেজ খালি বা অফলাইন থাকে, তবে কোড ক্র্যাশ না করে সিড ডাটা রিটার্ন করে।
  */
 export async function GET(req: NextRequest) {
   try {
@@ -20,13 +24,16 @@ export async function GET(req: NextRequest) {
     let rates: RateItem[] = [];
 
     try {
+      // MongoDB থেকে কালেকশন আনা
       const collection = await getCollection<RateItem>('rates');
       const query: Record<string, any> = {};
 
+      // ক্যাটাগরি ফিল্টারিং
       if (category && category !== 'All Categories') {
         query.category = category;
       }
 
+      // কীওয়ার্ড সার্চ (কেস-ইনসেনসিটিভ রেজেক্স)
       if (search) {
         query.$or = [
           { name: { $regex: search, $options: 'i' } },
@@ -36,9 +43,10 @@ export async function GET(req: NextRequest) {
         ];
       }
 
+      // ডাটাবেজ থেকে ডাটা নিয়ে সাজানো (Sort)
       rates = await collection.find(query).sort({ category: 1, name: 1 }).toArray();
 
-      // If DB is empty, auto-seed with initial rates
+      // যদি কালেকশনটি সম্পূর্ণ ফাঁকা থাকে, তবে স্বয়ংক্রিয়ভাবে সিড ডাটা লোড করে নেওয়া
       if (rates.length === 0 && !search && (!category || category === 'All Categories')) {
         const totalCount = await collection.countDocuments();
         if (totalCount === 0) {
@@ -50,7 +58,7 @@ export async function GET(req: NextRequest) {
       console.warn('Database error while fetching rates, falling back to static rates:', dbErr?.message);
     }
 
-    // Fallback if DB was unavailable or returned empty for query
+    // ব্যাকআপ ফলব্যাক: ডেটাবেজ কানেকশন না পেলেও ওয়েবসাইট যাতে সচল থাকে
     if (rates.length === 0) {
       rates = INITIAL_RATES.filter((item) => {
         const matchesCategory =
@@ -74,8 +82,12 @@ export async function GET(req: NextRequest) {
 }
 
 /**
- * POST /api/rates
- * Add a new tariff / test item (Admin only)
+ * ============================================================================
+ * POST /api/rates (নতুন ট্যারিফ / টেস্ট ফি যুক্ত করা - শুধুমাত্র অ্যাডমিন)
+ * ============================================================================
+ * ১. getSession() দিয়ে চেক করা হয় ইউজার অ্যাডমিন হিসেবে লগইন করা আছে কিনা।
+ * ২. ফিল্ড ভ্যালিডেশন (Category, Code, Name, Fee)।
+ * ৩. collection.insertOne() দিয়ে MongoDB 'rates' কালেকশনে নতুন ডকুমেন্ট সংরক্ষণ।
  */
 export async function POST(req: NextRequest) {
   try {
@@ -123,8 +135,11 @@ export async function POST(req: NextRequest) {
 }
 
 /**
- * PUT /api/rates
- * Update an existing tariff item (Admin only)
+ * ============================================================================
+ * PUT /api/rates (বিদ্যমান টেস্ট বা কেবিনের ফি আপডেট করা - শুধুমাত্র অ্যাডমিন)
+ * ============================================================================
+ * ১. আইটেমের ID অনুযায়ী MongoDB কালেকশনে ডকুমেন্ট খোঁজা হয়।
+ * ২. collection.updateOne() দিয়ে পরিবর্তিত ডেটা ($set) আপডেট করা হয়।
  */
 export async function PUT(req: NextRequest) {
   try {
@@ -179,8 +194,11 @@ export async function PUT(req: NextRequest) {
 }
 
 /**
- * DELETE /api/rates
- * Delete a tariff item (Admin only)
+ * ============================================================================
+ * DELETE /api/rates (ট্যারিফ আইটেম ডিলিট করা - শুধুমাত্র অ্যাডমিন)
+ * ============================================================================
+ * ১. URL কোয়েরি প্যারামিটার `?id=...` থেকে আইটেমের ID নেওয়া হয়।
+ * ২. ObjectId ভ্যালিড হলে `_id` দিয়ে, নতুবা আইটেমের `code` দিয়ে deleteOne() চালানো হয়।
  */
 export async function DELETE(req: NextRequest) {
   try {
