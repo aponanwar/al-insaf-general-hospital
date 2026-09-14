@@ -22,89 +22,64 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
     }
 
-    const defaultAdminEmail = (process.env.ADMIN_DEFAULT_EMAIL || 'admin@hospital.com').trim().toLowerCase();
-    const defaultAdminPass = (process.env.ADMIN_DEFAULT_PASSWORD || 'AdminHospital@2026#Secure').trim();
     const inputEmail = email.trim().toLowerCase();
     const inputPass = typeof password === 'string' ? password.trim() : '';
 
-    // Accepted aliases for the primary administrator
-    const validAdminEmails = [
-      defaultAdminEmail,
-      'admin@hospital.com',
-      'admin@alinsafhospital.com',
-      'admin',
-      'anwardu14_db_user',
-      'anwardu14',
-    ];
-
-    // Accepted default administrative passwords
-    const validAdminPasswords = [
-      defaultAdminPass,
-      'AdminHospital@2026#Secure',
-      'nYum33wSVJV7XkPu', // Atlas DB user master fallback
-    ];
+    const defaultAdminEmail = (process.env.ADMIN_DEFAULT_EMAIL || 'admin@hospital.com').trim().toLowerCase();
+    const defaultAdminPass = (process.env.ADMIN_DEFAULT_PASSWORD || 'AdminHospital@2026#Secure').trim();
 
     let user: User | null = null;
     let isValid = false;
 
-    // 1. Direct Super-Admin Credentials Check (Instant authentication even if DB is cold/offline)
-    const isMasterEmail = validAdminEmails.includes(inputEmail);
-    const isMasterPass = validAdminPasswords.includes(inputPass) || validAdminPasswords.includes(password);
+    // 1. Check MongoDB database for registered admin/staff users
+    try {
+      const collection = await getCollection<User>('users');
+      user = await collection.findOne({
+        $or: [
+          { email: inputEmail },
+          { email: { $regex: new RegExp(`^${inputEmail}$`, 'i') } }
+        ]
+      });
 
-    if (isMasterEmail && isMasterPass) {
+      if (user && user.passwordHash) {
+        isValid = await verifyPassword(inputPass, user.passwordHash);
+      }
+    } catch (dbErr: any) {
+      console.warn('MongoDB query warning during login attempt:', dbErr?.message);
+    }
+
+    // 2. Fallback to default admin configured in environment variables
+    if (!isValid && inputEmail === defaultAdminEmail && inputPass === defaultAdminPass) {
       user = {
         name: 'Hospital Chief Administrator',
-        email: inputEmail.includes('@') ? inputEmail : 'admin@hospital.com',
+        email: defaultAdminEmail,
         passwordHash: '',
         role: 'admin',
         createdAt: new Date().toISOString(),
       };
       isValid = true;
 
-      // Background persist to MongoDB if connected, without blocking login speed
+      // Persist to MongoDB in background if not present
       getCollection<User>('users')
         .then(async (collection) => {
-          const existing = await collection.findOne({ email: user!.email });
+          const existing = await collection.findOne({ email: defaultAdminEmail });
           if (!existing) {
             const passwordHash = await hashPassword(defaultAdminPass);
             await collection.insertOne({
               name: 'Hospital Chief Administrator',
-              email: user!.email,
+              email: defaultAdminEmail,
               passwordHash,
               role: 'admin',
               createdAt: new Date().toISOString(),
             } as any);
           }
         })
-        .catch(() => {
-          // Non-blocking background sync
-        });
-    } else {
-      // 2. Query MongoDB for custom registered admin/staff users
-      try {
-        const collection = await getCollection<User>('users');
-        user = await collection.findOne({
-          $or: [
-            { email: inputEmail },
-            { email: { $regex: new RegExp(`^${inputEmail}$`, 'i') } }
-          ]
-        });
-
-        if (user && user.passwordHash) {
-          isValid = await verifyPassword(password, user.passwordHash) || await verifyPassword(inputPass, user.passwordHash);
-        } else if (user && (user as any).password === password) {
-          isValid = true;
-        }
-      } catch (dbErr: any) {
-        console.warn('MongoDB query warning during login attempt:', dbErr?.message);
-      }
+        .catch(() => {});
     }
 
     if (!isValid || !user) {
       return NextResponse.json(
-        {
-          error: 'Invalid credentials. You can use Email: admin@hospital.com and Password: AdminHospital@2026#Secure',
-        },
+        { error: 'Invalid email or password. Please check your credentials.' },
         { status: 401 }
       );
     }

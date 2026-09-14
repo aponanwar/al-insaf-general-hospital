@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, FileSpreadsheet, CheckCircle2, ShieldCheck, Printer } from 'lucide-react';
 import { INITIAL_RATES } from '@/lib/seed-data';
+import { RateItem } from '@/lib/types';
 
 const CATEGORIES = [
   'All Categories',
@@ -11,13 +12,26 @@ const CATEGORIES = [
   'Diagnostic & Radiology',
   'Pathology & Lab',
   'Surgical & OT',
+  'Consultation',
 ];
 
 export default function RateChartsPage() {
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [searchQuery, setSearchQuery] = useState('');
+  const [rates, setRates] = useState<RateItem[]>(INITIAL_RATES);
 
-  const rates = INITIAL_RATES;
+  useEffect(() => {
+    fetch('/api/rates')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.rates && data.rates.length > 0) {
+          setRates(data.rates);
+        }
+      })
+      .catch((err) => {
+        console.warn('Could not load live rates, using defaults:', err);
+      });
+  }, []);
 
   const filteredRates = rates.filter((item) => {
     const matchesCategory =

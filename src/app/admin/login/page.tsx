@@ -17,8 +17,8 @@ function LoginContent() {
       ? rawFrom
       : '/admin/dashboard';
 
-  const [email, setEmail] = useState('admin@hospital.com');
-  const [password, setPassword] = useState('AdminHospital@2026#Secure');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -43,7 +43,6 @@ function LoginContent() {
       }
 
       setSuccess(true);
-      // Ensure smooth navigation to dashboard
       setTimeout(() => {
         window.location.href = redirectTo;
       }, 200);
@@ -51,12 +50,6 @@ function LoginContent() {
       setError(err.message || 'Login failed. Please check credentials.');
       setLoading(false);
     }
-  };
-
-  const handleFillDefaults = () => {
-    setEmail('admin@hospital.com');
-    setPassword('AdminHospital@2026#Secure');
-    setError('');
   };
 
   return (
@@ -149,27 +142,6 @@ function LoginContent() {
           </button>
         </div>
       </form>
-
-      <div className="bg-slate-900/80 p-4 rounded-2xl border border-slate-700/60 text-[11px] text-slate-400 space-y-2">
-        <div className="flex items-center justify-between">
-          <span className="font-bold text-slate-300">Default Admin Credentials:</span>
-          <button
-            type="button"
-            onClick={handleFillDefaults}
-            className="text-[10px] text-emerald-400 hover:text-emerald-300 font-bold underline"
-          >
-            Auto Fill
-          </button>
-        </div>
-        <div className="flex items-center justify-between font-mono text-[11px]">
-          <span>Email:</span>
-          <code className="text-emerald-400">admin@hospital.com</code>
-        </div>
-        <div className="flex items-center justify-between font-mono text-[11px]">
-          <span>Pass:</span>
-          <code className="text-emerald-400">AdminHospital@2026#Secure</code>
-        </div>
-      </div>
     </div>
   );
 }

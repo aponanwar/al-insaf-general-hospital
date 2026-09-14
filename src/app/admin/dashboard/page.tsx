@@ -338,7 +338,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Quick Navigation Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <Link
             href="/admin/appointments"
             className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-primary-500 hover:shadow-md transition-all flex items-center space-x-4"
@@ -347,34 +347,47 @@ export default function AdminDashboardPage() {
               <Calendar className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-slate-900">Manage Appointments</h4>
-              <p className="text-xs text-slate-500">Filter, confirm, or reschedule bookings</p>
+              <h4 className="text-sm font-bold text-slate-900">Appointments</h4>
+              <p className="text-xs text-slate-500">Confirm or reschedule bookings</p>
             </div>
           </Link>
 
           <Link
             href="/admin/doctors"
-            className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-primary-500 hover:shadow-md transition-all flex items-center space-x-4"
+            className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-emerald-500 hover:shadow-md transition-all flex items-center space-x-4"
           >
             <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
               <PlusCircle className="w-6 h-6" />
             </div>
             <div>
               <h4 className="text-sm font-bold text-slate-900">Add & Edit Doctors</h4>
-              <p className="text-xs text-slate-500">Upload photos & update OPD visiting hours</p>
+              <p className="text-xs text-slate-500">OPD visiting hours & profiles</p>
             </div>
           </Link>
 
           <Link
-            href="/patient-guide/rates"
-            className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-primary-500 hover:shadow-md transition-all flex items-center space-x-4"
+            href="/admin/rates"
+            className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-purple-500 hover:shadow-md transition-all flex items-center space-x-4"
           >
             <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
               <Activity className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-slate-900">Hospital Tariff Rates</h4>
-              <p className="text-xs text-slate-500">View diagnostic & cabin price list</p>
+              <h4 className="text-sm font-bold text-slate-900">Manage Tariffs & Rates</h4>
+              <p className="text-xs text-slate-500">Update test & cabin pricing</p>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/users"
+            className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-amber-500 hover:shadow-md transition-all flex items-center space-x-4"
+          >
+            <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+              <ShieldCheck className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-slate-900">Admin Accounts</h4>
+              <p className="text-xs text-slate-500">Authorize & manage admin users</p>
             </div>
           </Link>
         </div>
