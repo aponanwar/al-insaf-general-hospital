@@ -44,7 +44,17 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    return NextResponse.json({ success: true, doctors });
+    return NextResponse.json(
+      { success: true, doctors },
+      {
+        headers: {
+          // Vercel Edge CDN ক্যাশ: ১২০ সেকেন্ড ক্যাশ থাকবে এবং পরবর্তী ৬০০ সেকেন্ড ব্যাকগ্রাউন্ডে রিভ্যালিডেট হবে
+          'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600',
+          'CDN-Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600',
+          'Vercel-CDN-Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600',
+        },
+      }
+    );
   } catch (error: any) {
     return NextResponse.json({ success: true, doctors: INITIAL_DOCTORS });
   }

@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useState, useMemo } from 'react';
+import { Suspense, useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import {
@@ -15,6 +15,7 @@ import {
   UserCheck
 } from 'lucide-react';
 import { INITIAL_DOCTORS, INITIAL_DEPARTMENTS } from '@/lib/seed-data';
+import { Doctor } from '@/lib/types';
 
 const DAYS = ['All Days', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
@@ -28,7 +29,20 @@ function DoctorsContent() {
   const [searchQuery, setSearchQuery] = useState(initialQuery);
 
   const departments = ['All Departments', ...INITIAL_DEPARTMENTS.map((d) => d.name)];
-  const doctors = INITIAL_DOCTORS;
+  const [doctors, setDoctors] = useState<Doctor[]>(INITIAL_DOCTORS);
+
+  useEffect(() => {
+    fetch('/api/doctors')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.doctors && data.doctors.length > 0) {
+          setDoctors(data.doctors);
+        }
+      })
+      .catch((err) => {
+        console.warn('Could not load live doctors, using defaults:', err);
+      });
+  }, []);
 
   const filteredDoctors = useMemo(() => {
     return doctors.filter((doc) => {
