@@ -7,6 +7,7 @@ import {
   INITIAL_RATES,
   INITIAL_NEWS,
   INITIAL_TESTIMONIALS,
+  INITIAL_STAFF,
 } from '@/lib/seed-data';
 
 export const dynamic = 'force-dynamic';
@@ -64,7 +65,16 @@ export async function POST(req: NextRequest) {
     }
 
     // =========================================================================
-    // ৬. মাস্টার অ্যাডমিন ইউজার সিডিং (Super Admin User Seeding)
+    // ৬. হাসপাতাল স্টাফ ও কর্মী ডাটাবেজ সিডিং (Staff Members Seeding)
+    // =========================================================================
+    const staffCol = await getCollection('staffs');
+    const staffCount = await staffCol.countDocuments();
+    if (staffCount === 0) {
+      await staffCol.insertMany(INITIAL_STAFF as any[]);
+    }
+
+    // =========================================================================
+    // ৭. মাস্টার অ্যাডমিন ইউজার সিডিং (Super Admin User Seeding)
     // পাসওয়ার্ড bcrypt দিয়ে সিকিউর হ্যাশ করে 'users' কালেকশনে সংরক্ষণ করা হয়
     // =========================================================================
     const userCol = await getCollection('users');

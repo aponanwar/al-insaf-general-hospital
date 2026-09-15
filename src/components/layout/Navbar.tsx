@@ -126,6 +126,13 @@ export default function Navbar() {
                     <Users className="w-4 h-4 mr-2.5 text-primary-500" />
                     <span>Management Team</span>
                   </Link>
+                  <Link
+                    href="/staff"
+                    className="flex items-center px-4 py-2.5 text-sm text-slate-700 hover:bg-primary-50 hover:text-primary-700 transition-colors"
+                  >
+                    <ShieldCheck className="w-4 h-4 mr-2.5 text-primary-500" />
+                    <span>Staff & Hospital Team</span>
+                  </Link>
                 </div>
               </div>
 
@@ -390,6 +397,12 @@ export default function Navbar() {
                 className="block py-2 text-base font-semibold text-slate-800 hover:text-primary-600"
               >
                 About Us
+              </Link>
+              <Link
+                href="/staff"
+                className="block py-2 text-base font-semibold text-slate-800 hover:text-primary-600"
+              >
+                Staff & Hospital Team
               </Link>
               <Link
                 href="/specialities"

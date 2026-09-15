@@ -109,3 +109,41 @@ export interface User {
   role: 'admin' | 'staff' | 'doctor';
   createdAt: string;
 }
+
+export type StaffRole =
+  | 'administrative'
+  | 'doctor'
+  | 'nurse'
+  | 'pharmacist'
+  | 'receptionist'
+  | 'security'
+  | 'wardboy'
+  | 'technician'
+  | 'cleaner';
+
+export type EmploymentStatus = 'active' | 'on leave' | 'terminated';
+
+export interface Staff {
+  _id?: any;
+  staffId: string;
+  name: string;
+  role: StaffRole;
+  phone: string;
+  imageUrl?: string;
+  department?: string;
+  // Confidential / Admin Fields:
+  email?: string;
+  dateOfBirth?: string;
+  bloodGroup?: string;
+  gender?: 'Male' | 'Female' | 'Other';
+  address?: string;
+  licenseNumber?: string;
+  joiningDate?: string;
+  shiftTiming?: string;
+  employmentStatus: EmploymentStatus;
+  salary?: number;
+  designation?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+

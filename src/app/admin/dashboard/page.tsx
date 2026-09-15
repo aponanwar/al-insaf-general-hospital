@@ -18,7 +18,8 @@ import {
   RefreshCw,
   AlertTriangle,
   Server,
-  CheckCircle2
+  CheckCircle2,
+  Contact
 } from 'lucide-react';
 import { Appointment, Inquiry, Doctor } from '@/lib/types';
 
@@ -40,6 +41,7 @@ export default function AdminDashboardPage() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [doctorsCount, setDoctorsCount] = useState<number>(0);
+  const [staffCount, setStaffCount] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [seeding, setSeeding] = useState(false);
   const [seedMessage, setSeedMessage] = useState('');
@@ -87,6 +89,13 @@ export default function AdminDashboardPage() {
       if (docRes.ok) {
         const docData = await docRes.json();
         setDoctorsCount(docData.doctors ? docData.doctors.length : 12);
+      }
+
+      // 4. Fetch staff
+      const staffRes = await fetch('/api/staff?role=all');
+      if (staffRes.ok) {
+        const staffData = await staffRes.json();
+        setStaffCount(staffData.count || (staffData.staff ? staffData.staff.length : 0));
       }
     } catch (err) {
       console.error('Error fetching admin data:', err);
@@ -140,41 +149,44 @@ export default function AdminDashboardPage() {
   const confirmedAppointments = appointments.filter((a) => a.status === 'Confirmed').length;
 
   return (
-    <div className="bg-slate-100 min-h-screen">
-      {/* Top Admin Bar */}
-      <div className="bg-slate-900 text-white border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center font-bold">
-              <Activity className="w-5 h-5" />
-            </div>
-            <div>
-              <h1 className="text-base font-bold text-white">Al Insaf General Hospital CMS</h1>
-              <p className="text-[11px] text-slate-400">Master Administrative Panel</p>
-            </div>
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+      {/* Dashboard Top Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center space-x-2 text-xs font-semibold text-slate-500 mb-1">
+            <span>Hospital Administration</span>
+            <span>/</span>
+            <span className="text-slate-800 font-bold">Control Center</span>
           </div>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            Dashboard Overview
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+            Real-time status of appointments, medical staff, doctors, and inquiries
+          </p>
+        </div>
 
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={handleSeedDatabase}
-              disabled={seeding}
-              className="inline-flex items-center px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 text-xs font-bold rounded-lg border border-slate-700 transition-colors"
-            >
-              <Database className="w-3.5 h-3.5 mr-1.5" />
-              {seeding ? 'Seeding MongoDB...' : 'Seed Initial Data'}
-            </button>
-            <button
-              onClick={handleLogout}
-              className="inline-flex items-center px-3 py-1.5 bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white text-xs font-bold rounded-lg border border-rose-500/30 transition-colors"
-            >
-              <LogOut className="w-3.5 h-3.5 mr-1.5" />
-              Logout
-            </button>
-          </div>
+        <div className="flex items-center space-x-3">
+          <button
+            onClick={fetchData}
+            disabled={loading}
+            className="inline-flex items-center px-3.5 py-2.5 bg-white border border-slate-200 text-slate-700 text-xs font-bold rounded-xl hover:bg-slate-50 shadow-sm transition-colors"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 mr-1.5 ${loading ? 'animate-spin' : ''}`} />
+            Refresh
+          </button>
+          <button
+            onClick={handleSeedDatabase}
+            disabled={seeding}
+            className="inline-flex items-center px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-md shadow-emerald-700/20 transition-all"
+          >
+            <Database className="w-3.5 h-3.5 mr-1.5" />
+            {seeding ? 'Syncing...' : 'Sync/Seed DB'}
+          </button>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="space-y-6">
         {seedMessage && (
           <div className="p-4 bg-emerald-50 border border-emerald-300 rounded-2xl text-xs text-emerald-800 font-bold flex items-center justify-between">
             <span>{seedMessage}</span>
@@ -291,103 +303,139 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Metric Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <Link
+            href="/admin/appointments"
+            className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-primary-500 hover:shadow-md transition-all"
+          >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase text-slate-400">Total Bookings</span>
+              <span className="text-xs font-bold uppercase text-slate-400">Total Serials</span>
               <div className="w-8 h-8 rounded-lg bg-primary-50 text-primary-600 flex items-center justify-center">
                 <Calendar className="w-4 h-4" />
               </div>
             </div>
-            <div className="text-3xl font-black text-slate-900">{appointments.length}</div>
-            <p className="text-xs text-slate-500">All registered patient serials</p>
-          </div>
+            <div className="text-2xl font-black text-slate-900">{appointments.length}</div>
+            <p className="text-[11px] text-slate-500">Patient bookings</p>
+          </Link>
 
-          <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-2">
+          <Link
+            href="/admin/appointments"
+            className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-amber-500 hover:shadow-md transition-all"
+          >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase text-amber-500">Pending Review</span>
+              <span className="text-xs font-bold uppercase text-amber-500">Pending</span>
               <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
                 <Clock className="w-4 h-4" />
               </div>
             </div>
-            <div className="text-3xl font-black text-amber-600">{pendingAppointments}</div>
-            <p className="text-xs text-slate-500">Awaiting confirmation</p>
-          </div>
+            <div className="text-2xl font-black text-amber-600">{pendingAppointments}</div>
+            <p className="text-[11px] text-slate-500">Awaiting approval</p>
+          </Link>
 
-          <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-2">
+          <Link
+            href="/admin/doctors"
+            className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-emerald-500 hover:shadow-md transition-all"
+          >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase text-emerald-500">Active Doctors</span>
+              <span className="text-xs font-bold uppercase text-emerald-500">Doctors</span>
               <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
                 <Users className="w-4 h-4" />
               </div>
             </div>
-            <div className="text-3xl font-black text-slate-900">{doctorsCount || 12}</div>
-            <p className="text-xs text-slate-500">Professors & Consultants</p>
-          </div>
+            <div className="text-2xl font-black text-slate-900">{doctorsCount || 12}</div>
+            <p className="text-[11px] text-slate-500">Consultants in roster</p>
+          </Link>
 
-          <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-2">
+          <Link
+            href="/admin/staff"
+            className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-teal-500 hover:shadow-md transition-all"
+          >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase text-blue-500">Patient Queries</span>
+              <span className="text-xs font-bold uppercase text-teal-600">Hospital Staff</span>
+              <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center">
+                <Contact className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl font-black text-slate-900">{staffCount || 10}</div>
+            <p className="text-[11px] text-slate-500">Across 9 categories</p>
+          </Link>
+
+          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold uppercase text-blue-500">Inquiries</span>
               <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
                 <MessageSquare className="w-4 h-4" />
               </div>
             </div>
-            <div className="text-3xl font-black text-slate-900">{inquiries.length}</div>
-            <p className="text-xs text-slate-500">Online inquiry submissions</p>
+            <div className="text-2xl font-black text-slate-900">{inquiries.length}</div>
+            <p className="text-[11px] text-slate-500">Online queries</p>
           </div>
         </div>
 
         {/* Quick Navigation Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           <Link
             href="/admin/appointments"
-            className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-primary-500 hover:shadow-md transition-all flex items-center space-x-4"
+            className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm hover:border-primary-500 hover:shadow-md transition-all flex items-center space-x-3"
           >
-            <div className="w-12 h-12 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center">
-              <Calendar className="w-6 h-6" />
+            <div className="w-10 h-10 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center shrink-0">
+              <Calendar className="w-5 h-5" />
             </div>
-            <div>
-              <h4 className="text-sm font-bold text-slate-900">Appointments</h4>
-              <p className="text-xs text-slate-500">Confirm or reschedule bookings</p>
+            <div className="min-w-0">
+              <h4 className="text-xs font-bold text-slate-900 truncate">Appointments</h4>
+              <p className="text-[10px] text-slate-500 truncate">Serials & schedule</p>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/staff"
+            className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm hover:border-teal-500 hover:shadow-md transition-all flex items-center space-x-3"
+          >
+            <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
+              <Contact className="w-5 h-5" />
+            </div>
+            <div className="min-w-0">
+              <h4 className="text-xs font-bold text-slate-900 truncate">Staff Directory</h4>
+              <p className="text-[10px] text-slate-500 truncate">9 role categories & HR</p>
             </div>
           </Link>
 
           <Link
             href="/admin/doctors"
-            className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-emerald-500 hover:shadow-md transition-all flex items-center space-x-4"
+            className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm hover:border-emerald-500 hover:shadow-md transition-all flex items-center space-x-3"
           >
-            <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <PlusCircle className="w-6 h-6" />
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <PlusCircle className="w-5 h-5" />
             </div>
-            <div>
-              <h4 className="text-sm font-bold text-slate-900">Add & Edit Doctors</h4>
-              <p className="text-xs text-slate-500">OPD visiting hours & profiles</p>
+            <div className="min-w-0">
+              <h4 className="text-xs font-bold text-slate-900 truncate">Doctors List</h4>
+              <p className="text-[10px] text-slate-500 truncate">OPD hours & fees</p>
             </div>
           </Link>
 
           <Link
             href="/admin/rates"
-            className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-purple-500 hover:shadow-md transition-all flex items-center space-x-4"
+            className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm hover:border-purple-500 hover:shadow-md transition-all flex items-center space-x-3"
           >
-            <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
-              <Activity className="w-6 h-6" />
+            <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+              <Activity className="w-5 h-5" />
             </div>
-            <div>
-              <h4 className="text-sm font-bold text-slate-900">Manage Tariffs & Rates</h4>
-              <p className="text-xs text-slate-500">Update test & cabin pricing</p>
+            <div className="min-w-0">
+              <h4 className="text-xs font-bold text-slate-900 truncate">Tariffs & Rates</h4>
+              <p className="text-[10px] text-slate-500 truncate">Cabin & test charges</p>
             </div>
           </Link>
 
           <Link
             href="/admin/users"
-            className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-amber-500 hover:shadow-md transition-all flex items-center space-x-4"
+            className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm hover:border-amber-500 hover:shadow-md transition-all flex items-center space-x-3"
           >
-            <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-              <ShieldCheck className="w-6 h-6" />
+            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+              <ShieldCheck className="w-5 h-5" />
             </div>
-            <div>
-              <h4 className="text-sm font-bold text-slate-900">Admin Accounts</h4>
-              <p className="text-xs text-slate-500">Authorize & manage admin users</p>
+            <div className="min-w-0">
+              <h4 className="text-xs font-bold text-slate-900 truncate">Admin Accounts</h4>
+              <p className="text-[10px] text-slate-500 truncate">User access control</p>
             </div>
           </Link>
         </div>
