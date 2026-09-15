@@ -1,10 +1,22 @@
-import Link from 'next/link';
-import { Building2, Award, Users, CheckCircle, ShieldCheck, HeartPulse, Sparkles, MapPin } from 'lucide-react';
+import Link from "next/link";
+import {
+  Building2,
+  Award,
+  Users,
+  CheckCircle,
+  ShieldCheck,
+  HeartPulse,
+  Sparkles,
+  MapPin,
+} from "lucide-react";
 
 export const metadata = {
-  title: 'About Us | Al Insaf General Hospital Ltd. (AIGH)',
-  description: 'Learn about Al Insaf General Hospital, our mission, vision, management team, and modern healthcare facilities in Dhaka.',
+  title: "About Us | Al Insaf General Hospital Ltd. (AIGH)",
+  description:
+    "Learn about Al Insaf General Hospital, our mission, vision, management team, and modern healthcare facilities in Dhaka.",
 };
+
+const imageUrl = "https://i.ibb.co.com/8nCy2WB3/shamim-updated-image.jpg";
 
 export default function AboutUsPage() {
   return (
@@ -15,14 +27,15 @@ export default function AboutUsPage() {
           <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-500/30">
             About Al Insaf Hospital
           </span>
-          <h1 className="text-3xl sm:text-5xl font-black mt-4">
-            At a Glance
-          </h1>
+          <h1 className="text-3xl sm:text-5xl font-black mt-4">At a Glance</h1>
           <p className="text-slate-300 max-w-2xl mx-auto mt-3 text-sm sm:text-base">
-            Dedicated workforce with committed adherence to quality and uncompromising perfection.
+            Dedicated workforce with committed adherence to quality and
+            uncompromising perfection.
           </p>
           <div className="flex justify-center items-center space-x-2 text-xs text-slate-400 mt-4">
-            <Link href="/" className="hover:text-white">Home</Link>
+            <Link href="/" className="hover:text-white">
+              Home
+            </Link>
             <span>/</span>
             <span className="text-emerald-400">About Us</span>
           </div>
@@ -40,10 +53,18 @@ export default function AboutUsPage() {
               We are Al Insaf General Hospital
             </h2>
             <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-              Al Insaf General Hospital is a 500+ beds care hospital and the leading contributor of private healthcare services in Bangladesh. This has been achieved through consistent commitment to improving the lives of people through utmost service excellence since our inception in 2009.
+              Al Insaf General Hospital is a 500+ beds care hospital and the
+              leading contributor of private healthcare services in Bangladesh.
+              This has been achieved through consistent commitment to improving
+              the lives of people through utmost service excellence since our
+              inception in 2009.
             </p>
             <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-              Al Insaf General Hospital is one of the premier ventures of Al Insaf Group, which is the top medical business conglomerate in Bangladesh. Our campus features modern architecture, 24+ clinical departments, laminar flow operation theatres, and round-the-clock emergency care.
+              Al Insaf General Hospital is one of the premier ventures of Al
+              Insaf Group, which is the top medical business conglomerate in
+              Bangladesh. Our campus features modern architecture, 24+ clinical
+              departments, laminar flow operation theatres, and round-the-clock
+              emergency care.
             </p>
             <div className="pt-2 flex flex-wrap gap-4">
               <div className="flex items-center space-x-2 text-xs font-bold text-slate-800 bg-white border border-slate-200 px-3.5 py-2 rounded-xl shadow-sm">
@@ -93,7 +114,10 @@ export default function AboutUsPage() {
             </div>
             <h3 className="text-xl font-black text-slate-900">Our Mission</h3>
             <p className="text-sm text-slate-600 leading-relaxed">
-              &quot;Al Insaf General Hospital will be the leading healthcare and academic institution of the country, providing world-class tertiary medical care, compassionate nursing, and high-tech affordable healthcare for all.&quot;
+              &quot;Al Insaf General Hospital will be the leading healthcare and
+              academic institution of the country, providing world-class
+              tertiary medical care, compassionate nursing, and high-tech
+              affordable healthcare for all.&quot;
             </p>
           </div>
 
@@ -103,7 +127,10 @@ export default function AboutUsPage() {
             </div>
             <h3 className="text-xl font-black text-slate-900">Our Vision</h3>
             <p className="text-sm text-slate-600 leading-relaxed">
-              &quot;To establish a benchmark healthcare ecosystem through innovative clinical expertise and state-of-the-art diagnostic technology that adds profound value to society and acts as a driving force of humanity.&quot;
+              &quot;To establish a benchmark healthcare ecosystem through
+              innovative clinical expertise and state-of-the-art diagnostic
+              technology that adds profound value to society and acts as a
+              driving force of humanity.&quot;
             </p>
           </div>
 
@@ -113,41 +140,72 @@ export default function AboutUsPage() {
             </div>
             <h3 className="text-xl font-black text-slate-900">Why Us</h3>
             <p className="text-sm text-slate-600 leading-relaxed">
-              &quot;The flagship medical venture of Al Insaf Group fulfills our devoted commitment towards the health sector of Bangladesh, providing round-the-clock intensive care, 24+ specialties, and affordable diagnostic accuracy under one roof.&quot;
+              &quot;The flagship medical venture of Al Insaf Group fulfills our
+              devoted commitment towards the health sector of Bangladesh,
+              providing round-the-clock intensive care, 24+ specialties, and
+              affordable diagnostic accuracy under one roof.&quot;
             </p>
           </div>
         </div>
 
         {/* Leadership Message Section */}
-        <div id="leadership" className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 shadow-sm space-y-10">
+        <div
+          id="leadership"
+          className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 shadow-sm space-y-10"
+        >
           <div className="border-b border-slate-100 pb-6">
             <span className="text-xs font-bold text-primary-600 uppercase tracking-wider bg-primary-50 px-3 py-1 rounded-full">
               Leadership
             </span>
             <h2 className="text-3xl font-black text-slate-900 mt-2">
-              Message from Managing Director & CEO
+              Message from Vice Chairman
             </h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-4 text-center lg:text-left">
-              <div className="w-44 h-44 mx-auto lg:mx-0 rounded-2xl overflow-hidden bg-slate-100 border-4 border-slate-100 shadow-md">
+              <div className="w-44 h-44 mx-auto lg:mx-0 rounded-2xl overflow-hidden bg-slate-100 border-4 border-slate-100 shadow-md relative">
                 <img
-                  src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=400"
-                  alt="Managing Director"
+                  src={imageUrl}
+                  alt="Vice Chairman Md Shamim Ahammed - Al Insaf General Hospital"
                   className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                  loading="eager"
                 />
               </div>
-              <h4 className="text-lg font-black text-slate-900 mt-4">Dr. Mostafizur Rahman</h4>
-              <p className="text-xs text-primary-600 font-bold uppercase">Managing Director & CEO, Al Insaf Group</p>
+              <h4 className="text-lg font-black text-slate-900 mt-4 uppercase">
+                Md Shamim Ahammed
+              </h4>
+              <p className="text-xs text-primary-600 font-bold uppercase">
+                Vice Chairman
+              </p>
+              <p className="text-xs text-slate-500 font-bold uppercase">
+                Al Insaf General Hospital
+              </p>
             </div>
 
             <div className="lg:col-span-8 text-slate-600 text-sm sm:text-base leading-relaxed space-y-4">
               <p>
-                &ldquo;At Al Insaf General Hospital, our mission from day one has been to render the best possible standard of healthcare to every citizen at an accessible and affordable cost. We have continuously invested in global-standard operating rooms, intensive care ventilators, and the latest robotic and laser surgical technologies.&rdquo;
+                &ldquo;Dear Ladies and Gentlemen, <br></br>On behalf of Al Insaf
+                General Hospital , I extend my sincere greetings to you all. Our
+                primary commitment is to ensure quality healthcare in order to
+                build a healthy and robust society. Our goal is not merely to
+                provide medical treatment, but to restore patients to health
+                with the utmost care and compassion. By combining modern medical
+                technology, skilled physicians, and dedicated nurses and
+                healthcare workers, we are working tirelessly to provide
+                national-standard care to every patient. We believe that access
+                to healthcare is a fundamental right for everyone. Therefore, we
+                are committed to bringing accurate diagnostics and reliable
+                medical care to everyone's doorstep at an affordable cost. Your
+                trust and affection are the primary inspiration behind our
+                journey. We wish you all good health and longevity. Sincerely,
+                &rdquo;
               </p>
               <p>
-                &ldquo;Our dedicated faculty of doctors, consultants, nurses, and technicians work tirelessly 24 hours a day to uphold our sacred motto: <em>We Care for Life</em>.&rdquo;
+                &ldquo;Our dedicated faculty of doctors, consultants, nurses,
+                and technicians work tirelessly 24 hours a day to uphold our
+                sacred motto: <em>We Care for Life</em>.&rdquo;
               </p>
             </div>
           </div>
@@ -156,8 +214,12 @@ export default function AboutUsPage() {
         {/* Call to Action Bar */}
         <div className="bg-[#384349] rounded-3xl p-8 sm:p-12 text-white flex flex-col sm:flex-row items-center justify-between shadow-xl">
           <div className="space-y-2 text-center sm:text-left mb-6 sm:mb-0">
-            <h3 className="text-2xl font-black">Need Expert Medical Consultation?</h3>
-            <p className="text-sm text-slate-300">Book an appointment with our renowned clinical specialists today.</p>
+            <h3 className="text-2xl font-black">
+              Need Expert Medical Consultation?
+            </h3>
+            <p className="text-sm text-slate-300">
+              Book an appointment with our renowned clinical specialists today.
+            </p>
           </div>
           <Link
             href="/appointments"

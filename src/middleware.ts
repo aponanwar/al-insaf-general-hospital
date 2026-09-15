@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
     script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com https://www.googletagmanager.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     font-src 'self' https://fonts.gstatic.com data:;
-    img-src 'self' data: blob: https://res.cloudinary.com https://images.unsplash.com https://popular-hospital.com https://alinsafhospital.com;
+    img-src 'self' data: blob: https://res.cloudinary.com https://images.unsplash.com https://popular-hospital.com https://alinsafhospital.com https://i.ibb.co.com https://i.ibb.co https://ibb.co https://*.ibb.co;
     connect-src 'self' https://static.cloudflareinsights.com https://www.google-analytics.com;
     frame-src 'self' https://www.google.com;
     object-src 'none';
