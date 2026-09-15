@@ -12,7 +12,10 @@ import {
   Filter,
   CheckCircle2,
   Phone,
-  UserCheck
+  UserCheck,
+  X,
+  ZoomIn,
+  Sparkles
 } from 'lucide-react';
 import { INITIAL_DOCTORS, INITIAL_DEPARTMENTS } from '@/lib/seed-data';
 import { Doctor } from '@/lib/types';
@@ -27,6 +30,20 @@ function DoctorsContent() {
   const [selectedDept, setSelectedDept] = useState(initialDept);
   const [selectedDay, setSelectedDay] = useState('All Days');
   const [searchQuery, setSearchQuery] = useState(initialQuery);
+  const [selectedDoctorForImage, setSelectedDoctorForImage] = useState<Doctor | null>(null);
+
+  // Close image modal with Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedDoctorForImage(null);
+      }
+    };
+    if (selectedDoctorForImage) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedDoctorForImage]);
 
   const departments = ['All Departments', ...INITIAL_DEPARTMENTS.map((d) => d.name)];
   const [doctors, setDoctors] = useState<Doctor[]>(INITIAL_DOCTORS);
@@ -188,12 +205,23 @@ function DoctorsContent() {
                   <div>
                     {/* Top Row: Avatar & Designation */}
                     <div className="flex items-start space-x-4">
-                      <img
-                        src={doc.imageUrl}
-                        alt={doc.name}
-                        className="w-20 h-20 rounded-2xl object-cover border-2 border-primary-500 shadow-md flex-shrink-0 group-hover:scale-105 transition-transform"
-                      />
-                      <div className="space-y-1">
+                      <div
+                        onClick={() => setSelectedDoctorForImage(doc)}
+                        className="relative group/avatar cursor-pointer flex-shrink-0"
+                        title="Click to enlarge doctor photo"
+                      >
+                        <img
+                          src={doc.imageUrl}
+                          alt={doc.name}
+                          className="w-20 h-20 rounded-2xl object-cover border-2 border-primary-500 shadow-md group-hover/avatar:scale-105 transition-transform"
+                        />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/avatar:opacity-100 transition-opacity rounded-2xl flex flex-col items-center justify-center text-white">
+                          <ZoomIn className="w-5 h-5 drop-shadow" />
+                          <span className="text-[9px] font-bold mt-0.5 tracking-tight">Enlarge</span>
+                        </div>
+                      </div>
+
+                      <div className="space-y-1 min-w-0">
                         <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-primary-50 text-primary-700">
                           {doc.department}
                         </span>
@@ -260,6 +288,95 @@ function DoctorsContent() {
           )}
         </div>
       </div>
+
+      {/* Doctor Image Pop-up Modal */}
+      {selectedDoctorForImage && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 transition-all"
+          onClick={() => setSelectedDoctorForImage(null)}
+        >
+          <div
+            className="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200 space-y-0 transform transition-all animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="p-4 bg-slate-900 text-white flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <span className="text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                  {selectedDoctorForImage.department}
+                </span>
+                <span className="text-xs text-slate-300">Doctor Profile Photo</span>
+              </div>
+              <button
+                onClick={() => setSelectedDoctorForImage(null)}
+                className="p-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
+                aria-label="Close photo preview"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Large Image Showcase */}
+            <div className="relative bg-gradient-to-b from-slate-100 to-slate-200 flex items-center justify-center p-6">
+              <div className="relative w-72 h-72 sm:w-80 sm:h-80 rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-slate-200">
+                <img
+                  src={selectedDoctorForImage.imageUrl}
+                  alt={selectedDoctorForImage.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+
+            {/* Doctor Info & Action Footer */}
+            <div className="p-5 sm:p-6 space-y-4 bg-white">
+              <div className="text-center space-y-1">
+                <h3 className="text-xl font-black text-slate-900">
+                  {selectedDoctorForImage.name}
+                </h3>
+                <p className="text-xs font-bold text-emerald-700">
+                  {selectedDoctorForImage.designation}
+                </p>
+                <p className="text-xs text-slate-600 font-medium">
+                  {selectedDoctorForImage.qualifications}
+                </p>
+                {selectedDoctorForImage.specialty && (
+                  <p className="text-xs text-slate-500">
+                    Speciality: <span className="font-semibold text-slate-700">{selectedDoctorForImage.specialty}</span>
+                  </p>
+                )}
+              </div>
+
+              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100 grid grid-cols-2 gap-3 text-xs text-slate-700">
+                <div className="flex items-center space-x-2">
+                  <Clock className="w-4 h-4 text-primary-600 shrink-0" />
+                  <span className="truncate"><strong>Visiting:</strong> {selectedDoctorForImage.visitingHours}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <MapPin className="w-4 h-4 text-primary-600 shrink-0" />
+                  <span className="truncate"><strong>Chamber:</strong> {selectedDoctorForImage.roomNumber}</span>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between pt-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setSelectedDoctorForImage(null)}
+                  className="w-1/2 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-colors text-center"
+                >
+                  Close Preview
+                </button>
+                <Link
+                  href={`/appointments?doctor=${encodeURIComponent(selectedDoctorForImage.name)}&department=${encodeURIComponent(selectedDoctorForImage.department)}`}
+                  className="w-1/2 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-xs font-bold rounded-xl shadow transition-all text-center flex items-center justify-center space-x-1.5"
+                >
+                  <Calendar className="w-3.5 h-3.5" />
+                  <span>Book Appointment</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

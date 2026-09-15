@@ -21,7 +21,10 @@ import {
   BedDouble,
   Microscope,
   Trash2,
-  Clock
+  Clock,
+  X,
+  ZoomIn,
+  Calendar
 } from 'lucide-react';
 import { Staff, StaffRole } from '@/lib/types';
 
@@ -106,6 +109,20 @@ export default function StaffDirectoryPage() {
   const [selectedRole, setSelectedRole] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
+  const [selectedStaffForImage, setSelectedStaffForImage] = useState<Staff | null>(null);
+
+  // Close image modal with Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedStaffForImage(null);
+      }
+    };
+    if (selectedStaffForImage) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedStaffForImage]);
 
   // Fetch staff data
   useEffect(() => {
@@ -342,8 +359,12 @@ export default function StaffDirectoryPage() {
                     >
                       {/* Left: Image, Staff ID, Name, Role */}
                       <div className="flex items-center space-x-4">
-                        {/* Profile Image */}
-                        <div className="relative flex-shrink-0">
+                        {/* Profile Image (Clickable for Pop-up) */}
+                        <div
+                          onClick={() => setSelectedStaffForImage(staff)}
+                          className="relative flex-shrink-0 cursor-pointer group/avatar"
+                          title="Click to view full photo"
+                        >
                           <img
                             src={
                               staff.imageUrl ||
@@ -351,8 +372,12 @@ export default function StaffDirectoryPage() {
                             }
                             alt={staff.name}
                             referrerPolicy="no-referrer"
-                            className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl object-cover border-2 border-slate-100 shadow-sm group-hover:scale-105 transition-transform"
+                            className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl object-cover border-2 border-slate-100 shadow-sm group-hover/avatar:scale-105 transition-transform"
                           />
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/avatar:opacity-100 transition-opacity rounded-2xl flex flex-col items-center justify-center text-white">
+                            <ZoomIn className="w-4 h-4 drop-shadow" />
+                            <span className="text-[8px] font-bold mt-0.5">Enlarge</span>
+                          </div>
                           <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-white flex items-center justify-center text-white" title="Verified Staff">
                             <CheckCircle2 className="w-3 h-3" />
                           </div>
@@ -419,6 +444,98 @@ export default function StaffDirectoryPage() {
           </main>
         </div>
       </div>
+
+      {/* Staff / Doctor Photo Pop-up Modal */}
+      {selectedStaffForImage && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 transition-all"
+          onClick={() => setSelectedStaffForImage(null)}
+        >
+          <div
+            className="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-200 space-y-0 transform transition-all animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="p-4 bg-slate-900 text-white flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <span className="text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                  {selectedStaffForImage.role}
+                </span>
+                <span className="text-xs text-slate-300">Staff Photo Preview</span>
+              </div>
+              <button
+                onClick={() => setSelectedStaffForImage(null)}
+                className="p-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
+                aria-label="Close photo preview"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Large Image Showcase */}
+            <div className="relative bg-gradient-to-b from-slate-100 to-slate-200 flex items-center justify-center p-6">
+              <div className="relative w-64 h-64 sm:w-72 sm:h-72 rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-slate-200">
+                <img
+                  src={
+                    selectedStaffForImage.imageUrl ||
+                    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400'
+                  }
+                  alt={selectedStaffForImage.name}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+
+            {/* Staff Info & Action Footer */}
+            <div className="p-5 space-y-4 bg-white">
+              <div className="text-center space-y-1">
+                <h3 className="text-lg font-black text-slate-900">
+                  {selectedStaffForImage.name}
+                </h3>
+                <div className="text-xs font-mono font-bold text-emerald-700">
+                  ID: {selectedStaffForImage.staffId}
+                </div>
+                <p className="text-xs font-medium text-slate-600">
+                  {selectedStaffForImage.designation ? `${selectedStaffForImage.designation} • ` : ''}
+                  {selectedStaffForImage.department || 'Al Insaf General Hospital'}
+                </p>
+              </div>
+
+              <div className="bg-slate-50 p-3 rounded-2xl border border-slate-100 flex items-center justify-between text-xs text-slate-700">
+                <div className="flex items-center space-x-2">
+                  <Phone className="w-4 h-4 text-emerald-600" />
+                  <span className="font-bold">{selectedStaffForImage.phone}</span>
+                </div>
+                <a
+                  href={`tel:${selectedStaffForImage.phone.replace(/[^0-9+]/g, '')}`}
+                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition-colors"
+                >
+                  Call Now
+                </a>
+              </div>
+
+              {selectedStaffForImage.role === 'doctor' && (
+                <Link
+                  href={`/appointments?doctor=${encodeURIComponent(selectedStaffForImage.name)}`}
+                  className="w-full py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-xs font-bold rounded-xl shadow transition-all text-center flex items-center justify-center space-x-1.5"
+                >
+                  <Calendar className="w-3.5 h-3.5" />
+                  <span>Book Doctor Appointment</span>
+                </Link>
+              )}
+
+              <button
+                type="button"
+                onClick={() => setSelectedStaffForImage(null)}
+                className="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-colors text-center"
+              >
+                Close Preview
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
