@@ -35,7 +35,8 @@ const config: Config = {
         }
       },
       fontFamily: {
-        sans: ['Roboto', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        sans: ['Kalpurush', 'Roboto', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        kalpurush: ['Kalpurush', 'sans-serif'],
       },
     },
   },

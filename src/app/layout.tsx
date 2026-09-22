@@ -40,6 +40,10 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400;1,700&display=swap"
           rel="stylesheet"
         />
+        <link
+          href="https://fonts.maateen.me/kalpurush/font.css"
+          rel="stylesheet"
+        />
       </head>
       <body className="font-sans flex flex-col min-h-screen bg-slate-50 text-slate-900 selection:bg-emerald-500 selection:text-white">
         <ClientLayout>{children}</ClientLayout>
