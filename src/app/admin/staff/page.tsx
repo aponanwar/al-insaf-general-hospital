@@ -26,6 +26,7 @@ import {
   Stethoscope,
   Filter
 } from 'lucide-react';
+import { TableSkeleton } from '@/components/ui/Skeleton';
 import { Staff, StaffRole, EmploymentStatus } from '@/lib/types';
 
 const ROLE_SERIAL_ORDER: { key: StaffRole | 'all'; label: string; bg: string; text: string }[] = [
@@ -448,10 +449,7 @@ export default function AdminStaffPage() {
       {/* Staff Table (Row-wise presentation) */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         {loading ? (
-          <div className="py-20 text-center space-y-3">
-            <RefreshCw className="w-8 h-8 text-emerald-600 animate-spin mx-auto" />
-            <p className="text-xs font-bold text-slate-500">Loading staff database...</p>
-          </div>
+          <TableSkeleton rows={8} cols={8} />
         ) : filteredStaff.length === 0 ? (
           <div className="py-16 text-center space-y-3">
             <Users className="w-12 h-12 text-slate-300 mx-auto" />

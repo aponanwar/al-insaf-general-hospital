@@ -13,6 +13,7 @@ import {
   HeartPulse,
   Truck
 } from 'lucide-react';
+import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
 import { INITIAL_DEPARTMENTS } from '@/lib/seed-data';
 
 export default function ContactUsPage() {
@@ -69,20 +70,12 @@ export default function ContactUsPage() {
 
   return (
     <div className="bg-slate-50 min-h-screen">
-      {/* Banner */}
-      <div className="bg-[#384349] text-white py-14">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-500/30">
-            24/7 Helpline & Location
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black mt-3">
-            Contact & Location Map
-          </h1>
-          <p className="text-slate-300 max-w-2xl mx-auto mt-2 text-sm sm:text-base">
-            Reach out to our patient care desk or visit our Dhanmondi, Dhaka hospital complex.
-          </p>
-        </div>
-      </div>
+      {/* Glossy Header Banner */}
+      <PageHeaderBanner
+        badge="24/7 Helpline & Location"
+        title="Contact & Location Map"
+        description="Reach out to our patient care desk or visit our Dhanmondi, Dhaka hospital complex."
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
         {/* 3 Contact Info Cards */}

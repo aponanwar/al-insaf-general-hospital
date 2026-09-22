@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { Search, FileSpreadsheet, CheckCircle2, ShieldCheck, Printer } from 'lucide-react';
+import { Skeleton } from '@/components/ui/Skeleton';
+import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
 import { INITIAL_RATES } from '@/lib/seed-data';
 import { RateItem } from '@/lib/types';
 
@@ -18,26 +20,26 @@ const CATEGORIES = [
 export default function RateChartsPage() {
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [searchQuery, setSearchQuery] = useState('');
-  
-  // প্রাথমিক স্টেট হিসেবে সিড ডাটা রাখা হয়েছে, যাতে পেজ লোড হওয়ার সময় কোনো ফাঁকা স্ক্রিন বা ফ্লিকার না হয়
-  const [rates, setRates] = useState<RateItem[]>(INITIAL_RATES);
+  const [rates, setRates] = useState<RateItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  /**
-   * পেজটি ব্রাউজারে মাউন্ট (Mount) হওয়ার সাথে সাথে useEffect স্বয়ংক্রিয়ভাবে রান হয়।
-   * এটি ব্যাকএন্ড API (/api/rates)-এ কল করে MongoDB-র লাইভ এবং আপডেটেড ডাটা নিয়ে এসে স্টেট আপডেট করে।
-   */
   useEffect(() => {
+    setLoading(true);
     fetch('/api/rates')
       .then((res) => res.json())
       .then((data) => {
         if (data?.rates && data.rates.length > 0) {
-          // ডাটাবেজ থেকে পাওয়া ডাটা দিয়ে স্টেট আপডেট
           setRates(data.rates);
+        } else {
+          setRates(INITIAL_RATES);
         }
       })
       .catch((err) => {
-        // কোনো কারণে নেটওয়ার্ক বা ব্যাকএন্ডে সমস্যা হলেও ডিফল্ট ডাটা প্রদর্শিত থাকবে
-        console.warn('Could not load live rates, using defaults:', err);
+        console.warn('Could not load live rates from database, falling back to seed data:', err);
+        setRates(INITIAL_RATES);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
@@ -55,32 +57,24 @@ export default function RateChartsPage() {
 
   return (
     <div className="bg-slate-50 min-h-screen">
-      {/* Banner */}
-      <div className="bg-[#384349] text-white py-14">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-500/30">
-            Transparent Healthcare Pricing
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black mt-3">
-            Hospital Rate Charts & Tariffs
-          </h1>
-          <p className="text-slate-300 max-w-2xl mx-auto mt-2 text-sm sm:text-base">
-            Transparent pricing for hospital accommodations, intensive care units, laboratory investigations, and diagnostic imaging.
-          </p>
-
-          {/* Quick Search */}
-          <div className="max-w-xl mx-auto mt-8 relative">
-            <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search tests, procedures or cabin rates (e.g. MRI, ICU, CBC, Cabin)..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 shadow-xl"
-            />
-          </div>
+      {/* Glossy Header Banner */}
+      <PageHeaderBanner
+        badge="Transparent Healthcare Pricing"
+        title="Hospital Rate Charts & Tariffs"
+        description="Transparent pricing for hospital accommodations, intensive care units, laboratory investigations, and diagnostic imaging."
+      >
+        {/* Quick Search */}
+        <div className="max-w-xl mx-auto mt-6 relative">
+          <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Search tests, procedures or cabin rates (e.g. MRI, ICU, CBC, Cabin)..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 shadow-xl border border-slate-200"
+          />
         </div>
-      </div>
+      </PageHeaderBanner>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
         {/* Category Pills & Print Trigger */}
@@ -136,7 +130,17 @@ export default function RateChartsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-xs sm:text-sm">
-                {filteredRates.length === 0 ? (
+                {loading ? (
+                  Array.from({ length: 8 }).map((_, i) => (
+                    <tr key={i}>
+                      <td className="py-4 px-6"><Skeleton className="h-4 w-20" /></td>
+                      <td className="py-4 px-6"><Skeleton className="h-4 w-52" /></td>
+                      <td className="py-4 px-6"><Skeleton className="h-5 w-28 rounded-full" /></td>
+                      <td className="py-4 px-6"><Skeleton className="h-4 w-16" /></td>
+                      <td className="py-4 px-6 text-right"><Skeleton className="h-5 w-20 ml-auto" /></td>
+                    </tr>
+                  ))
+                ) : filteredRates.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="py-12 text-center text-slate-400">
                       No rates or test items match your search filter.

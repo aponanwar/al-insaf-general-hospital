@@ -39,22 +39,27 @@ export default function DepartmentDetailPage({ params }: Props) {
 
   return (
     <div className="bg-slate-50 min-h-screen">
-      {/* Header Banner */}
-      <div className="bg-[#384349] text-white py-14">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Glossy Header Banner */}
+      <div className="relative bg-gradient-to-b from-[#2a3338] via-[#384349] to-[#232a2e] text-white py-14 sm:py-16 overflow-hidden border-b border-slate-700/60 shadow-lg">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-400/20 via-white/5 to-transparent pointer-events-none" />
+        <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[650px] h-48 bg-emerald-400/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-2">
-              <div className="flex items-center space-x-2 text-xs text-slate-400">
-                <Link href="/" className="hover:text-white">Home</Link>
+              <div className="flex items-center space-x-2 text-xs text-slate-300">
+                <Link href="/" className="hover:text-white transition-colors">Home</Link>
                 <span>/</span>
-                <Link href="/specialities" className="hover:text-white">Specialities</Link>
+                <Link href="/specialities" className="hover:text-white transition-colors">Specialities</Link>
                 <span>/</span>
-                <span className="text-emerald-400">{department.name}</span>
+                <span className="text-emerald-400 font-semibold">{department.name}</span>
               </div>
-              <h1 className="text-2xl sm:text-4xl font-black text-white">
+              <h1 className="text-2xl sm:text-4xl font-black text-white drop-shadow-sm">
                 {department.name}
               </h1>
-              <p className="text-sm text-slate-300 max-w-2xl">
+              <p className="text-sm text-slate-300 max-w-2xl leading-relaxed">
                 {department.shortDescription}
               </p>
             </div>

@@ -13,11 +13,13 @@ import {
   Stethoscope,
   Trash2
 } from 'lucide-react';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { INITIAL_DEPARTMENTS } from '@/lib/seed-data';
 import { Doctor } from '@/lib/types';
 
 export default function AdminDoctorsPage() {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [fetchingDoctors, setFetchingDoctors] = useState(true);
   const [name, setName] = useState('');
   const [department, setDepartment] = useState(INITIAL_DEPARTMENTS[0].name);
   const [designation, setDesignation] = useState('Professor & Senior Consultant');
@@ -35,6 +37,7 @@ export default function AdminDoctorsPage() {
   const [errorMsg, setErrorMsg] = useState('');
 
   const fetchDoctors = async () => {
+    setFetchingDoctors(true);
     try {
       const res = await fetch('/api/doctors');
       if (res.ok) {
@@ -43,6 +46,8 @@ export default function AdminDoctorsPage() {
       }
     } catch (err) {
       console.error(err);
+    } finally {
+      setFetchingDoctors(false);
     }
   };
 
@@ -374,7 +379,25 @@ export default function AdminDoctorsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-xs">
-                {doctors.length === 0 ? (
+                {fetchingDoctors ? (
+                  Array.from({ length: 6 }).map((_, i) => (
+                    <tr key={i}>
+                      <td className="py-3.5 px-4">
+                        <div className="flex items-center space-x-3">
+                          <Skeleton className="w-10 h-10 rounded-xl shrink-0" />
+                          <div className="space-y-1">
+                            <Skeleton className="w-32 h-4" />
+                            <Skeleton className="w-24 h-3" />
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-3.5 px-4"><Skeleton className="h-4 w-28" /></td>
+                      <td className="py-3.5 px-4"><Skeleton className="h-4 w-32" /></td>
+                      <td className="py-3.5 px-4"><Skeleton className="h-4 w-24" /></td>
+                      <td className="py-3.5 px-4 text-right"><Skeleton className="h-8 w-16 ml-auto rounded-lg" /></td>
+                    </tr>
+                  ))
+                ) : doctors.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="py-8 text-center text-slate-400">
                       No doctors found in directory.

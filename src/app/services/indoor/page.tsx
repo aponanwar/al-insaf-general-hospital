@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { BedDouble, HeartPulse, CheckCircle2, ShieldAlert, Phone, Users, Clock } from 'lucide-react';
+import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
 
 export const metadata = {
   title: 'Indoor Medical Services | Al Insaf General Hospital Ltd.',
@@ -32,20 +33,12 @@ export default function IndoorServicesPage() {
 
   return (
     <div className="bg-slate-50 min-h-screen">
-      {/* Banner */}
-      <div className="bg-[#384349] text-white py-14">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-500/30">
-            500+ Bed Inpatient Hospital
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black mt-3">
-            Indoor Medical Services
-          </h1>
-          <p className="text-slate-300 max-w-2xl mx-auto mt-2 text-sm sm:text-base">
-            Safe, comfortable, and comprehensive inpatient recovery under the supervision of leading clinical specialists.
-          </p>
-        </div>
-      </div>
+      {/* Glossy Header Banner */}
+      <PageHeaderBanner
+        badge="500+ Bed Inpatient Hospital"
+        title="Indoor Medical Services"
+        description="Safe, comfortable, and comprehensive inpatient recovery under the supervision of leading clinical specialists."
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
         {/* Intro */}

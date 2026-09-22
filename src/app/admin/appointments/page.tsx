@@ -14,6 +14,7 @@ import {
   User,
   Printer
 } from 'lucide-react';
+import { TableSkeleton, Skeleton } from '@/components/ui/Skeleton';
 import { Appointment } from '@/lib/types';
 
 export default function AdminAppointmentsPage() {
@@ -145,7 +146,19 @@ export default function AdminAppointmentsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-xs">
-                {filteredAppointments.length === 0 ? (
+                {loading ? (
+                  Array.from({ length: 6 }).map((_, i) => (
+                    <tr key={i}>
+                      <td className="py-4 px-6"><Skeleton className="h-4 w-24" /></td>
+                      <td className="py-4 px-6"><Skeleton className="h-4 w-36 mb-1" /><Skeleton className="h-3 w-24" /></td>
+                      <td className="py-4 px-6"><Skeleton className="h-4 w-32 mb-1" /><Skeleton className="h-3 w-20" /></td>
+                      <td className="py-4 px-6"><Skeleton className="h-4 w-28" /></td>
+                      <td className="py-4 px-6"><Skeleton className="h-4 w-32" /></td>
+                      <td className="py-4 px-6"><Skeleton className="h-5 w-20 rounded-full" /></td>
+                      <td className="py-4 px-6 text-right"><Skeleton className="h-8 w-20 ml-auto rounded-lg" /></td>
+                    </tr>
+                  ))
+                ) : filteredAppointments.length === 0 ? (
                   <tr>
                     <td colSpan={7} className="py-12 text-center text-slate-400">
                       No appointments matching the selected filter.

@@ -16,6 +16,7 @@ import {
   Baby,
   Wind
 } from 'lucide-react';
+import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
 import { INITIAL_DEPARTMENTS } from '@/lib/seed-data';
 
 export default function SpecialitiesPage() {
@@ -29,32 +30,24 @@ export default function SpecialitiesPage() {
 
   return (
     <div className="bg-slate-50 min-h-screen">
-      {/* Top Banner */}
-      <div className="bg-[#384349] text-white py-14">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-500/30">
-            Center of Clinical Excellence
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black mt-3">
-            Our Specialities & Departments
-          </h1>
-          <p className="text-slate-300 max-w-2xl mx-auto mt-2 text-sm sm:text-base">
-            Providing comprehensive super-specialized diagnostic and surgical care across 24+ medical wings.
-          </p>
-
-          {/* Real-time Search Box */}
-          <div className="max-w-xl mx-auto mt-8 relative">
-            <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search by department name (e.g. Cardiology, Orthopaedics, Oncology)..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 shadow-xl"
-            />
-          </div>
+      {/* Glossy Top Banner */}
+      <PageHeaderBanner
+        badge="Center of Clinical Excellence"
+        title="Our Specialities & Departments"
+        description="Providing comprehensive super-specialized diagnostic and surgical care across 24+ medical wings."
+      >
+        {/* Real-time Search Box */}
+        <div className="max-w-xl mx-auto mt-6 relative">
+          <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Search by department name (e.g. Cardiology, Orthopaedics, Oncology)..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 shadow-xl border border-slate-200"
+          />
         </div>
-      </div>
+      </PageHeaderBanner>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="flex items-center justify-between mb-8">

@@ -21,6 +21,7 @@ import {
   CheckCircle2,
   Contact
 } from 'lucide-react';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { Appointment, Inquiry, Doctor } from '@/lib/types';
 
 interface DbStatus {
@@ -42,6 +43,7 @@ export default function AdminDashboardPage() {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [doctorsCount, setDoctorsCount] = useState<number>(0);
   const [staffCount, setStaffCount] = useState<number>(0);
+  const [ratesCount, setRatesCount] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [seeding, setSeeding] = useState(false);
   const [seedMessage, setSeedMessage] = useState('');
@@ -96,6 +98,13 @@ export default function AdminDashboardPage() {
       if (staffRes.ok) {
         const staffData = await staffRes.json();
         setStaffCount(staffData.count || (staffData.staff ? staffData.staff.length : 0));
+      }
+
+      // 5. Fetch rates & tariffs
+      const rateRes = await fetch('/api/rates');
+      if (rateRes.ok) {
+        const rateData = await rateRes.json();
+        setRatesCount(rateData.rates ? rateData.rates.length : 0);
       }
     } catch (err) {
       console.error('Error fetching admin data:', err);
@@ -303,72 +312,86 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Metric Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           <Link
             href="/admin/appointments"
-            className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-primary-500 hover:shadow-md transition-all"
+            className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-primary-500 hover:shadow-md transition-all"
           >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase text-slate-400">Total Serials</span>
+              <span className="text-[11px] font-bold uppercase text-slate-400">Total Serials</span>
               <div className="w-8 h-8 rounded-lg bg-primary-50 text-primary-600 flex items-center justify-center">
                 <Calendar className="w-4 h-4" />
               </div>
             </div>
             <div className="text-2xl font-black text-slate-900">{appointments.length}</div>
-            <p className="text-[11px] text-slate-500">Patient bookings</p>
+            <p className="text-[10px] text-slate-500">Patient bookings</p>
           </Link>
 
           <Link
             href="/admin/appointments"
-            className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-amber-500 hover:shadow-md transition-all"
+            className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-amber-500 hover:shadow-md transition-all"
           >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase text-amber-500">Pending</span>
+              <span className="text-[11px] font-bold uppercase text-amber-500">Pending</span>
               <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
                 <Clock className="w-4 h-4" />
               </div>
             </div>
             <div className="text-2xl font-black text-amber-600">{pendingAppointments}</div>
-            <p className="text-[11px] text-slate-500">Awaiting approval</p>
+            <p className="text-[10px] text-slate-500">Awaiting approval</p>
           </Link>
 
           <Link
             href="/admin/doctors"
-            className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-emerald-500 hover:shadow-md transition-all"
+            className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-emerald-500 hover:shadow-md transition-all"
           >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase text-emerald-500">Doctors</span>
+              <span className="text-[11px] font-bold uppercase text-emerald-500">Doctors</span>
               <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
                 <Users className="w-4 h-4" />
               </div>
             </div>
             <div className="text-2xl font-black text-slate-900">{doctorsCount || 12}</div>
-            <p className="text-[11px] text-slate-500">Consultants in roster</p>
+            <p className="text-[10px] text-slate-500">Consultants roster</p>
           </Link>
 
           <Link
             href="/admin/staff"
-            className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-teal-500 hover:shadow-md transition-all"
+            className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-teal-500 hover:shadow-md transition-all"
           >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase text-teal-600">Hospital Staff</span>
+              <span className="text-[11px] font-bold uppercase text-teal-600">Staff</span>
               <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center">
                 <Contact className="w-4 h-4" />
               </div>
             </div>
             <div className="text-2xl font-black text-slate-900">{staffCount || 10}</div>
-            <p className="text-[11px] text-slate-500">Across 9 categories</p>
+            <p className="text-[10px] text-slate-500">9 HR categories</p>
           </Link>
 
-          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <Link
+            href="/admin/rates"
+            className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-purple-500 hover:shadow-md transition-all"
+          >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase text-blue-500">Inquiries</span>
+              <span className="text-[11px] font-bold uppercase text-purple-600">Tariff & Rates</span>
+              <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
+                <Activity className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl font-black text-slate-900">{ratesCount || 17}</div>
+            <p className="text-[10px] text-slate-500">Tests & cabin rates</p>
+          </Link>
+
+          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold uppercase text-blue-500">Inquiries</span>
               <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
                 <MessageSquare className="w-4 h-4" />
               </div>
             </div>
             <div className="text-2xl font-black text-slate-900">{inquiries.length}</div>
-            <p className="text-[11px] text-slate-500">Online queries</p>
+            <p className="text-[10px] text-slate-500">Online messages</p>
           </div>
         </div>
 
@@ -469,7 +492,18 @@ export default function AdminDashboardPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-xs">
-                {appointments.length === 0 ? (
+                {loading ? (
+                  Array.from({ length: 5 }).map((_, i) => (
+                    <tr key={i}>
+                      <td className="py-3.5 px-4"><Skeleton className="h-4 w-24" /></td>
+                      <td className="py-3.5 px-4"><Skeleton className="h-4 w-32" /></td>
+                      <td className="py-3.5 px-4"><Skeleton className="h-4 w-36" /></td>
+                      <td className="py-3.5 px-4"><Skeleton className="h-4 w-28" /></td>
+                      <td className="py-3.5 px-4"><Skeleton className="h-5 w-20 rounded-full" /></td>
+                      <td className="py-3.5 px-4 text-right"><Skeleton className="h-7 w-16 ml-auto rounded-lg" /></td>
+                    </tr>
+                  ))
+                ) : appointments.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="py-8 text-center text-slate-400">
                       No appointments received yet.

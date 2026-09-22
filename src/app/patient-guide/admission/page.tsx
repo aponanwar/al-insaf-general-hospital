@@ -8,6 +8,7 @@ import {
   PhoneCall,
   Calendar
 } from 'lucide-react';
+import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
 
 export const metadata = {
   title: 'Admission & Payment Guide | Al Insaf General Hospital Ltd.',
@@ -40,20 +41,12 @@ export default function AdmissionGuidePage() {
 
   return (
     <div className="bg-slate-50 min-h-screen">
-      {/* Banner */}
-      <div className="bg-[#384349] text-white py-14">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-500/30">
-            Patient Support & Guidelines
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black mt-3">
-            Admission & Payment Guide
-          </h1>
-          <p className="text-slate-300 max-w-2xl mx-auto mt-2 text-sm sm:text-base">
-            Everything you need to know about inpatient admission, payment options, visitor rules, and discharge formalities.
-          </p>
-        </div>
-      </div>
+      {/* Glossy Header Banner */}
+      <PageHeaderBanner
+        badge="Patient Support & Guidelines"
+        title="Admission & Payment Guide"
+        description="Everything you need to know about inpatient admission, payment options, visitor rules, and discharge formalities."
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
         {/* Step by Step Admission Flow */}

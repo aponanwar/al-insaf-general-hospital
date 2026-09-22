@@ -26,6 +26,9 @@ import {
   ZoomIn,
   Calendar
 } from 'lucide-react';
+import { StaffRowSkeleton } from '@/components/ui/Skeleton';
+import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
+import { INITIAL_STAFF } from '@/lib/seed-data';
 import { Staff, StaffRole } from '@/lib/types';
 
 // Exact serial order specified by the user
@@ -131,11 +134,16 @@ export default function StaffDirectoryPage() {
       try {
         const res = await fetch('/api/staff');
         const data = await res.json();
-        if (data.success) {
-          setStaffList(data.staff || []);
+        if (data.success && data.staff && data.staff.length > 0) {
+          setStaffList(data.staff);
+        } else {
+          // If database is empty, fallback to seed staff data
+          setStaffList(INITIAL_STAFF as Staff[]);
         }
       } catch (err) {
-        console.error('Failed to load staff list:', err);
+        // If database connection crashes or network fails, fallback to seed data
+        console.warn('Database error while loading staff, falling back to seed data:', err);
+        setStaffList(INITIAL_STAFF as Staff[]);
       } finally {
         setLoading(false);
       }
@@ -171,32 +179,24 @@ export default function StaffDirectoryPage() {
 
   return (
     <div className="bg-slate-50 min-h-screen">
-      {/* Top Banner */}
-      <div className="bg-[#384349] text-white py-14 border-b border-slate-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
-          <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950/60 px-3.5 py-1 rounded-full border border-emerald-500/30">
-            Al Insaf Hospital Workforce
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight">
-            Staff & Medical Team Directory
-          </h1>
-          <p className="text-slate-300 max-w-2xl mx-auto text-xs sm:text-sm">
-            Meet our dedicated team of administrators, medical specialists, nurses, pharmacists, and support personnel who make 24/7 patient care possible.
-          </p>
-
-          <div className="flex justify-center items-center space-x-2 text-xs text-slate-400 pt-2">
-            <Link href="/" className="hover:text-white transition-colors">
-              Home
-            </Link>
-            <span>/</span>
-            <Link href="/about-us" className="hover:text-white transition-colors">
-              About Us
-            </Link>
-            <span>/</span>
-            <span className="text-emerald-400 font-semibold">Staff Directory</span>
-          </div>
+      {/* Glossy Top Banner */}
+      <PageHeaderBanner
+        badge="Al Insaf Hospital Workforce"
+        title="Staff & Medical Team Directory"
+        description="Meet our dedicated team of administrators, medical specialists, nurses, pharmacists, and support personnel who make 24/7 patient care possible."
+      >
+        <div className="flex justify-center items-center space-x-2 text-xs text-slate-300 pt-2">
+          <Link href="/" className="hover:text-white transition-colors">
+            Home
+          </Link>
+          <span>/</span>
+          <Link href="/about-us" className="hover:text-white transition-colors">
+            About Us
+          </Link>
+          <span>/</span>
+          <span className="text-emerald-400 font-semibold">Staff Directory</span>
         </div>
-      </div>
+      </PageHeaderBanner>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -325,10 +325,7 @@ export default function StaffDirectoryPage() {
 
             {/* Loading State */}
             {loading ? (
-              <div className="bg-white rounded-3xl p-12 border border-slate-200 text-center space-y-3">
-                <div className="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto" />
-                <p className="text-xs font-bold text-slate-600">Loading Staff Directory...</p>
-              </div>
+              <StaffRowSkeleton count={6} />
             ) : filteredStaff.length === 0 ? (
               <div className="bg-white rounded-3xl p-12 border border-slate-200 text-center space-y-3">
                 <Users className="w-12 h-12 text-slate-300 mx-auto" />

@@ -17,6 +17,8 @@ import {
   ZoomIn,
   Sparkles
 } from 'lucide-react';
+import { DoctorCardSkeleton } from '@/components/ui/Skeleton';
+import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
 import { INITIAL_DOCTORS, INITIAL_DEPARTMENTS } from '@/lib/seed-data';
 import { Doctor } from '@/lib/types';
 
@@ -46,18 +48,28 @@ function DoctorsContent() {
   }, [selectedDoctorForImage]);
 
   const departments = ['All Departments', ...INITIAL_DEPARTMENTS.map((d) => d.name)];
-  const [doctors, setDoctors] = useState<Doctor[]>(INITIAL_DOCTORS);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    setLoading(true);
     fetch('/api/doctors')
       .then((res) => res.json())
       .then((data) => {
         if (data?.doctors && data.doctors.length > 0) {
           setDoctors(data.doctors);
+        } else {
+          // If database is empty or returns no results, fallback to initial seed data
+          setDoctors(INITIAL_DOCTORS);
         }
       })
       .catch((err) => {
-        console.warn('Could not load live doctors, using defaults:', err);
+        // If database connection crashed or network failed, fallback to seed data
+        console.warn('Database error while loading doctors, falling back to seed data:', err);
+        setDoctors(INITIAL_DOCTORS);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
@@ -177,7 +189,9 @@ function DoctorsContent() {
             </span>
           </div>
 
-          {filteredDoctors.length === 0 ? (
+          {loading ? (
+            <DoctorCardSkeleton count={6} />
+          ) : filteredDoctors.length === 0 ? (
             <div className="bg-white rounded-3xl p-12 text-center border border-slate-200 space-y-3">
               <Stethoscope className="w-12 h-12 text-slate-300 mx-auto" />
               <h3 className="text-base font-bold text-slate-800">No doctors found matching filters</h3>
@@ -384,20 +398,12 @@ function DoctorsContent() {
 export default function DoctorsDirectoryPage() {
   return (
     <div className="bg-slate-50 min-h-screen">
-      {/* Banner */}
-      <div className="bg-[#384349] text-white py-14">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-500/30">
-            Expert Medical Faculty
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black mt-3">
-            Find Our Specialist Doctors
-          </h1>
-          <p className="text-slate-300 max-w-2xl mx-auto mt-2 text-sm sm:text-base">
-            Consult with over 200+ renowned professors, senior consultants, and surgeons in Dhaka.
-          </p>
-        </div>
-      </div>
+      {/* Glossy Header Banner */}
+      <PageHeaderBanner
+        badge="Expert Medical Faculty"
+        title="Find Our Specialist Doctors"
+        description="Consult with over 200+ renowned professors, senior consultants, and surgeons in Dhaka."
+      />
 
       <Suspense fallback={<div className="p-12 text-center text-slate-500">Loading Doctor Directory...</div>}>
         <DoctorsContent />

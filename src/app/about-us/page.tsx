@@ -1,4 +1,5 @@
 import Link from "next/link";
+import PageHeaderBanner from "@/components/layout/PageHeaderBanner";
 import {
   Building2,
   Award,
@@ -22,25 +23,19 @@ export default function AboutUsPage() {
   return (
     <div className="bg-slate-50 min-h-screen">
       {/* Header Banner */}
-      <div className="bg-[#384349] text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-500/30">
-            About Al Insaf Hospital
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black mt-4">At a Glance</h1>
-          <p className="text-slate-300 max-w-2xl mx-auto mt-3 text-sm sm:text-base">
-            Dedicated workforce with committed adherence to quality and
-            uncompromising perfection.
-          </p>
-          <div className="flex justify-center items-center space-x-2 text-xs text-slate-400 mt-4">
-            <Link href="/" className="hover:text-white">
-              Home
-            </Link>
-            <span>/</span>
-            <span className="text-emerald-400">About Us</span>
-          </div>
+      <PageHeaderBanner
+        badge="About Al Insaf Hospital"
+        title="At a Glance"
+        description="Dedicated workforce with committed adherence to quality and uncompromising perfection."
+      >
+        <div className="flex justify-center items-center space-x-2 text-xs text-slate-300 pt-2">
+          <Link href="/" className="hover:text-white transition-colors">
+            Home
+          </Link>
+          <span>/</span>
+          <span className="text-emerald-400 font-semibold">About Us</span>
         </div>
-      </div>
+      </PageHeaderBanner>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
         {/* Intro Story */}

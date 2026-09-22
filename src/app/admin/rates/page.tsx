@@ -17,6 +17,7 @@ import {
   Tag,
   Layers,
 } from 'lucide-react';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { RateItem } from '@/lib/types';
 
 const CATEGORIES: Array<RateItem['category']> = [
@@ -308,10 +309,21 @@ export default function AdminRatesPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-xs sm:text-sm">
-                {filteredRates.length === 0 ? (
+                {loading ? (
+                  Array.from({ length: 6 }).map((_, i) => (
+                    <tr key={i}>
+                      <td className="py-4 px-6"><Skeleton className="h-4 w-20" /></td>
+                      <td className="py-4 px-6"><Skeleton className="h-4 w-48 mb-1" /><Skeleton className="h-3 w-32" /></td>
+                      <td className="py-4 px-6"><Skeleton className="h-5 w-28 rounded-full" /></td>
+                      <td className="py-4 px-6"><Skeleton className="h-4 w-16" /></td>
+                      <td className="py-4 px-6 text-right"><Skeleton className="h-5 w-16 ml-auto" /></td>
+                      <td className="py-4 px-6 text-right"><Skeleton className="h-8 w-16 ml-auto rounded-lg" /></td>
+                    </tr>
+                  ))
+                ) : filteredRates.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="py-12 text-center text-slate-400">
-                      {loading ? 'Loading tariffs...' : 'No tariff items match the selected filter.'}
+                      No tariff items match the selected filter.
                     </td>
                   </tr>
                 ) : (

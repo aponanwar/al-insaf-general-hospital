@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Calendar, ArrowRight, Bell, Newspaper, Sparkles } from 'lucide-react';
+import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
 import { INITIAL_NEWS } from '@/lib/seed-data';
 
 export const metadata = {
@@ -12,20 +13,12 @@ export default function NewsPage() {
 
   return (
     <div className="bg-slate-50 min-h-screen">
-      {/* Banner */}
-      <div className="bg-[#384349] text-white py-14">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-500/30">
-            Media & Communication
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black mt-3">
-            Hospital News, Events & Notices
-          </h1>
-          <p className="text-slate-300 max-w-2xl mx-auto mt-2 text-sm sm:text-base">
-            Stay updated with clinical milestones, health workshops, and institutional announcements.
-          </p>
-        </div>
-      </div>
+      {/* Glossy Header Banner */}
+      <PageHeaderBanner
+        badge="Media & Communication"
+        title="Hospital News, Events & Notices"
+        description="Stay updated with clinical milestones, health workshops, and institutional announcements."
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

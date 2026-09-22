@@ -24,20 +24,25 @@ export default function NewsDetailPage({ params }: Props) {
 
   return (
     <div className="bg-slate-50 min-h-screen">
-      {/* Banner */}
-      <div className="bg-[#384349] text-white py-14">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Glossy Header Banner */}
+      <div className="relative bg-gradient-to-b from-[#2a3338] via-[#384349] to-[#232a2e] text-white py-14 sm:py-16 overflow-hidden border-b border-slate-700/60 shadow-lg">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-400/20 via-white/5 to-transparent pointer-events-none" />
+        <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[650px] h-48 bg-emerald-400/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent" />
+
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
           <Link
             href="/news"
-            className="inline-flex items-center text-xs font-bold text-emerald-400 hover:text-emerald-300 mb-4"
+            className="inline-flex items-center text-xs font-bold text-emerald-400 hover:text-emerald-300 mb-4 transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-1" />
             Back to All News
           </Link>
-          <span className="inline-block text-[11px] font-extrabold uppercase px-3 py-1 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 mb-3">
+          <span className="inline-block text-[11px] font-extrabold uppercase px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-emerald-300 border border-white/20 mb-3 shadow-inner">
             {article.category}
           </span>
-          <h1 className="text-2xl sm:text-4xl font-black text-white leading-tight">
+          <h1 className="text-2xl sm:text-4xl font-black text-white leading-tight drop-shadow-sm">
             {article.title}
           </h1>
           <div className="flex items-center space-x-2 text-xs text-slate-300 mt-4">
