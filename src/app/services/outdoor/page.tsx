@@ -14,8 +14,11 @@ export default function OutdoorServicesPage() {
       {/* Glossy Header Banner */}
       <PageHeaderBanner
         badge="Outpatient Department (OPD)"
+        badgeBn="আউটডোর ও বহির্বিভাগ (ওপিডি)"
         title="Outdoor Consultation & Diagnostics"
+        titleBn="আউটডোর কনসাল্টেশন ও ডায়াগনস্টিক"
         description="Convenient consultation shifts from morning to late night with country's leading medical specialists."
+        descriptionBn="সকাল থেকে রাত পর্যন্ত দেশের খ্যাতনামা বিশেষজ্ঞ চিকিৎসকদের সরাসরি কনসালটেশন ও নির্ভুল ডায়াগনস্টিক টেস্ট।"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">

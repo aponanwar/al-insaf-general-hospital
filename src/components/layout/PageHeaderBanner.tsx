@@ -1,18 +1,33 @@
+'use client';
+
 import React from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface PageHeaderBannerProps {
   badge?: string;
+  badgeBn?: string;
   title: string;
+  titleBn?: string;
   description?: string;
+  descriptionBn?: string;
   children?: React.ReactNode;
 }
 
 export default function PageHeaderBanner({
   badge,
+  badgeBn,
   title,
+  titleBn,
   description,
+  descriptionBn,
   children,
 }: PageHeaderBannerProps) {
+  const { language } = useLanguage();
+
+  const activeBadge = language === 'bn' ? (badgeBn || badge) : badge;
+  const activeTitle = language === 'bn' ? (titleBn || title) : title;
+  const activeDesc = language === 'bn' ? (descriptionBn || description) : description;
+
   return (
     <div className="relative bg-gradient-to-b from-[#2a3338] via-[#384349] to-[#232a2e] text-white py-14 sm:py-16 overflow-hidden border-b border-slate-700/60 shadow-lg">
       {/* Glossy ambient light reflection, top hairline & radial glow */}
@@ -26,20 +41,20 @@ export default function PageHeaderBanner({
       <div className="absolute -bottom-10 -left-10 w-60 h-60 bg-teal-500/10 rounded-full blur-2xl pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3 z-10">
-        {badge && (
+        {activeBadge && (
           <div className="inline-block">
             <span className="text-xs font-bold uppercase tracking-widest text-emerald-300 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20 shadow-inner inline-flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              {badge}
+              {activeBadge}
             </span>
           </div>
         )}
         <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white drop-shadow-md">
-          {title}
+          {activeTitle}
         </h1>
-        {description && (
+        {activeDesc && (
           <p className="text-slate-300 max-w-2xl mx-auto text-xs sm:text-sm md:text-base font-normal leading-relaxed">
-            {description}
+            {activeDesc}
           </p>
         )}
         {children}
@@ -47,5 +62,3 @@ export default function PageHeaderBanner({
     </div>
   );
 }
-
-

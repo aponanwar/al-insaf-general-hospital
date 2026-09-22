@@ -7,6 +7,8 @@ import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
 import { INITIAL_RATES } from '@/lib/seed-data';
 import { RateItem } from '@/lib/types';
 
+import { useLanguage } from '@/context/LanguageContext';
+
 const CATEGORIES = [
   'All Categories',
   'Cabin & Bed',
@@ -18,6 +20,7 @@ const CATEGORIES = [
 ];
 
 export default function RateChartsPage() {
+  const { language } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [searchQuery, setSearchQuery] = useState('');
   const [rates, setRates] = useState<RateItem[]>([]);
@@ -60,15 +63,18 @@ export default function RateChartsPage() {
       {/* Glossy Header Banner */}
       <PageHeaderBanner
         badge="Transparent Healthcare Pricing"
+        badgeBn="স্বচ্ছ স্বাস্থ্যসেবা ও ফি তালিকা"
         title="Hospital Rate Charts & Tariffs"
+        titleBn="হাসপাতাল ফি তালিকা ও সেবা চার্জ"
         description="Transparent pricing for hospital accommodations, intensive care units, laboratory investigations, and diagnostic imaging."
+        descriptionBn="কেবিন ও বেড ভাড়া, আইসিইউ চার্জ, ল্যাবরেটরি টেস্ট এবং রেডিওলজি ও ডায়াগনস্টিকের নির্ধারিত ফি তালিকা।"
       >
         {/* Quick Search */}
         <div className="max-w-xl mx-auto mt-6 relative">
           <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
-            placeholder="Search tests, procedures or cabin rates (e.g. MRI, ICU, CBC, Cabin)..."
+            placeholder={language === 'bn' ? "টেস্ট বা কেবিন খুঁজুন (যেমন: MRI, ICU, CBC, Cabin)..." : "Search tests, procedures or cabin rates (e.g. MRI, ICU, CBC, Cabin)..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 shadow-xl border border-slate-200"

@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import { ChevronDown, CheckCircle2, Shield, Clock, Award, Users } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
-const ACCORDION_ITEMS = [
+const ACCORDION_ITEMS_EN = [
   {
     id: 1,
     title: 'More Experience & Clinical Excellence',
@@ -35,12 +35,46 @@ const ACCORDION_ITEMS = [
   },
 ];
 
+const ACCORDION_ITEMS_BN = [
+  {
+    id: 1,
+    title: 'অভিজ্ঞ চিকিৎসক ও আন্তর্জাতিক মানের চিকিৎসা',
+    content:
+      'স্বাস্থ্যসেবায় গুণগত মান নিশ্চিত করাই আল ইনসাফ জেনারেল হাসপাতালের মূল লক্ষ্য। অভিজ্ঞ চিকিৎসক, দক্ষ নার্স এবং নিবেদিত স্বাস্থ্যকর্মীদের মাধ্যমে রোগীদের আন্তর্জাতিক মানের নির্ভরযোগ্য সেবা প্রদান করা হয়।',
+    icon: Award,
+  },
+  {
+    id: 2,
+    title: 'সর্বাধুনিক প্রযুক্তির নির্ভুল ডায়াগনস্টিক ল্যাব',
+    content:
+      '১২৮-স্লাইস সিটি স্ক্যান, ১.৫ টেসলা এমআরআই, ফোর-ডি কালার ডপলার এবং সম্পূর্ণ অটোমেটেড বায়োকেমিস্ট্রি ও হেমাটোলজি ল্যাবের মাধ্যমে দ্রুততম সময়ে শতভাগ নির্ভুল টেস্ট রিপোর্ট প্রদান করা হয়।',
+    icon: CheckCircle2,
+  },
+  {
+    id: 3,
+    title: '২৪ ঘণ্টা নিরবচ্ছিন্ন জরুরি ও আইসিইউ সেবা',
+    content:
+      'সকাল থেকে রাত পর্যন্ত বিশেষজ্ঞ ডাক্তারদের নিয়মিত কনসালটেশনের পাশাপাশি ২৪ ঘণ্টা জরুরি বিভাগ, ট্রমা সেন্টার, সেন্ট্রাল ফার্মেসি, ব্লাড ব্যাংক এবং সার্বক্ষণিক অ্যাম্বুলেন্স সেবা চালু থাকে।',
+    icon: Clock,
+  },
+  {
+    id: 4,
+    title: '২৪+ বিশেষায়িত বিভাগে বিশেষজ্ঞ সার্জন ও টিম',
+    content:
+      'মেডিসিন, সার্জারি, গাইনি, হৃদরোগ, শিশু রোগ, অর্থোপেডিকস ও নিউরোসহ প্রতিটি বিভাগে আধুনিক ল্যাপারোস্কপিক ও জটিল সার্জারির জন্য সার্বক্ষণিক প্রস্তুত বিশেষজ্ঞ মেডিকেল বোর্ড।',
+    icon: Users,
+  },
+];
+
 export default function WhyChooseUs() {
   const [openId, setOpenId] = useState<number>(1);
+  const { language } = useLanguage();
 
   const toggleAccordion = (id: number) => {
     setOpenId(openId === id ? 0 : id);
   };
+
+  const accordionItems = language === 'bn' ? ACCORDION_ITEMS_BN : ACCORDION_ITEMS_EN;
 
   return (
     <section className="bg-slate-100 py-16 lg:py-24 border-y border-slate-200">
@@ -57,10 +91,14 @@ export default function WhyChooseUs() {
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
               <div className="absolute bottom-6 left-6 right-6 text-white">
                 <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest bg-slate-900/80 px-3 py-1 rounded-full backdrop-blur-sm">
-                  Advanced Critical Care
+                  {language === 'bn' ? 'উন্নত ক্রিটিক্যাল কেয়ার' : 'Advanced Critical Care'}
                 </span>
-                <h4 className="text-lg font-bold mt-2">50-Bed ICU, CCU & NICU Infrastructure</h4>
-                <p className="text-xs text-slate-300">Equipped with Servo mechanical ventilators and 1:1 nurse-to-patient ratio.</p>
+                <h4 className="text-lg font-bold mt-2">
+                  {language === 'bn' ? '৫০ শয্যার আধুনিক আইসিইউ, সিসিইউ ও এনআইসিইউ' : '50-Bed ICU, CCU & NICU Infrastructure'}
+                </h4>
+                <p className="text-xs text-slate-300">
+                  {language === 'bn' ? 'আধুনিক ভেন্টিলেটর সুবিধা ও ১:১ দক্ষ নার্সিং অনুপাত।' : 'Equipped with Servo mechanical ventilators and 1:1 nurse-to-patient ratio.'}
+                </p>
               </div>
             </div>
 
@@ -70,8 +108,12 @@ export default function WhyChooseUs() {
                 <Shield className="w-6 h-6" />
               </div>
               <div>
-                <div className="text-lg font-black text-slate-900">500+ Beds</div>
-                <div className="text-xs text-slate-500 font-medium">Tertiary Healthcare Provider</div>
+                <div className="text-lg font-black text-slate-900">
+                  {language === 'bn' ? '৫০০+ শয্যা' : '500+ Beds'}
+                </div>
+                <div className="text-xs text-slate-500 font-medium">
+                  {language === 'bn' ? 'টারশিয়ারি স্বাস্থ্যসেবা প্রতিষ্ঠান' : 'Tertiary Healthcare Provider'}
+                </div>
               </div>
             </div>
           </div>
@@ -80,19 +122,30 @@ export default function WhyChooseUs() {
           <div className="lg:col-span-6 space-y-6">
             <div>
               <span className="text-xs font-bold uppercase tracking-widest text-primary-600 bg-primary-50 px-3 py-1 rounded-full">
-                Why Patients Trust Us
+                {language === 'bn' ? 'রোগীদের আস্থার কারণ' : 'Why Patients Trust Us'}
               </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-3 tracking-tight">
-                Committed to Quality, <br />
-                <span className="text-primary-600">Uncompromising Perfection</span>
+                {language === 'bn' ? (
+                  <>
+                    উন্নত স্বাস্থ্যসেবায় <br />
+                    <span className="text-primary-600">আমাদের অঙ্গীকার আপসহীন</span>
+                  </>
+                ) : (
+                  <>
+                    Committed to Quality, <br />
+                    <span className="text-primary-600">Uncompromising Perfection</span>
+                  </>
+                )}
               </h2>
               <p className="text-sm text-slate-600 mt-2">
-                Discover why over 30,000+ patients choose Al Insaf General Hospital for their diagnosis and clinical treatments every year.
+                {language === 'bn'
+                  ? 'প্রতি বছর হাজার হাজার রোগী কেন তাদের নির্ভুল রোগ নির্ণয় ও চিকিৎসার জন্য আল ইনসাফ হাসপাতাল বেছে নেন।'
+                  : 'Discover why over 30,000+ patients choose Al Insaf General Hospital for their diagnosis and clinical treatments every year.'}
               </p>
             </div>
 
             <div className="space-y-3">
-              {ACCORDION_ITEMS.map((item) => {
+              {accordionItems.map((item) => {
                 const isOpen = openId === item.id;
                 const Icon = item.icon;
                 return (

@@ -25,8 +25,11 @@ export default function AboutUsPage() {
       {/* Header Banner */}
       <PageHeaderBanner
         badge="About Al Insaf Hospital"
+        badgeBn="আল ইনসাফ হাসপাতাল পরিচিতি"
         title="At a Glance"
+        titleBn="এক নজরে হাসপাতাল"
         description="Dedicated workforce with committed adherence to quality and uncompromising perfection."
+        descriptionBn="রোগীদের উন্নত ও মানবিক চিকিৎসাসেবা প্রদানে নিবেদিত এবং গুণগত মানে আপসহীন।"
       >
         <div className="flex justify-center items-center space-x-2 text-xs text-slate-300 pt-2">
           <Link href="/" className="hover:text-white transition-colors">

@@ -21,10 +21,12 @@ import { DoctorCardSkeleton } from '@/components/ui/Skeleton';
 import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
 import { INITIAL_DOCTORS, INITIAL_DEPARTMENTS } from '@/lib/seed-data';
 import { Doctor } from '@/lib/types';
+import { useLanguage } from '@/context/LanguageContext';
 
 const DAYS = ['All Days', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
 function DoctorsContent() {
+  const { language } = useLanguage();
   const searchParams = useSearchParams();
   const initialDept = searchParams?.get('department') || 'All Departments';
   const initialQuery = searchParams?.get('q') || '';
@@ -107,7 +109,7 @@ function DoctorsContent() {
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center space-x-2 text-sm font-bold text-slate-900">
                 <Filter className="w-4 h-4 text-primary-600" />
-                <span>Filter Directory</span>
+                <span>{language === 'bn' ? 'ফিল্টার করুন' : 'Filter Directory'}</span>
               </div>
               {(selectedDept !== 'All Departments' || selectedDay !== 'All Days' || searchQuery !== '') && (
                 <button
@@ -118,7 +120,7 @@ function DoctorsContent() {
                   }}
                   className="text-xs font-semibold text-rose-600 hover:underline"
                 >
-                  Reset
+                  {language === 'bn' ? 'রিসেট' : 'Reset'}
                 </button>
               )}
             </div>
@@ -126,7 +128,7 @@ function DoctorsContent() {
             {/* Department Selector */}
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                Specialty / Department
+                {language === 'bn' ? 'বিভাগ / স্পেশালিটি' : 'Specialty / Department'}
               </label>
               <select
                 value={selectedDept}
@@ -135,7 +137,7 @@ function DoctorsContent() {
               >
                 {departments.map((dept, i) => (
                   <option key={i} value={dept}>
-                    {dept}
+                    {dept === 'All Departments' && language === 'bn' ? 'সকল বিভাগ' : dept}
                   </option>
                 ))}
               </select>
@@ -144,7 +146,7 @@ function DoctorsContent() {
             {/* Day of Week Selector */}
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                Visiting Day
+                {language === 'bn' ? 'রোগী দেখার দিন' : 'Visiting Day'}
               </label>
               <div className="space-y-1">
                 {DAYS.map((day, i) => (
@@ -158,7 +160,18 @@ function DoctorsContent() {
                         : 'text-slate-600 hover:bg-slate-100'
                     }`}
                   >
-                    <span>{day}</span>
+                    <span>
+                      {language === 'bn'
+                        ? day === 'All Days' ? 'সকল দিন'
+                        : day === 'Saturday' ? 'শনিবার'
+                        : day === 'Sunday' ? 'রবিবার'
+                        : day === 'Monday' ? 'সোমবার'
+                        : day === 'Tuesday' ? 'মঙ্গলবার'
+                        : day === 'Wednesday' ? 'বুধবার'
+                        : day === 'Thursday' ? 'বৃহস্পতিবার'
+                        : 'শুক্রবার'
+                        : day}
+                    </span>
                     {selectedDay === day && <CheckCircle2 className="w-3.5 h-3.5" />}
                   </button>
                 ))}
@@ -169,10 +182,13 @@ function DoctorsContent() {
             <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl text-xs text-emerald-900 space-y-2">
               <div className="font-bold flex items-center">
                 <Phone className="w-3.5 h-3.5 mr-1 text-emerald-700" />
-                Need Help Finding a Doctor?
+                {language === 'bn' ? 'ডাক্তার খুঁজতে সাহায্য প্রয়োজন?' : 'Need Help Finding a Doctor?'}
               </div>
               <p className="text-[11px] text-emerald-800">
-                Call our 24/7 OPD desk at <span className="font-bold">09666 787800</span> for serial and timing confirmation.
+                {language === 'bn'
+                  ? 'ডাক্তারের শিডিউল ও সিরিয়াল কনফার্মেশনের জন্য আমাদের ওপিডি ডেস্কে কল করুন: '
+                  : 'Call our 24/7 OPD desk at '}
+                <span className="font-bold">09666 787800</span>
               </p>
             </div>
           </div>
@@ -182,10 +198,12 @@ function DoctorsContent() {
         <div className="lg:col-span-9 space-y-6">
           <div className="flex items-center justify-between bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
             <span className="text-sm font-bold text-slate-800">
-              Found <span className="text-primary-600">{filteredDoctors.length}</span> Specialist Doctors
+              {language === 'bn' ? 'মোট পাওয়া গেছে ' : 'Found '}
+              <span className="text-primary-600">{filteredDoctors.length}</span>
+              {language === 'bn' ? ' জন বিশেষজ্ঞ ডাক্তার' : ' Specialist Doctors'}
             </span>
             <span className="text-xs text-slate-500">
-              Sorted by Seniority & Department
+              {language === 'bn' ? 'পদবী ও বিভাগ অনুযায়ী সাজানো' : 'Sorted by Seniority & Department'}
             </span>
           </div>
 
@@ -194,9 +212,13 @@ function DoctorsContent() {
           ) : filteredDoctors.length === 0 ? (
             <div className="bg-white rounded-3xl p-12 text-center border border-slate-200 space-y-3">
               <Stethoscope className="w-12 h-12 text-slate-300 mx-auto" />
-              <h3 className="text-base font-bold text-slate-800">No doctors found matching filters</h3>
+              <h3 className="text-base font-bold text-slate-800">
+                {language === 'bn' ? 'কোনো ডাক্তার পাওয়া যায়নি' : 'No doctors found matching filters'}
+              </h3>
               <p className="text-xs text-slate-500">
-                Try clearing your search query or selecting &quot;All Departments&quot;.
+                {language === 'bn'
+                  ? 'অনুসন্ধান ক্লিয়ার করুন অথবা "সকল বিভাগ" নির্বাচন করুন।'
+                  : 'Try clearing your search query or selecting "All Departments".'}
               </p>
               <button
                 onClick={() => {
@@ -206,7 +228,7 @@ function DoctorsContent() {
                 }}
                 className="px-4 py-2 bg-primary-600 text-white rounded-xl text-xs font-bold shadow"
               >
-                Show All Doctors
+                {language === 'bn' ? 'সকল ডাক্তার দেখুন' : 'Show All Doctors'}
               </button>
             </div>
           ) : (
@@ -231,7 +253,9 @@ function DoctorsContent() {
                         />
                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/avatar:opacity-100 transition-opacity rounded-2xl flex flex-col items-center justify-center text-white">
                           <ZoomIn className="w-5 h-5 drop-shadow" />
-                          <span className="text-[9px] font-bold mt-0.5 tracking-tight">Enlarge</span>
+                          <span className="text-[9px] font-bold mt-0.5 tracking-tight">
+                            {language === 'bn' ? 'বড় ছবি' : 'Enlarge'}
+                          </span>
                         </div>
                       </div>
 
@@ -252,7 +276,8 @@ function DoctorsContent() {
                         {doc.qualifications}
                       </p>
                       <p className="text-xs text-slate-500 line-clamp-2">
-                        Speciality: <span className="font-semibold text-slate-700">{doc.specialty}</span>
+                        {language === 'bn' ? 'বিশেষজ্ঞতা: ' : 'Speciality: '}
+                        <span className="font-semibold text-slate-700">{doc.specialty}</span>
                       </p>
                     </div>
 
@@ -260,11 +285,17 @@ function DoctorsContent() {
                     <div className="mt-4 bg-slate-50 p-3 rounded-2xl border border-slate-100 space-y-1.5 text-xs text-slate-700">
                       <div className="flex items-center">
                         <Clock className="w-3.5 h-3.5 text-primary-600 mr-2 flex-shrink-0" />
-                        <span>Hours: <strong className="text-slate-900">{doc.visitingHours}</strong></span>
+                        <span>
+                          {language === 'bn' ? 'সময়সূচী: ' : 'Hours: '}
+                          <strong className="text-slate-900">{doc.visitingHours}</strong>
+                        </span>
                       </div>
                       <div className="flex items-center">
                         <MapPin className="w-3.5 h-3.5 text-primary-600 mr-2 flex-shrink-0" />
-                        <span>Chamber: <strong className="text-slate-900">{doc.roomNumber}</strong></span>
+                        <span>
+                          {language === 'bn' ? 'চেম্বার: ' : 'Chamber: '}
+                          <strong className="text-slate-900">{doc.roomNumber}</strong>
+                        </span>
                       </div>
                     </div>
 
@@ -284,7 +315,9 @@ function DoctorsContent() {
                   {/* Bottom CTA */}
                   <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
                     <div>
-                      <div className="text-[10px] text-slate-400 uppercase font-semibold">Consultation</div>
+                      <div className="text-[10px] text-slate-400 uppercase font-semibold">
+                        {language === 'bn' ? 'ভিজিট ফি' : 'Consultation'}
+                      </div>
                       <div className="text-sm font-black text-slate-900">৳{doc.consultationFee}</div>
                     </div>
 
@@ -293,7 +326,7 @@ function DoctorsContent() {
                       className="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-bold text-xs rounded-xl shadow transition-all hover:scale-105"
                     >
                       <Calendar className="w-3.5 h-3.5 mr-1.5" />
-                      Book Appointment
+                      {language === 'bn' ? 'সিরিয়াল নিন' : 'Book Appointment'}
                     </Link>
                   </div>
                 </div>
@@ -401,8 +434,11 @@ export default function DoctorsDirectoryPage() {
       {/* Glossy Header Banner */}
       <PageHeaderBanner
         badge="Expert Medical Faculty"
+        badgeBn="অভিজ্ঞ বিশেষজ্ঞ চিকিৎসকবৃন্দ"
         title="Find Our Specialist Doctors"
+        titleBn="আমাদের বিশেষজ্ঞ ডাক্তারদের তালিকা"
         description="Consult with over 200+ renowned professors, senior consultants, and surgeons in Dhaka."
+        descriptionBn="ধানমন্ডি, ঢাকায় ২০০-রও বেশি খ্যাতনামা অধ্যাপক, সিনিয়র কনসালটেন্ট ও বিশেষজ্ঞ চিকিৎসকের অ্যাপয়েন্টমেন্ট নিন।"
       />
 
       <Suspense fallback={<div className="p-12 text-center text-slate-500">Loading Doctor Directory...</div>}>

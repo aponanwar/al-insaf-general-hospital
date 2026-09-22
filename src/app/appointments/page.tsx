@@ -435,8 +435,11 @@ export default function AppointmentPage() {
       {/* Glossy Header Banner */}
       <PageHeaderBanner
         badge="Online Serial & Consultation"
+        badgeBn="অনলাইন সিরিয়াল ও অ্যাপয়েন্টমেন্ট"
         title="Book Doctor Appointment"
+        titleBn="ডাক্তারের অ্যাপয়েন্টমেন্ট বুকিং"
         description="Instant booking confirmation with senior consultants and hospital specialists."
+        descriptionBn="সহজেই ঘরে বসে অভিজ্ঞ কনসালটেন্ট ও বিশেষজ্ঞ ডাক্তারের সিরিয়াল নিশ্চিত করুন।"
       />
 
       <Suspense fallback={<div className="p-12 text-center text-slate-500">Loading Appointment Booking Form...</div>}>

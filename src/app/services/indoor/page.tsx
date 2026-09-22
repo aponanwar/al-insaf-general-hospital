@@ -36,8 +36,11 @@ export default function IndoorServicesPage() {
       {/* Glossy Header Banner */}
       <PageHeaderBanner
         badge="500+ Bed Inpatient Hospital"
+        badgeBn="৫০০+ শয্যাবিশিষ্ট ইনডোর সেবা"
         title="Indoor Medical Services"
+        titleBn="ইনডোর ও কেবিন চিকিৎসা সেবা"
         description="Safe, comfortable, and comprehensive inpatient recovery under the supervision of leading clinical specialists."
+        descriptionBn="অভিজ্ঞ বিশেষজ্ঞ চিকিৎসকদের নিবিড় তত্ত্বাবধানে নিরাপদ, আরামদায়ক ও আধুনিক ইনডোর চিকিৎসা সেবা।"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">

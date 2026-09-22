@@ -44,8 +44,11 @@ export default function AdmissionGuidePage() {
       {/* Glossy Header Banner */}
       <PageHeaderBanner
         badge="Patient Support & Guidelines"
+        badgeBn="রোগী সহায়তা ও নির্দেশিকা"
         title="Admission & Payment Guide"
+        titleBn="হাসপাতাল ভর্তি ও পেমেন্ট নির্দেশিকা"
         description="Everything you need to know about inpatient admission, payment options, visitor rules, and discharge formalities."
+        descriptionBn="হাসপাতালে ভর্তি প্রক্রিয়া, বিল পরিশোধের নিয়মাবলী, ভিজিটর শিডিউল ও ছাড়পত্র সম্পর্কিত তথ্যাবলী।"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">

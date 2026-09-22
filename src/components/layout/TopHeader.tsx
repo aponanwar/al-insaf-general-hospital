@@ -1,7 +1,12 @@
+'use client';
+
 import Link from 'next/link';
 import { Phone, Mail, Clock, ChevronRight, Facebook, Twitter, Instagram } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function TopHeader() {
+  const { t } = useLanguage();
+
   return (
     <div className="bg-[#384349] text-white text-xs border-b border-slate-700/40 hidden md:block">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
@@ -11,22 +16,22 @@ export default function TopHeader() {
             <div className="flex items-center space-x-3 text-slate-300">
               <Link href="/patient-guide/admission" className="hover:text-emerald-400 transition-colors flex items-center">
                 <ChevronRight className="w-3 h-3 mr-0.5 text-emerald-400" />
-                Admission
+                {t('top.admission')}
               </Link>
               <span className="text-slate-600">|</span>
               <Link href="/services/facilities" className="hover:text-emerald-400 transition-colors flex items-center">
                 <ChevronRight className="w-3 h-3 mr-0.5 text-emerald-400" />
-                Amenities
+                {t('top.amenities')}
               </Link>
               <span className="text-slate-600">|</span>
               <Link href="/news" className="hover:text-emerald-400 transition-colors flex items-center">
                 <ChevronRight className="w-3 h-3 mr-0.5 text-emerald-400" />
-                News & Events
+                {t('top.newsEvents')}
               </Link>
               <span className="text-slate-600">|</span>
               <Link href="/patient-guide/rates" className="hover:text-emerald-400 transition-colors flex items-center">
                 <ChevronRight className="w-3 h-3 mr-0.5 text-emerald-400" />
-                Rate Charts
+                {t('top.rateCharts')}
               </Link>
             </div>
 
@@ -35,7 +40,7 @@ export default function TopHeader() {
             <div className="flex items-center space-x-4">
               <a href="tel:09666787800" className="flex items-center text-slate-200 hover:text-white font-medium">
                 <Phone className="w-3.5 h-3.5 mr-1.5 text-emerald-400 animate-pulse" />
-                <span>09666 787800</span>
+                <span>{t('hotline')}</span>
               </a>
               <a href="mailto:info@alinsafhospital.com" className="flex items-center text-slate-200 hover:text-white">
                 <Mail className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
@@ -44,11 +49,11 @@ export default function TopHeader() {
             </div>
           </div>
 
-          {/* Right: 24/7 Hotline Badge & Social Links (Facebook, Twitter, WhatsApp, Gmail, Instagram) */}
+          {/* Right: 24/7 Hotline Badge & Social Links */}
           <div className="flex items-center space-x-4">
             <div className="flex items-center bg-emerald-700/60 px-2.5 py-0.5 rounded text-[11px] font-semibold text-emerald-100 tracking-wide">
               <Clock className="w-3 h-3 mr-1" />
-              24/7 Emergency & Ambulance
+              {t('top.emergency')}
             </div>
 
             <div className="flex items-center space-x-2 text-slate-300">

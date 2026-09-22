@@ -1,9 +1,13 @@
+'use client';
+
 import Link from 'next/link';
-import { Calendar, ArrowRight, Bell, Newspaper, Sparkles } from 'lucide-react';
+import { Calendar, ArrowRight } from 'lucide-react';
 import { INITIAL_NEWS } from '@/lib/seed-data';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function LatestNewsSection() {
   const newsList = INITIAL_NEWS.slice(0, 3);
+  const { language, t } = useLanguage();
 
   return (
     <section className="py-16 bg-white">
@@ -11,20 +15,20 @@ export default function LatestNewsSection() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
           <div>
             <span className="text-xs font-bold uppercase tracking-widest text-primary-600 bg-primary-50 px-3 py-1 rounded-full">
-              Hospital Updates
+              {t('news.badge')}
             </span>
             <h2 className="text-3xl font-black text-slate-900 mt-2">
-              Latest News & Notices
+              {t('news.title')}
             </h2>
             <p className="text-sm text-slate-500 mt-1">
-              Stay informed about our latest clinical achievements, health camps, and notices.
+              {t('news.desc')}
             </p>
           </div>
           <Link
             href="/news"
             className="mt-4 md:mt-0 inline-flex items-center text-sm font-bold text-primary-600 hover:text-primary-700 hover:underline"
           >
-            <span>View All News & Events</span>
+            <span>{t('news.viewAll')}</span>
             <ArrowRight className="w-4 h-4 ml-1" />
           </Link>
         </div>
@@ -51,7 +55,13 @@ export default function LatestNewsSection() {
                         : 'bg-primary-600'
                     }`}
                   >
-                    {item.category}
+                    {language === 'bn'
+                      ? item.category === 'Notice'
+                        ? 'নোটিশ'
+                        : item.category === 'Event'
+                        ? 'ইভেন্ট'
+                        : 'সংবাদ'
+                      : item.category}
                   </span>
                 </div>
               </div>
@@ -60,7 +70,12 @@ export default function LatestNewsSection() {
                 <div className="space-y-2">
                   <div className="flex items-center text-xs text-slate-400 space-x-2">
                     <Calendar className="w-3.5 h-3.5 text-primary-500" />
-                    <span>{new Date(item.publishDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                    <span>
+                      {new Date(item.publishDate).toLocaleDateString(
+                        language === 'bn' ? 'bn-BD' : 'en-US',
+                        { month: 'short', day: 'numeric', year: 'numeric' }
+                      )}
+                    </span>
                   </div>
                   <h3 className="text-base font-bold text-slate-900 group-hover:text-primary-600 transition-colors line-clamp-2">
                     {item.title}
@@ -74,7 +89,7 @@ export default function LatestNewsSection() {
                   href={`/news/${item.slug}`}
                   className="inline-flex items-center text-xs font-bold text-primary-600 hover:text-primary-700 pt-2 border-t border-slate-200/60"
                 >
-                  <span>Read Full Story</span>
+                  <span>{t('news.readMore')}</span>
                   <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>

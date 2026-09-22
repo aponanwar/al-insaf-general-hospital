@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import {
   Phone,
@@ -9,8 +11,11 @@ import {
   ChevronRight,
   Lock
 } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function Footer() {
+  const { language, t } = useLanguage();
+
   return (
     <footer className="bg-slate-900 text-slate-300 pt-16 pb-8 border-t border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,27 +28,28 @@ export default function Footer() {
               </div>
               <div className="flex flex-col">
                 <span className="text-xl font-black text-white tracking-tight">
-                  AL INSAF <span className="text-primary-400">HOSPITAL</span>
+                  {language === 'bn' ? 'আল ইনসাফ ' : 'AL INSAF '}
+                  <span className="text-primary-400">{language === 'bn' ? 'হাসপাতাল' : 'HOSPITAL'}</span>
                 </span>
                 <span className="text-[10px] text-slate-400 uppercase tracking-wider">
-                  Al Insaf General Hospital Ltd.
+                  {t('hospital.subname')}
                 </span>
               </div>
             </Link>
 
             <p className="text-sm text-slate-400 leading-relaxed pr-6">
-              The premier healthcare institution of Al Insaf Group, delivering tertiary medical care with 500+ beds, 24/7 emergency response, modern ICUs, and 24+ specialized clinical departments in Dhaka, Bangladesh.
+              {t('hospital.tagline')}
             </p>
 
             <div className="space-y-2.5 pt-2 text-sm">
               <div className="flex items-start space-x-3">
                 <MapPin className="w-4 h-4 text-primary-400 mt-1 flex-shrink-0" />
-                <span>House: 08, Road: 02, Dhanmondi, Dhaka-1205, Bangladesh</span>
+                <span>{t('hospital.address')}</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-4 h-4 text-primary-400 flex-shrink-0" />
                 <a href="tel:09666787800" className="hover:text-white font-semibold text-emerald-400">
-                  09666 787800 (Hotline)
+                  {t('hotline')} ({language === 'bn' ? 'হটলাইন' : 'Hotline'})
                 </a>
               </div>
               <div className="flex items-center space-x-3">
@@ -59,43 +65,43 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center">
               <ShieldCheck className="w-4 h-4 text-primary-400 mr-2" />
-              Services
+              {t('footer.services')}
             </h4>
             <ul className="space-y-2.5 text-sm">
               <li>
                 <Link href="/services/indoor" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center">
                   <ChevronRight className="w-3.5 h-3.5 mr-1 text-slate-500" />
-                  Indoor & Cabins
+                  {t('nav.services.indoor')}
                 </Link>
               </li>
               <li>
                 <Link href="/services/outdoor" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center">
                   <ChevronRight className="w-3.5 h-3.5 mr-1 text-slate-500" />
-                  Outdoor & OPD
+                  {t('nav.services.outdoor')}
                 </Link>
               </li>
               <li>
                 <Link href="/services/facilities" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center">
                   <ChevronRight className="w-3.5 h-3.5 mr-1 text-slate-500" />
-                  ICU, CCU & NICU
+                  {t('nav.services.facilities')}
                 </Link>
               </li>
               <li>
                 <Link href="/patient-guide/rates" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center">
                   <ChevronRight className="w-3.5 h-3.5 mr-1 text-slate-500" />
-                  Hospital Tariff Charts
+                  {t('nav.guide.rates')}
                 </Link>
               </li>
               <li>
                 <Link href="/patient-guide/vaccination" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center">
                   <ChevronRight className="w-3.5 h-3.5 mr-1 text-slate-500" />
-                  Vaccination Center
+                  {t('nav.guide.vaccination')}
                 </Link>
               </li>
               <li>
                 <Link href="/appointments" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center">
                   <ChevronRight className="w-3.5 h-3.5 mr-1 text-slate-500" />
-                  Online Appointment
+                  {t('nav.appointmentBtn')}
                 </Link>
               </li>
             </ul>
@@ -105,43 +111,43 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center">
               <Clock className="w-4 h-4 text-primary-400 mr-2" />
-              Quick Links
+              {t('footer.quickLinks')}
             </h4>
             <ul className="space-y-2.5 text-sm">
               <li>
                 <Link href="/about-us" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center">
                   <ChevronRight className="w-3.5 h-3.5 mr-1 text-slate-500" />
-                  About Our Hospital
+                  {t('nav.about.glance')}
                 </Link>
               </li>
               <li>
                 <Link href="/doctors" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center">
                   <ChevronRight className="w-3.5 h-3.5 mr-1 text-slate-500" />
-                  Find a Doctor
+                  {t('nav.doctors')}
                 </Link>
               </li>
               <li>
                 <Link href="/specialities" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center">
                   <ChevronRight className="w-3.5 h-3.5 mr-1 text-slate-500" />
-                  All Specialities
+                  {t('nav.specialities')}
                 </Link>
               </li>
               <li>
                 <Link href="/patient-guide/admission" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center">
                   <ChevronRight className="w-3.5 h-3.5 mr-1 text-slate-500" />
-                  Admission & Payment
+                  {t('nav.guide.admission')}
                 </Link>
               </li>
               <li>
                 <Link href="/news" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center">
                   <ChevronRight className="w-3.5 h-3.5 mr-1 text-slate-500" />
-                  News & Events
+                  {t('nav.news')}
                 </Link>
               </li>
               <li>
                 <Link href="/contact-us" className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center">
                   <ChevronRight className="w-3.5 h-3.5 mr-1 text-slate-500" />
-                  Contact & Location
+                  {t('nav.contact')}
                 </Link>
               </li>
             </ul>
@@ -150,20 +156,24 @@ export default function Footer() {
           {/* Col 4: Emergency & Quick Appointment Card */}
           <div className="bg-slate-800/80 p-5 rounded-2xl border border-slate-700/60 space-y-4">
             <h4 className="text-sm font-bold text-white uppercase tracking-wider">
-              24/7 Emergency Help
+              {t('footer.emergencyHelp')}
             </h4>
             <p className="text-xs text-slate-400">
-              Emergency casualty, round-the-clock cardiac care, trauma service, and ICU admission available.
+              {t('footer.emergencyDesc')}
             </p>
             <div className="bg-emerald-950/60 border border-emerald-800/50 p-3 rounded-xl text-center">
-              <div className="text-[11px] text-emerald-300 uppercase font-semibold">Ambulance & Hotline</div>
-              <div className="text-lg font-black text-emerald-400 tracking-wider">09666 787800</div>
+              <div className="text-[11px] text-emerald-300 uppercase font-semibold">
+                {t('footer.ambulanceHotline')}
+              </div>
+              <div className="text-lg font-black text-emerald-400 tracking-wider">
+                {t('hotline')}
+              </div>
             </div>
             <Link
               href="/appointments"
               className="w-full block text-center py-2.5 px-4 bg-primary-600 hover:bg-primary-500 text-white font-bold text-xs rounded-xl shadow-md transition-all"
             >
-              Book Doctor Now
+              {t('footer.bookDoctor')}
             </Link>
           </div>
         </div>
@@ -171,16 +181,17 @@ export default function Footer() {
         {/* Bottom copyright & admin portal link */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 space-y-3 sm:space-y-0">
           <div>
-            © {new Date().getFullYear()} Al Insaf General Hospital Ltd. All rights reserved.
+            © {new Date().getFullYear()} {language === 'bn' ? 'আল ইনসাফ জেনারেল হাসপাতাল লিঃ। ' : 'Al Insaf General Hospital Ltd. '}
+            {t('footer.rights')}
           </div>
           <div className="flex items-center space-x-4">
-            <Link href="/privacy" className="hover:text-slate-400">Privacy Policy</Link>
+            <Link href="/privacy" className="hover:text-slate-400">{t('footer.privacy')}</Link>
             <span>•</span>
-            <Link href="/terms" className="hover:text-slate-400">Terms of Service</Link>
+            <Link href="/terms" className="hover:text-slate-400">{t('footer.terms')}</Link>
             <span>•</span>
             <Link href="/admin/login" className="hover:text-emerald-400 flex items-center text-slate-400 font-medium">
               <Lock className="w-3 h-3 mr-1 text-slate-500" />
-              Staff / Admin Portal
+              {t('footer.adminPortal')}
             </Link>
           </div>
         </div>

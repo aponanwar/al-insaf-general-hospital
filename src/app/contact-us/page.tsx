@@ -73,8 +73,11 @@ export default function ContactUsPage() {
       {/* Glossy Header Banner */}
       <PageHeaderBanner
         badge="24/7 Helpline & Location"
+        badgeBn="২৪/৭ হেল্পলাইন ও লোকেশন"
         title="Contact & Location Map"
+        titleBn="যোগাযোগ ও হাসপাতালের অবস্থান"
         description="Reach out to our patient care desk or visit our Dhanmondi, Dhaka hospital complex."
+        descriptionBn="রোগী সহায়তা ডেস্কে যোগাযোগ করুন অথবা আমাদের ধানমন্ডি, ঢাকা হাসপাতাল ক্যাম্পাসে আসুন।"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">

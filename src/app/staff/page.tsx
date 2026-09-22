@@ -182,8 +182,11 @@ export default function StaffDirectoryPage() {
       {/* Glossy Top Banner */}
       <PageHeaderBanner
         badge="Al Insaf Hospital Workforce"
+        badgeBn="আল ইনসাফ হাসপাতাল কর্মী ও পরিচালনা পর্ষদ"
         title="Staff & Medical Team Directory"
+        titleBn="হাসপাতাল কর্মকর্তা ও কর্মচারী ডিরেক্টরি"
         description="Meet our dedicated team of administrators, medical specialists, nurses, pharmacists, and support personnel who make 24/7 patient care possible."
+        descriptionBn="হাসপাতালের সম্মানিত প্রশাসনিক কর্মকর্তা, বিশেষজ্ঞ ডাক্তার, নার্স, ফার্মাসিস্ট ও স্বাস্থ্যকর্মীদের বিস্তারিত তালিকা।"
       >
         <div className="flex justify-center items-center space-x-2 text-xs text-slate-300 pt-2">
           <Link href="/" className="hover:text-white transition-colors">

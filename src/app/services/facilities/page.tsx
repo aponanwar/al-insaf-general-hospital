@@ -62,8 +62,11 @@ export default function FacilitiesPage() {
       {/* Glossy Header Banner */}
       <PageHeaderBanner
         badge="High-Tech Infrastructure"
+        badgeBn="অত্যাধুনিক অবকাঠামো ও প্রযুক্তি"
         title="In-Patient Facilities & Critical Care"
+        titleBn="ইন-পেশেন্ট সুবিধা ও ক্রিটিক্যাল কেয়ার"
         description="Cutting-edge medical technology, modern life support systems, and patient-centered amenities."
+        descriptionBn="৫০ শয্যার আইসিইউ, সিসিইউ, এনআইসিইউ, আধুনিক অপারেশন থিয়েটার ও ডায়ালাইসিস সেবা।"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">

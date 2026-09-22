@@ -2,20 +2,21 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, Calendar, ArrowRight, ShieldCheck, HeartPulse } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar, ArrowRight, HeartPulse } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
-const SLIDES = [
+const SLIDES_EN = [
   {
     id: 1,
     title: 'Welcome to Al Insaf General Hospital',
     subtitle: 'An Advanced Center for Medical Services & Diagnostics',
-    description: 'A 500+ bed tertiary hospital delivering excellence, compassionate care, and state-of-the-art medical technology in Bangladesh.',
+    description: 'A 500+ bed tertiary hospital delivering excellence, compassionate care, and state-of-the-art medical technology in Dhaka, Bangladesh.',
     ctaText: 'Explore Specialties',
     ctaLink: '/specialities',
     secondaryCtaText: 'Book Appointment',
     secondaryCtaLink: '/appointments',
     bgImage: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&q=80&w=1600',
-    badge: 'Tertiary Care Hospital',
+    badge: 'Tertiary Care Hospital (500+ Beds)',
   },
   {
     id: 2,
@@ -33,32 +34,74 @@ const SLIDES = [
     id: 3,
     title: 'Casualty, Accident & 24/7 Emergency Care',
     subtitle: 'Immediate Multi-Disciplinary Critical Response',
-    description: 'Dedicated Trauma Center, 50-bed modern ICU/CCU/NICU, in-house pharmacy, and 24/7 cardiac emergency unit.',
+    description: 'Dedicated Trauma Center, modern 50-bed ICU/CCU/NICU, in-house pharmacy, and 24/7 cardiac emergency readiness.',
     ctaText: 'Emergency Services',
     ctaLink: '/services/facilities',
     secondaryCtaText: 'Contact Hospital',
     secondaryCtaLink: '/contact-us',
     bgImage: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=1600',
-    badge: '24/7 Emergency & ICU',
+    badge: '24/7 Emergency & Critical Care',
+  },
+];
+
+const SLIDES_BN = [
+  {
+    id: 1,
+    title: 'আল ইনসাফ জেনারেল হাসপাতালে আপনাকে স্বাগতম',
+    subtitle: 'আধুনিক চিকিৎসাসেবা ও নির্ভুল রোগ নির্ণয়ে নির্ভরযোগ্য প্রতিষ্ঠান',
+    description: '৫০০+ শয্যাবিশিষ্ট আন্তর্জাতিক মানের টারশিয়ারি হাসপাতাল, যেখানে রয়েছে মানবিক সেবা ও উন্নত চিকিৎসা প্রযুক্তির অনন্য সমন্বয়।',
+    ctaText: 'বিশেষায়িত বিভাগসমূহ',
+    ctaLink: '/specialities',
+    secondaryCtaText: 'অ্যাপয়েন্টমেন্ট বুকিং',
+    secondaryCtaLink: '/appointments',
+    bgImage: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&q=80&w=1600',
+    badge: '৫০০+ শয্যাবিশিষ্ট টারশিয়ারি হাসপাতাল',
+  },
+  {
+    id: 2,
+    title: 'আপনার সুস্থতায় বিশ্বস্ত স্বাস্থ্যসঙ্গী',
+    subtitle: 'উন্নত চিকিৎসা • আন্তরিক সেবা • সর্বাধুনিক প্রযুক্তি',
+    description: '২৪টিরও বেশি বিশেষায়িত চিকিৎসা বিভাগে কর্মরত আছেন দেশের শীর্ষস্থানীয় অধ্যাপক, সিনিয়র কনসালটেন্ট ও সার্জনবৃন্দ।',
+    ctaText: 'ডাক্তার খুঁজুন',
+    ctaLink: '/doctors',
+    secondaryCtaText: 'ফি তালিকা দেখুন',
+    secondaryCtaLink: '/patient-guide/rates',
+    bgImage: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=1600',
+    badge: '২০০+ বিশেষজ্ঞ চিকিৎসক',
+  },
+  {
+    id: 3,
+    title: '২৪ ঘণ্টা জরুরি সেবা, ক্যাজুয়ালটি ও ট্রমা কেয়ার',
+    subtitle: 'মুমূর্ষু রোগীর দ্রুততম ও নির্ভুল জীবনরক্ষাকারী সেবা',
+    description: 'ডেডিকেটেড ট্রমা সেন্টার, ৫০ শয্যার আধুনিক আইসিইউ/সিসিইউ/এনআইসিইউ, সেন্ট্রাল অক্সিজেন ও সার্বক্ষণিক অ্যাম্বুলেন্স।',
+    ctaText: 'জরুরি সেবা ও আইসিইউ',
+    ctaLink: '/services/facilities',
+    secondaryCtaText: 'যোগাযোগ করুন',
+    secondaryCtaLink: '/contact-us',
+    bgImage: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=1600',
+    badge: '২৪/৭ জরুরি ও ক্রিটিক্যাল কেয়ার',
   },
 ];
 
 export default function HeroSlider() {
   const [current, setCurrent] = useState(0);
+  const { language } = useLanguage();
+
+  const slides = language === 'bn' ? SLIDES_BN : SLIDES_EN;
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % SLIDES.length);
+      setCurrent((prev) => (prev + 1) % slides.length);
     }, 6000);
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
 
-  const prevSlide = () => setCurrent((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
-  const nextSlide = () => setCurrent((prev) => (prev + 1) % SLIDES.length);
+  const prevSlide = () => setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
+  const nextSlide = () => setCurrent((prev) => (prev + 1) % slides.length);
 
   return (
     <div className="relative w-full h-[520px] lg:h-[600px] overflow-hidden bg-slate-900">
-      {SLIDES.map((slide, index) => (
+      {slides.map((slide, index) => (
         <div
           key={slide.id}
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
@@ -133,7 +176,7 @@ export default function HeroSlider() {
 
       {/* Slide Indicator Dots */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
-        {SLIDES.map((_, i) => (
+        {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrent(i)}

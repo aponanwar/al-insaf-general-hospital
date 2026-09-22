@@ -1,30 +1,35 @@
+'use client';
+
 import { Users, Award, UserCheck, Hospital } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function StatsCounter() {
+  const { language } = useLanguage();
+
   const stats = [
     {
       icon: Users,
-      value: '30,000+',
-      label: 'Happy Patients Treated',
-      desc: 'Recovered & well-cared across all wings',
+      value: language === 'bn' ? '৩০,০০০+' : '30,000+',
+      label: language === 'bn' ? 'সন্তুষ্ট সুস্থ রোগী' : 'Happy Patients Treated',
+      desc: language === 'bn' ? 'সকল বিভাগে সফল চিকিৎসা সেবা' : 'Recovered & well-cared across all wings',
     },
     {
       icon: Award,
-      value: '15+',
-      label: 'Years of Excellence',
-      desc: 'Pioneering modern medical care since 2010',
+      value: language === 'bn' ? '১৫+' : '15+',
+      label: language === 'bn' ? 'বছরের বিশ্বস্ত অভিজ্ঞতা' : 'Years of Excellence',
+      desc: language === 'bn' ? '২০১০ সাল থেকে আধুনিক চিকিৎসাসেবা' : 'Pioneering modern medical care since 2010',
     },
     {
       icon: UserCheck,
-      value: '200+',
-      label: 'Renowned Doctors',
-      desc: 'Professors, specialists & surgical consultants',
+      value: language === 'bn' ? '২০০+' : '200+',
+      label: language === 'bn' ? 'খ্যাতনামা বিশেষজ্ঞ ডাক্তার' : 'Renowned Doctors',
+      desc: language === 'bn' ? 'অধ্যাপক, বিশেষজ্ঞ ও সার্জনবৃন্দ' : 'Professors, specialists & surgical consultants',
     },
     {
       icon: Hospital,
-      value: '400+',
-      label: 'Dedicated Staff & Nurses',
-      desc: '24/7 patient support and emergency assistance',
+      value: language === 'bn' ? '৪০০+' : '400+',
+      label: language === 'bn' ? 'নিবেদিত নার্স ও কর্মী' : 'Dedicated Staff & Nurses',
+      desc: language === 'bn' ? '২৪/৭ রোগীর আন্তরিক সেবা ও সাপোর্ট' : '24/7 patient support and emergency assistance',
     },
   ];
 

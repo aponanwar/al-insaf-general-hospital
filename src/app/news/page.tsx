@@ -16,8 +16,11 @@ export default function NewsPage() {
       {/* Glossy Header Banner */}
       <PageHeaderBanner
         badge="Media & Communication"
+        badgeBn="সংবাদ ও জনসংযোগ"
         title="Hospital News, Events & Notices"
+        titleBn="হাসপাতাল সংবাদ, ইভেন্ট ও নোটিশ"
         description="Stay updated with clinical milestones, health workshops, and institutional announcements."
+        descriptionBn="হাসপাতালের সর্বশেষ স্বাস্থ্য ক্যাম্প, ফ্রি মেডিকেল ক্যাম্পেইন এবং গুরুত্বপূর্ণ নোটিশসমূহ।"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

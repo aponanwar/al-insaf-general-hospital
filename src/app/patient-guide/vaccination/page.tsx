@@ -22,8 +22,11 @@ export default function VaccinationPage() {
       {/* Glossy Header Banner */}
       <PageHeaderBanner
         badge="Preventive & Transfusion Medicine"
+        badgeBn="প্রতিরোধ ও ট্রান্সফিউশন মেডিসিন"
         title="Vaccination Centre & Blood Bank"
+        titleBn="টিকাদান কেন্দ্র ও ব্লাড ব্যাংক"
         description="Safe immunizations for all age groups and 24/7 emergency blood transfusion services."
+        descriptionBn="সকল বয়সের শিশুদের ও প্রাপ্তবয়স্কদের নিরাপদ টিকাদান এবং ২৪ ঘণ্টা জরুরি রক্ত পরিসঞ্চালন সেবা।"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">

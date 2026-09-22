@@ -18,8 +18,10 @@ import {
 } from 'lucide-react';
 import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
 import { INITIAL_DEPARTMENTS } from '@/lib/seed-data';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function SpecialitiesPage() {
+  const { language } = useLanguage();
   const [query, setQuery] = useState('');
   const departments = INITIAL_DEPARTMENTS;
 
@@ -33,15 +35,18 @@ export default function SpecialitiesPage() {
       {/* Glossy Top Banner */}
       <PageHeaderBanner
         badge="Center of Clinical Excellence"
+        badgeBn="উন্নত চিকিৎসা ও সার্জিক্যাল সেবা"
         title="Our Specialities & Departments"
+        titleBn="আমাদের বিশেষায়িত চিকিৎসা বিভাগসমূহ"
         description="Providing comprehensive super-specialized diagnostic and surgical care across 24+ medical wings."
+        descriptionBn="২৪টিরও বেশি চিকিৎসা বিভাগে নির্ভুল রোগ নির্ণয়, উন্নত চিকিৎসা ও আধুনিক সার্জিক্যাল সেবা।"
       >
         {/* Real-time Search Box */}
         <div className="max-w-xl mx-auto mt-6 relative">
           <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
-            placeholder="Search by department name (e.g. Cardiology, Orthopaedics, Oncology)..."
+            placeholder={language === 'bn' ? "বিভাগের নাম দিয়ে খুঁজুন (যেমন: Cardiology, Orthopaedics, Medicine)..." : "Search by department name (e.g. Cardiology, Orthopaedics, Oncology)..."}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 shadow-xl border border-slate-200"
