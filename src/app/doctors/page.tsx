@@ -439,8 +439,8 @@ export default function DoctorsDirectoryPage() {
         badgeBn="অভিজ্ঞ বিশেষজ্ঞ চিকিৎসকবৃন্দ"
         title="Find Our Specialist Doctors"
         titleBn="আমাদের বিশেষজ্ঞ ডাক্তারদের তালিকা"
-        description="Consult with over 200+ renowned professors, senior consultants, and surgeons in Dhaka."
-        descriptionBn="ধানমন্ডি, ঢাকায় ২০০-রও বেশি খ্যাতনামা অধ্যাপক, সিনিয়র কনসালটেন্ট ও বিশেষজ্ঞ চিকিৎসকের অ্যাপয়েন্টমেন্ট নিন।"
+        description="Consult with renowned specialist consultants and surgeons at Al Insaf General Hospital, Dewanganj."
+        descriptionBn="আল ইনসাফ জেনারেল হাসপাতাল, দেওয়ানগঞ্জ, জামালপুরে অভিজ্ঞ কনসালটেন্ট ও বিশেষজ্ঞ চিকিৎসকদের অ্যাপয়েন্টমেন্ট নিন।"
       />
 
       <Suspense fallback={<div className="p-12 text-center text-slate-500">Loading Doctor Directory...</div>}>

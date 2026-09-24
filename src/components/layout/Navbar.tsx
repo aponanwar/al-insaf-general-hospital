@@ -80,14 +80,14 @@ export default function Navbar() {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-lg sm:text-xl font-extrabold text-slate-800 tracking-tight leading-none group-hover:text-primary-600 transition-colors">
+                <span className="text-lg sm:text-xl font-extrabold text-slate-600 tracking-tight leading-none group-hover:text-primary-600 transition-colors">
 
-                  {language === 'bn' ? 'আল ইনসাফ ' : 'AL INSAF '}
-                  <span className="text-primary-600 font-bold">{language === 'bn' ? 'হাসপাতাল' : 'HOSPITAL'}</span>
+                  {language === 'bn' ? 'আল ইনসাফ জেনারেল' : 'AL INSAF GENERAL'} <br></br>
+                  <span className="text-primary-600 font-bold ">{language === 'bn' ? 'হাসপাতাল (প্রাঃ)' : 'HOSPITAL (PVT.)'}</span>
                 </span>
-                <span className="text-[10px] sm:text-[11px] font-medium text-slate-500 tracking-wider uppercase mt-1">
+                {/* <span className="text-[10px] sm:text-[11px] font-medium text-slate-500 tracking-wider uppercase mt-1">
                   {t('hospital.subname')}
-                </span>
+                </span> */}
               </div>
             </Link>
 
