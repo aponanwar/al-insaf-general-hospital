@@ -51,28 +51,19 @@ function DoctorsContent() {
   }, [selectedDoctorForImage]);
 
   const departments = ['All Departments', ...INITIAL_DEPARTMENTS.map((d) => d.name)];
-  const [doctors, setDoctors] = useState<Doctor[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [doctors, setDoctors] = useState<Doctor[]>(INITIAL_DOCTORS);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    setLoading(true);
     fetch('/api/doctors')
       .then((res) => res.json())
       .then((data) => {
         if (data?.doctors && data.doctors.length > 0) {
           setDoctors(data.doctors);
-        } else {
-          // If database is empty or returns no results, fallback to initial seed data
-          setDoctors(INITIAL_DOCTORS);
         }
       })
       .catch((err) => {
-        // If database connection crashed or network failed, fallback to seed data
-        console.warn('Database error while loading doctors, falling back to seed data:', err);
-        setDoctors(INITIAL_DOCTORS);
-      })
-      .finally(() => {
-        setLoading(false);
+        console.warn('Error fetching doctors from API, using default list:', err);
       });
   }, []);
 
