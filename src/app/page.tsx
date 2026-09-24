@@ -5,10 +5,11 @@ import WhyChooseUs from '@/components/home/WhyChooseUs';
 import StatsCounter from '@/components/home/StatsCounter';
 import LatestNewsSection from '@/components/home/LatestNewsSection';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
+import FloatingHotline from '@/components/home/FloatingHotline';
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen relative">
       <HeroSlider />
       <QuickCards />
       <FeaturedBoxes />
@@ -16,6 +17,8 @@ export default function HomePage() {
       <StatsCounter />
       <LatestNewsSection />
       <TestimonialsSection />
+      <FloatingHotline />
     </div>
   );
 }
+

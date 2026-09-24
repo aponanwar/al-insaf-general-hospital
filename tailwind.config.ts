@@ -35,9 +35,12 @@ const config: Config = {
         }
       },
       fontFamily: {
-        sans: ['Kalpurush', 'Roboto', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
-        kalpurush: ['Kalpurush', 'sans-serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        inter: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        kalpurush: ['Kalpurush', 'Inter', 'sans-serif'],
       },
+
+
     },
   },
   plugins: [],

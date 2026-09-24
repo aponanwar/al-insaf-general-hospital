@@ -195,7 +195,7 @@ export function getPasswordResetHtmlTemplate(resetUrl: string, adminName: string
     <meta charset="utf-8">
     <title>Reset Your Password - Al Insaf General Hospital</title>
   </head>
-  <body style="margin: 0; padding: 0; background-color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <body style="margin: 0; padding: 0; background-color: #f1f5f9; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f1f5f9; padding: 40px 20px;">
       <tr>
         <td align="center">

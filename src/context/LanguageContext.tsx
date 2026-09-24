@@ -25,6 +25,7 @@ export const translations: Record<string, { en: string; bn: string }> = {
     bn: 'বাড়ি: ০৮, রোড: ০২, ধানমন্ডি, ঢাকা-১২০৫, বাংলাদেশ'
   },
   'hotline': { en: '09666 787800', bn: '০৯৬৬৬ ৭৮৭৮০০' },
+  'hotline.floating': { en: '24/7 Hotline', bn: '২৪/৭ হটলাইন' },
 
   // Navbar Links
   'nav.home': { en: 'Home', bn: 'হোম' },
@@ -195,6 +196,20 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       // Ignore localStorage errors
     }
   }, []);
+
+  // Synchronize document lang attribute & body classes with selected language
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = language;
+      if (language === 'bn') {
+        document.documentElement.classList.add('lang-bn');
+        document.documentElement.classList.remove('lang-en');
+      } else {
+        document.documentElement.classList.add('lang-en');
+        document.documentElement.classList.remove('lang-bn');
+      }
+    }
+  }, [language]);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);

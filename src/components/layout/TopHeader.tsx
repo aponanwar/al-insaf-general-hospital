@@ -51,10 +51,18 @@ export default function TopHeader() {
 
           {/* Right: 24/7 Hotline Badge & Social Links */}
           <div className="flex items-center space-x-4">
-            <div className="flex items-center bg-emerald-700/60 px-2.5 py-0.5 rounded text-[11px] font-semibold text-emerald-100 tracking-wide">
-              <Clock className="w-3 h-3 mr-1" />
-              {t('top.emergency')}
-            </div>
+            <a
+              href="tel:09666787800"
+              className="flex items-center bg-red-600 hover:bg-red-700 text-white px-2.5 py-1 rounded text-[11px] font-bold tracking-wide shadow-sm transition-colors duration-200"
+              title="24/7 Emergency & Ambulance: 09666 787800"
+            >
+              <span className="relative flex h-2 w-2 mr-1.5 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+              </span>
+              <Clock className="w-3 h-3 mr-1 shrink-0" />
+              <span>{t('top.emergency')}</span>
+            </a>
 
             <div className="flex items-center space-x-2 text-slate-300">
               {/* Facebook */}
