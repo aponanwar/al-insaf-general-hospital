@@ -1,5 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-@import url('https://fonts.maateen.me/kalpurush/font.css');
+
+@font-face {
+  font-family: 'Kalpurush';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/Kalpurush.woff2') format('woff2'),
+       url('/fonts/Kalpurush.ttf') format('truetype'),
+       url('https://fonts.maateen.me/kalpurush/Kalpurush-v0.258.woff2') format('woff2');
+}
 
 @tailwind base;
 @tailwind components;
@@ -11,33 +20,45 @@
     --foreground: 222.2 84% 4.9%;
   }
 
-  /* Default base font stack */
+  /* Universal font stack: Inter for Latin, Kalpurush for Bengali */
   html,
   body,
   button,
   input,
   select,
   textarea {
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Inter', 'Kalpurush', sans-serif;
   }
 
-  /* English version - purely Inter font */
+  /* When English is active */
   html[lang="en"],
   html[lang="en"] body,
   html.lang-en,
   html.lang-en body,
   .lang-en {
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-family: 'Inter', 'Kalpurush', sans-serif;
   }
 
-  /* Bangla version - Kalpurush font with Inter fallback */
+  /* When Bangla is active */
   html[lang="bn"],
   html[lang="bn"] body,
   html.lang-bn,
   html.lang-bn body,
-  .lang-bn {
-    font-family: 'Kalpurush', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  .lang-bn,
+  .lang-bn body {
+    font-family: 'Kalpurush', 'Inter', sans-serif !important;
   }
+
+  /* Ensure all nested text elements inside Bangla mode inherit Kalpurush */
+  html[lang="bn"] h1, html[lang="bn"] h2, html[lang="bn"] h3, html[lang="bn"] h4, html[lang="bn"] h5, html[lang="bn"] h6,
+  html[lang="bn"] p, html[lang="bn"] span, html[lang="bn"] a, html[lang="bn"] button, html[lang="bn"] div,
+  html[lang="bn"] nav, html[lang="bn"] input, html[lang="bn"] select,
+  html.lang-bn h1, html.lang-bn h2, html.lang-bn h3, html.lang-bn h4, html.lang-bn h5, html.lang-bn h6,
+  html.lang-bn p, html.lang-bn span, html.lang-bn a, html.lang-bn button, html.lang-bn div,
+  html.lang-bn nav, html.lang-bn input, html.lang-bn select {
+    font-family: 'Kalpurush', 'Inter', sans-serif;
+  }
+
 
 
   body {
