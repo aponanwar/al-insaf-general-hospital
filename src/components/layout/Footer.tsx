@@ -23,10 +23,11 @@ export default function Footer() {
           {/* Col 1: About & Contacts (2 spans) */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center space-x-3 group">
-              <div className="w-10 h-10 rounded-xl bg-primary-600 flex items-center justify-center text-white shadow-lg shadow-primary-500/20">
-                <HeartPulse className="w-6 h-6" />
+              <div className="w-12 h-12 rounded-full flex items-center justify-center p-0.5 bg-white shadow-lg shrink-0">
+                <img src="/images/logo.png" alt="Al Insaf Logo" className="w-full h-full object-contain" />
               </div>
               <div className="flex flex-col">
+
                 <span className="text-xl font-black text-white tracking-tight">
                   {language === 'bn' ? 'আল ইনসাফ ' : 'AL INSAF '}
                   <span className="text-primary-400">{language === 'bn' ? 'হাসপাতাল' : 'HOSPITAL'}</span>

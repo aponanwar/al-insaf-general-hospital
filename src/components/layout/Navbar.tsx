@@ -72,11 +72,16 @@ export default function Navbar() {
           <div className="flex items-center justify-between">
             {/* Hospital Brand & Logo */}
             <Link href="/" className="flex items-center space-x-3 group py-1 flex-shrink-0">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-primary-500 to-emerald-700 flex items-center justify-center text-white shadow-md shadow-primary-500/20 group-hover:scale-105 transition-transform">
-                <HeartPulse className="w-6 h-6 text-white" />
+              <div className="w-11 h-11 rounded-full flex items-center justify-center p-0.5 shadow-md shadow-slate-200 group-hover:scale-105 transition-transform bg-white border border-slate-100">
+                <img
+                  src="/images/logo.png"
+                  alt="Al Insaf General Hospital"
+                  className="w-full h-full object-contain"
+                />
               </div>
               <div className="flex flex-col">
                 <span className="text-lg sm:text-xl font-extrabold text-slate-800 tracking-tight leading-none group-hover:text-primary-600 transition-colors">
+
                   {language === 'bn' ? 'আল ইনসাফ ' : 'AL INSAF '}
                   <span className="text-primary-600 font-bold">{language === 'bn' ? 'হাসপাতাল' : 'HOSPITAL'}</span>
                 </span>
@@ -421,12 +426,15 @@ export default function Navbar() {
         <div className="lg:hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm">
           <div className="fixed inset-y-0 right-0 w-full max-w-sm bg-white shadow-2xl flex flex-col justify-between overflow-y-auto">
             <div className="p-4 border-b border-slate-100 flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <HeartPulse className="w-6 h-6 text-primary-600" />
+              <div className="flex items-center space-x-2.5">
+                <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center p-0.5 bg-white border border-slate-100 shrink-0">
+                  <img src="/images/logo.png" alt="Al Insaf Logo" className="w-full h-full object-contain" />
+                </div>
                 <span className="font-bold text-slate-800 text-sm">
                   {language === 'bn' ? 'আল ইনসাফ হাসপাতাল' : 'Al Insaf Hospital'}
                 </span>
               </div>
+
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
