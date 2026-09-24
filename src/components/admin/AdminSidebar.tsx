@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
@@ -10,6 +10,7 @@ import {
   Stethoscope,
   Receipt,
   Users,
+  MessageSquare,
   ExternalLink,
   LogOut,
   Menu,
@@ -25,6 +26,7 @@ interface NavItem {
   href: string;
   icon: any;
   badge?: string;
+  isDynamicBadge?: boolean;
 }
 
 const NAV_ITEMS: NavItem[] = [
@@ -37,6 +39,12 @@ const NAV_ITEMS: NavItem[] = [
     name: 'Appointments',
     href: '/admin/appointments',
     icon: Calendar,
+  },
+  {
+    name: 'Patient Inquiries',
+    href: '/admin/inquiries',
+    icon: MessageSquare,
+    isDynamicBadge: true,
   },
   {
     name: 'Staff List & HR',
@@ -66,6 +74,19 @@ export default function AdminSidebar() {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
+  const [unreadInquiries, setUnreadInquiries] = useState<number>(0);
+
+  useEffect(() => {
+    fetch('/api/inquiries')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.inquiries) {
+          const unread = data.inquiries.filter((i: any) => i.status === 'Unread').length;
+          setUnreadInquiries(unread);
+        }
+      })
+      .catch(() => {});
+  }, [pathname]);
 
   const handleLogout = async () => {
     try {
@@ -108,6 +129,11 @@ export default function AdminSidebar() {
               />
               <span className="truncate">{item.name}</span>
             </div>
+            {item.isDynamicBadge && unreadInquiries > 0 && (
+              <span className="text-[10px] px-2 py-0.5 rounded-full font-extrabold bg-rose-500 text-white shadow-sm animate-pulse">
+                {unreadInquiries} New
+              </span>
+            )}
             {item.badge && (
               <span
                 className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
@@ -119,7 +145,7 @@ export default function AdminSidebar() {
                 {item.badge}
               </span>
             )}
-            {!item.badge && isActive && (
+            {!item.badge && (!item.isDynamicBadge || unreadInquiries === 0) && isActive && (
               <ChevronRight className="w-3.5 h-3.5 text-white/70" />
             )}
           </Link>

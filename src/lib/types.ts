@@ -65,7 +65,12 @@ export interface Inquiry {
   message: string;
   status: 'Unread' | 'Replied' | 'Archived';
   replyNotes?: string;
+  replySubject?: string;
+  replyMessage?: string;
+  repliedAt?: string;
+  repliedBy?: string;
   createdAt: string;
+  updatedAt?: string;
 }
 
 export interface RateItem {

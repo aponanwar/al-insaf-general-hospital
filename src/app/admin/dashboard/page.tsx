@@ -383,20 +383,55 @@ export default function AdminDashboardPage() {
             <p className="text-[10px] text-slate-500">Tests & cabin rates</p>
           </Link>
 
-          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <Link
+            href="/admin/inquiries"
+            className={`p-4 sm:p-5 rounded-2xl border shadow-sm space-y-2 transition-all hover:shadow-md ${
+              inquiries.filter((i) => i.status === 'Unread').length > 0
+                ? 'bg-rose-50/50 border-rose-300 hover:border-rose-500'
+                : 'bg-white border-slate-200 hover:border-blue-500'
+            }`}
+          >
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase text-blue-500">Inquiries</span>
-              <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+              <span className={`text-[11px] font-bold uppercase ${
+                inquiries.filter((i) => i.status === 'Unread').length > 0 ? 'text-rose-600' : 'text-blue-500'
+              }`}>
+                Inquiries
+              </span>
+              <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                inquiries.filter((i) => i.status === 'Unread').length > 0
+                  ? 'bg-rose-100 text-rose-600'
+                  : 'bg-blue-50 text-blue-600'
+              }`}>
                 <MessageSquare className="w-4 h-4" />
               </div>
             </div>
-            <div className="text-2xl font-black text-slate-900">{inquiries.length}</div>
-            <p className="text-[10px] text-slate-500">Online messages</p>
-          </div>
+            <div className="flex items-baseline space-x-2">
+              <div className="text-2xl font-black text-slate-900">{inquiries.length}</div>
+              {inquiries.filter((i) => i.status === 'Unread').length > 0 && (
+                <span className="text-[10px] font-extrabold text-rose-600 bg-rose-100 px-1.5 py-0.5 rounded-full">
+                  {inquiries.filter((i) => i.status === 'Unread').length} unread
+                </span>
+              )}
+            </div>
+            <p className="text-[10px] text-slate-500">Patient contact queries</p>
+          </Link>
         </div>
 
         {/* Quick Navigation Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+          <Link
+            href="/admin/inquiries"
+            className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm hover:border-rose-500 hover:shadow-md transition-all flex items-center space-x-3"
+          >
+            <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
+              <MessageSquare className="w-5 h-5" />
+            </div>
+            <div className="min-w-0">
+              <h4 className="text-xs font-bold text-slate-900 truncate">Patient Inquiries</h4>
+              <p className="text-[10px] text-slate-500 truncate">Email replies & queries</p>
+            </div>
+          </Link>
+
           <Link
             href="/admin/appointments"
             className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm hover:border-primary-500 hover:shadow-md transition-all flex items-center space-x-3"
