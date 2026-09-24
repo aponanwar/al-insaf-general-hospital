@@ -293,7 +293,7 @@ export const INITIAL_DOCTORS: Doctor[] = [
     bio: 'Experienced consultant in internal medicine, chest conditions, diagnostic endoscopy, and general healthcare at Al Insaf General Hospital, Dewanganj.',
     experienceYears: 12,
     consultationFee: 600,
-    imageUrl: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=600',
+    imageUrl: '/images/doctors/dr-touhidul-islam.jpg',
     isActive: true,
   },
   {
@@ -310,7 +310,7 @@ export const INITIAL_DOCTORS: Doctor[] = [
     bio: 'Specialist gynaecologist and obstetrician dedicated to maternal care, normal delivery, high-risk pregnancies, and women\'s health.',
     experienceYears: 10,
     consultationFee: 500,
-    imageUrl: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=600',
+    imageUrl: '/images/doctors/dr-toufika-rahman.jpg',
     isActive: true,
   },
   {
@@ -327,7 +327,7 @@ export const INITIAL_DOCTORS: Doctor[] = [
     bio: 'Assistant Professor and laparoscopic surgical oncologist specializing in tumor resections, laparoscopic surgery, hernia, and appendix procedures.',
     experienceYears: 15,
     consultationFee: 800,
-    imageUrl: 'https://images.unsplash.com/photo-1622902046580-2b47f47f5471?auto=format&fit=crop&q=80&w=600',
+    imageUrl: '/images/doctors/dr-shafiqul-islam.jpg',
     isActive: true,
   },
   {
@@ -344,7 +344,7 @@ export const INITIAL_DOCTORS: Doctor[] = [
     bio: 'Specialist in orthopaedic trauma management, fracture management, joint arthritis, and bone reconstructive care.',
     experienceYears: 11,
     consultationFee: 600,
-    imageUrl: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=600',
+    imageUrl: '/images/doctors/dr-alkas-tahmid.jpg',
     isActive: true,
   },
   {
@@ -361,7 +361,7 @@ export const INITIAL_DOCTORS: Doctor[] = [
     bio: 'Consultant paediatrician dedicated to newborn wellness, child infections, pediatric growth, and adolescent medicine.',
     experienceYears: 13,
     consultationFee: 500,
-    imageUrl: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=600',
+    imageUrl: '/images/doctors/dr-rezaul-islam.jpg',
     isActive: true,
   },
   {
@@ -378,7 +378,7 @@ export const INITIAL_DOCTORS: Doctor[] = [
     bio: 'Cardiologist trained at NICVD providing diagnostic cardiology, hypertension management, echocardiography, and cardiac consultation.',
     experienceYears: 14,
     consultationFee: 700,
-    imageUrl: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&q=80&w=600',
+    imageUrl: '/images/doctors/dr-salah-uddin.jpg',
     isActive: true,
   },
   {
@@ -395,7 +395,7 @@ export const INITIAL_DOCTORS: Doctor[] = [
     bio: 'Endocrine specialist offering advanced clinical management for diabetes mellitus, thyroid pathologies, and metabolic balance.',
     experienceYears: 12,
     consultationFee: 700,
-    imageUrl: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=600',
+    imageUrl: '/images/doctors/dr-raihan-habib.jpg',
     isActive: true,
   },
   {
@@ -412,7 +412,7 @@ export const INITIAL_DOCTORS: Doctor[] = [
     bio: 'Assistant Professor in orthopaedics specializing in trauma reconstruction, spine problems, and complex fracture fixes.',
     experienceYears: 16,
     consultationFee: 800,
-    imageUrl: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=600',
+    imageUrl: '/images/doctors/dr-nazmul-islam.jpg',
     isActive: true,
   },
   {
@@ -429,7 +429,7 @@ export const INITIAL_DOCTORS: Doctor[] = [
     bio: 'NITOR-trained orthopaedic surgeon focused on conservative and operative management of trauma, arthritis, and joint pain.',
     experienceYears: 10,
     consultationFee: 600,
-    imageUrl: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=600',
+    imageUrl: '/images/doctors/dr-mainul-islam.jpg',
     isActive: true,
   },
 ];
