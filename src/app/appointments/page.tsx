@@ -159,7 +159,8 @@ function AppointmentContent() {
             <strong className="block font-bold">Important Instructions:</strong>
             <p>• Please report to the hospital OPD reception 15 minutes before your scheduled appointment time.</p>
             <p>• Bring previous medical reports, prescriptions, and identity document.</p>
-            <p>• For urgent modifications or cancellation, call hotline: <strong>09666 787800</strong>.</p>
+            <p>• For urgent modifications or cancellation, call hotline: <strong>01303-359905</strong>.</p>
+
           </div>
 
           <div className="flex flex-wrap gap-4 pt-4">

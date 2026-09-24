@@ -76,8 +76,8 @@ export default function ContactUsPage() {
         badgeBn="২৪/৭ হেল্পলাইন ও লোকেশন"
         title="Contact & Location Map"
         titleBn="যোগাযোগ ও হাসপাতালের অবস্থান"
-        description="Reach out to our patient care desk or visit our Dhanmondi, Dhaka hospital complex."
-        descriptionBn="রোগী সহায়তা ডেস্কে যোগাযোগ করুন অথবা আমাদের ধানমন্ডি, ঢাকা হাসপাতাল ক্যাম্পাসে আসুন।"
+        description="Reach out to our patient care desk or visit our hospital complex at Dewanganj Bazar, Jamalpur."
+        descriptionBn="রোগী সহায়তা ডেস্কে যোগাযোগ করুন অথবা দেওয়ানগঞ্জ বাজার, জামালপুরে আমাদের হাসপাতালে আসুন।"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
@@ -90,8 +90,9 @@ export default function ContactUsPage() {
             <h3 className="text-lg font-bold text-slate-900">Hospital Hotlines</h3>
             <p className="text-xs text-slate-500">24/7 Emergency & OPD Serial Desk</p>
             <div className="pt-2 space-y-1 text-sm font-semibold text-slate-800">
-              <div>Hotline: <a href="tel:09666787800" className="text-emerald-700 font-bold">09666 787800</a></div>
-              <div>Ambulance: <a href="tel:01711000000" className="text-emerald-700 font-bold">01711-000000</a></div>
+              <div>Hotline: <a href="tel:01303359905" className="text-emerald-700 font-bold">01303-359905</a></div>
+              <div>Serial / Info: <a href="tel:01913129020" className="text-emerald-700 font-bold">01913-129020</a></div>
+              <div>Ambulance: <a href="tel:01715156034" className="text-emerald-700 font-bold">01715-156034</a></div>
             </div>
           </div>
 
@@ -102,8 +103,8 @@ export default function ContactUsPage() {
             <h3 className="text-lg font-bold text-slate-900">Email & Inquiries</h3>
             <p className="text-xs text-slate-500">Official hospital communications</p>
             <div className="pt-2 space-y-1 text-sm font-semibold text-slate-800">
-              <div>Info: <a href="mailto:info@alinsafhospital.com" className="text-blue-700">info@alinsafhospital.com</a></div>
-              <div>Billing: <a href="mailto:billing@alinsafhospital.com" className="text-blue-700">billing@alinsafhospital.com</a></div>
+              <div>Email: <a href="mailto:alinsafhospital2025@gmail.com" className="text-blue-700">alinsafhospital2025@gmail.com</a></div>
+              <div>Appointments: <a href="mailto:alinsafhospital2025@gmail.com" className="text-blue-700">alinsafhospital2025@gmail.com</a></div>
             </div>
           </div>
 
@@ -112,12 +113,13 @@ export default function ContactUsPage() {
               <MapPin className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-bold text-slate-900">Hospital Address</h3>
-            <p className="text-xs text-slate-500">Prime location in Dhanmondi</p>
+            <p className="text-xs text-slate-500">Beside Govt. High School Gate</p>
             <p className="pt-2 text-sm text-slate-700 leading-relaxed font-medium">
-              House: 08, Road: 02, Dhanmondi, Dhaka-1205, Bangladesh
+              Govt. High School Gate, Dewanganj Bazar, Dewanganj, Jamalpur, Bangladesh
             </p>
           </div>
         </div>
+
 
         {/* Contact Form & Google Map */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -259,11 +261,22 @@ export default function ContactUsPage() {
           {/* Map & Direction Details */}
           <div className="lg:col-span-5 space-y-6">
             <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm overflow-hidden space-y-4">
-              <h3 className="text-base font-bold text-slate-900">Hospital Location Map</h3>
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-bold text-slate-900">Hospital Location Map</h3>
+                <a
+                  href="https://www.google.com/maps/search/Dewanganj+Government+High+School+Jamalpur"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-bold text-primary-600 hover:text-primary-700 flex items-center hover:underline"
+                >
+                  <span>Open in Google Maps</span>
+                  <span className="ml-1">↗</span>
+                </a>
+              </div>
               <div className="w-full h-64 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200">
                 <iframe
-                  title="Al Insaf General Hospital Location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3652.223849187311!2d90.37894291543147!3d23.739396395116747!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b8b64e06d9fb%3A0xbc404987f4c5496!2sPopular%20Medical%20College%20Hospital!5e0!3m2!1sen!2sbd!4v1620000000000!5m2!1sen!2sbd"
+                  title="Al Insaf General Hospital Dewanganj Location"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14456.289196886367!2d89.7716999!3d25.1437000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fc561491764653%3A0x6b78d2b7754b2efc!2sDewanganj%20Govt.%20High%20School!5e0!3m2!1sen!2sbd!4v1711234567890!5m2!1sen!2sbd"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -273,8 +286,8 @@ export default function ContactUsPage() {
                 />
               </div>
               <div className="text-xs text-slate-600 space-y-1">
-                <p><strong>Landmark:</strong> Near Dhanmondi Lake & City College Road 2.</p>
-                <p><strong>Parking:</strong> Basement car parking available for patients and ambulances.</p>
+                <p><strong>Landmark:</strong> Beside Dewanganj Govt. High School Gate, Dewanganj Bazar, Jamalpur.</p>
+                <p><strong>Parking:</strong> Patient vehicle & ambulance parking available 24/7.</p>
               </div>
             </div>
 
@@ -285,16 +298,17 @@ export default function ContactUsPage() {
               </div>
               <h4 className="text-lg font-black">Need Urgent Patient Transport?</h4>
               <p className="text-xs text-slate-300">
-                Our ICU-equipped ambulances with ventilator and paramedic team can be dispatched anywhere in Dhaka within minutes.
+                Our emergency ambulance and medical team can be dispatched across Dewanganj, Jamalpur, and surrounding areas promptly.
               </p>
               <a
-                href="tel:09666787800"
-                className="inline-block w-full text-center py-2.5 bg-emerald-600 hover:bg-emerald-500 font-bold text-xs rounded-xl transition-all"
+                href="tel:01303359905"
+                className="inline-block w-full text-center py-2.5 bg-emerald-600 hover:bg-emerald-500 font-bold text-xs rounded-xl transition-all shadow-md"
               >
-                Call Ambulance Now
+                Call Ambulance: 01303-359905
               </a>
             </div>
           </div>
+
         </div>
       </div>
     </div>

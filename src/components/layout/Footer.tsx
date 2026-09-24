@@ -48,17 +48,18 @@ export default function Footer() {
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-4 h-4 text-primary-400 flex-shrink-0" />
-                <a href="tel:09666787800" className="hover:text-white font-semibold text-emerald-400">
+                <a href="tel:01303359905" className="hover:text-white font-semibold text-emerald-400">
                   {t('hotline')} ({language === 'bn' ? 'হটলাইন' : 'Hotline'})
                 </a>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="w-4 h-4 text-primary-400 flex-shrink-0" />
-                <a href="mailto:info@alinsafhospital.com" className="hover:text-white">
-                  info@alinsafhospital.com
+                <a href="mailto:alinsafhospital2025@gmail.com" className="hover:text-white">
+                  alinsafhospital2025@gmail.com
                 </a>
               </div>
             </div>
+
           </div>
 
           {/* Col 2: Hospital Services */}

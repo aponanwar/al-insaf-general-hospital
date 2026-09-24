@@ -187,7 +187,8 @@ export default function RateChartsPage() {
             • Rates are subject to periodic hospital management revision and doctor prescription specifications.
           </p>
           <p>
-            • For inquiries regarding package deals, major surgical estimates, or corporate corporate discounts, please contact the Billing Desk at <strong>09666 787800</strong>.
+            • For inquiries regarding package deals, major surgical estimates, or discounts, please contact the Billing Desk at <strong>01303-359905</strong>.
+
           </p>
         </div>
       </div>

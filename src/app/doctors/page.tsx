@@ -26,8 +26,9 @@ import { useLanguage } from '@/context/LanguageContext';
 const DAYS = ['All Days', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
 function DoctorsContent() {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const searchParams = useSearchParams();
+
   const initialDept = searchParams?.get('department') || 'All Departments';
   const initialQuery = searchParams?.get('q') || '';
 
@@ -188,7 +189,8 @@ function DoctorsContent() {
                 {language === 'bn'
                   ? 'ডাক্তারের শিডিউল ও সিরিয়াল কনফার্মেশনের জন্য আমাদের ওপিডি ডেস্কে কল করুন: '
                   : 'Call our 24/7 OPD desk at '}
-                <span className="font-bold">09666 787800</span>
+                <span className="font-bold">{t('hotline')}</span>
+
               </p>
             </div>
           </div>

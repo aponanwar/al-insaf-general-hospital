@@ -130,7 +130,7 @@ export default function DepartmentDetailPage({ params }: Props) {
               <div className="space-y-3 pt-2 text-xs text-slate-600">
                 <div className="flex items-center space-x-3">
                   <Phone className="w-4 h-4 text-primary-600" />
-                  <span>OPD Desk: 09666 787800</span>
+                  <span>OPD Desk: 01303-359905</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Clock className="w-4 h-4 text-primary-600" />
@@ -138,7 +138,7 @@ export default function DepartmentDetailPage({ params }: Props) {
                 </div>
                 <div className="flex items-center space-x-3">
                   <MapPin className="w-4 h-4 text-primary-600" />
-                  <span>Al Insaf General Hospital, Dhaka</span>
+                  <span>Al Insaf General Hospital, Dewanganj, Jamalpur</span>
                 </div>
               </div>
             </div>
@@ -149,11 +149,12 @@ export default function DepartmentDetailPage({ params }: Props) {
                 Direct ICU/Ward admission desk is available 24 hours round the clock.
               </p>
               <a
-                href="tel:09666787800"
+                href="tel:01303359905"
                 className="w-full inline-flex items-center justify-center py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 font-bold text-xs rounded-xl transition-all"
               >
-                Call Hospital Hotline
+                Call Hospital Hotline: 01303-359905
               </a>
+
             </div>
           </div>
         </div>

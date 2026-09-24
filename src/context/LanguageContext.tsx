@@ -17,14 +17,25 @@ export const translations: Record<string, { en: string; bn: string }> = {
   'hospital.subname': { en: 'General Hospital Ltd.', bn: 'জেনারেল হাসপাতাল লিঃ' },
   'hospital.motto': { en: 'Excellence in Healthcare & Diagnostics', bn: 'উন্নত স্বাস্থ্যসেবা ও নির্ভুল রোগ নির্ণয়ে বিশ্বস্ত' },
   'hospital.tagline': {
-    en: 'The premier healthcare institution of Al Insaf Group, delivering tertiary medical care with 500+ beds, 24/7 emergency response, modern ICUs, and 24+ specialized clinical departments in Dhaka, Bangladesh.',
-    bn: 'আল ইনসাফ গ্রুপের প্রধান স্বাস্থ্যসেবা প্রতিষ্ঠান— ৫০০+ শয্যা, ২৪/৭ জরুরি সেবা, আধুনিক আইসিইউ এবং ২৪টিরও বেশি বিশেষায়িত চিকিৎসা বিভাগ নিয়ে ধানমন্ডি, ঢাকায় অবস্থিত।'
+    en: 'The premier healthcare institution of Al Insaf Group, delivering tertiary medical care with 500+ beds, 24/7 emergency response, modern ICUs, and 24+ specialized clinical departments in Dewanganj, Jamalpur, Bangladesh.',
+    bn: 'আল ইনসাফ গ্রুপের প্রধান স্বাস্থ্যসেবা প্রতিষ্ঠান— ৫০০+ শয্যা, ২৪/৭ জরুরি সেবা, আধুনিক আইসিইউ এবং ২৪টিরও বেশি বিশেষায়িত চিকিৎসা বিভাগ নিয়ে দেওয়ানগঞ্জ, জামালপুরে অবস্থিত।'
   },
   'hospital.address': {
-    en: 'House: 08, Road: 02, Dhanmondi, Dhaka-1205, Bangladesh',
-    bn: 'বাড়ি: ০৮, রোড: ০২, ধানমন্ডি, ঢাকা-১২০৫, বাংলাদেশ'
+    en: process.env.NEXT_PUBLIC_HOSPITAL_ADDRESS || 'Govt. High School Gate, Dewanganj Bazar, Dewanganj, Jamalpur, Bangladesh',
+    bn: 'সরকারি হাই স্কুল গেট সংলগ্ন, দেওয়ানগঞ্জ বাজার, দেওয়ানগঞ্জ, জামালপুর, বাংলাদেশ'
   },
-  'hotline': { en: '09666 787800', bn: '০৯৬৬৬ ৭৮৭৮০০' },
+  'hotline': {
+    en: process.env.NEXT_PUBLIC_HOSPITAL_PHONE || '01303-359905',
+    bn: '০১৩০৩-৩৫৯৯০৫'
+  },
+  'hotline.alt': {
+    en: process.env.NEXT_PUBLIC_HOSPITAL_PHONE_ALT || '01913-129020',
+    bn: '০১৯১৩-১২৯০২০'
+  },
+  'email': {
+    en: process.env.NEXT_PUBLIC_HOSPITAL_EMAIL || 'alinsafhospital2025@gmail.com',
+    bn: 'alinsafhospital2025@gmail.com'
+  },
   'hotline.floating': { en: '24/7 Hotline', bn: '২৪/৭ হটলাইন' },
 
   // Navbar Links
@@ -56,7 +67,11 @@ export const translations: Record<string, { en: string; bn: string }> = {
   'nav.searchClear': { en: 'Clear', bn: 'মুছুন' },
   'nav.matchingDepts': { en: 'Matching Departments & Specialties', bn: 'সম্পর্কিত বিভাগ ও স্পেশালিটি' },
   'nav.searchAllDoctors': { en: 'Search all doctors for', bn: 'ডাক্তার খুঁজুন' },
-  'nav.callHotline': { en: 'Call Hotline: 09666 787800', bn: 'হটলাইন কল করুন: ০৯৬৬৬ ৭৮৭৮০০' },
+  'nav.callHotline': {
+    en: `Call Hotline: ${process.env.NEXT_PUBLIC_HOSPITAL_PHONE || '01303-359905'}`,
+    bn: 'হটলাইন কল করুন: ০১৩০৩-৩৫৯৯০৫'
+  },
+
 
   // TopHeader
   'top.admission': { en: 'Admission', bn: 'ভর্তি তথ্য' },

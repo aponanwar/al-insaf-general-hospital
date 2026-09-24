@@ -10,7 +10,8 @@ const SLIDES_EN = [
     id: 1,
     title: 'Welcome to Al Insaf General Hospital',
     subtitle: 'An Advanced Center for Medical Services & Diagnostics',
-    description: 'A 500+ bed tertiary hospital delivering excellence, compassionate care, and state-of-the-art medical technology in Dhaka, Bangladesh.',
+    description: 'A 500+ bed hospital delivering excellence, compassionate care, and state-of-the-art medical technology in Dewanganj, Jamalpur, Bangladesh.',
+
     ctaText: 'Explore Specialties',
     ctaLink: '/specialities',
     secondaryCtaText: 'Book Appointment',

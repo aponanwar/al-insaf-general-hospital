@@ -38,13 +38,13 @@ export default function TopHeader() {
             <div className="h-3 w-px bg-slate-600 hidden lg:block" />
 
             <div className="flex items-center space-x-4">
-              <a href="tel:09666787800" className="flex items-center text-slate-200 hover:text-white font-medium">
+              <a href="tel:01303359905" className="flex items-center text-slate-200 hover:text-white font-medium">
                 <Phone className="w-3.5 h-3.5 mr-1.5 text-emerald-400 animate-pulse" />
                 <span>{t('hotline')}</span>
               </a>
-              <a href="mailto:info@alinsafhospital.com" className="flex items-center text-slate-200 hover:text-white">
+              <a href="mailto:alinsafhospital2025@gmail.com" className="flex items-center text-slate-200 hover:text-white">
                 <Mail className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
-                <span>info@alinsafhospital.com</span>
+                <span>alinsafhospital2025@gmail.com</span>
               </a>
             </div>
           </div>
@@ -52,9 +52,9 @@ export default function TopHeader() {
           {/* Right: 24/7 Hotline Badge & Social Links */}
           <div className="flex items-center space-x-4">
             <a
-              href="tel:09666787800"
+              href="tel:01303359905"
               className="flex items-center bg-red-600 hover:bg-red-700 text-white px-2.5 py-1 rounded text-[11px] font-bold tracking-wide shadow-sm transition-colors duration-200"
-              title="24/7 Emergency & Ambulance: 09666 787800"
+              title="24/7 Emergency & Ambulance: 01303-359905"
             >
               <span className="relative flex h-2 w-2 mr-1.5 shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
@@ -91,7 +91,7 @@ export default function TopHeader() {
 
               {/* WhatsApp */}
               <a
-                href="https://wa.me/8801711000000?text=Hello%20Al%20Insaf%20General%20Hospital,%20I%20need%20information."
+                href="https://wa.me/8801303359905?text=Hello%20Al%20Insaf%20General%20Hospital,%20I%20need%20information."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-emerald-400 hover:scale-110 transition-transform p-1"
@@ -110,13 +110,14 @@ export default function TopHeader() {
 
               {/* Gmail / Webmail */}
               <a
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=info@alinsafhospital.com&su=Inquiry%20from%20Website"
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=alinsafhospital2025@gmail.com&su=Inquiry%20from%20Website"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-red-400 hover:scale-110 transition-transform p-1"
                 aria-label="Gmail"
                 title="Send via Gmail"
               >
+
                 {/* Custom Crisp Gmail M-envelope SVG Icon */}
                 <svg
                   className="w-3.5 h-3.5 fill-current"

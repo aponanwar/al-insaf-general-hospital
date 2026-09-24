@@ -248,7 +248,8 @@ export function getPasswordResetHtmlTemplate(resetUrl: string, adminName: string
                 <p style="color: #94a3b8; font-size: 11px; margin: 0;">
                   © ${new Date().getFullYear()} Al Insaf General Hospital Ltd. All rights reserved.
                   <br>
-                  House: 08, Road: 02, Dhanmondi, Dhaka-1205, Bangladesh | Hotline: 09666 787800
+                  Govt. High School Gate, Dewanganj Bazar, Dewanganj, Jamalpur, Bangladesh | Hotline: 01303-359905
+
                 </p>
               </td>
             </tr>

@@ -21,10 +21,10 @@ export default function FloatingHotline() {
 
         {/* Action Link */}
         <a
-          href="tel:09666787800"
+          href="tel:01303359905"
           className="relative flex items-center space-x-3 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white pl-4 pr-5 py-3 rounded-full shadow-2xl hover:shadow-red-500/50 hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-white/20 backdrop-blur-sm"
           title={language === 'bn' ? 'জরুরি হটলাইনে কল করুন' : 'Call 24/7 Emergency Hotline'}
-          aria-label={language === 'bn' ? 'জরুরি হটলাইনে কল করুন' : 'Call 24/7 Emergency Hotline: 09666 787800'}
+          aria-label={language === 'bn' ? 'জরুরি হটলাইনে কল করুন' : 'Call 24/7 Emergency Hotline'}
         >
           {/* Animated Call Icon with Ripple */}
           <div className="relative flex items-center justify-center w-10 h-10 rounded-full bg-white/20 text-white shrink-0">
@@ -41,10 +41,11 @@ export default function FloatingHotline() {
               </span>
             </div>
             <span className="text-sm font-extrabold tracking-tight text-white font-mono drop-shadow-sm">
-              {t('hotline', '09666 787800')}
+              {t('hotline')}
             </span>
           </div>
         </a>
+
       </div>
     </div>
   );

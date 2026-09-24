@@ -5,19 +5,20 @@ import ClientLayout from '@/components/layout/ClientLayout';
 export const metadata: Metadata = {
   title: 'Al Insaf General Hospital Ltd. (AIGH) | Leading Tertiary Care & Diagnostics',
   description:
-    'Al Insaf General Hospital is a 500+ beds tertiary healthcare institution in Dhaka, Bangladesh, offering 24/7 emergency, ICU/CCU, outdoor diagnostics, and 24+ super-specialized departments.',
+    'Al Insaf General Hospital is a premier healthcare institution in Dewanganj, Jamalpur, Bangladesh, offering 24/7 emergency, ICU, outdoor consultations, diagnostics, and 24+ specialized departments.',
   keywords: [
     'Al Insaf General Hospital',
-    'Al Insaf Hospital',
+    'Al Insaf Hospital Dewanganj',
+    'Hospital Dewanganj Jamalpur',
+    'Doctors Appointment Dewanganj',
+    'ICU Jamalpur',
+    'Diagnostic Center Dewanganj',
+    'Medical Specialists Jamalpur',
     'AIGH',
-    'Hospital Dhaka',
-    'Doctors Appointment Bangladesh',
-    'ICU Dhaka',
-    'Diagnostic Center Dhanmondi',
-    'Medical Specialists',
   ],
   authors: [{ name: 'Al Insaf General Hospital' }],
 };
+
 
 export const viewport: Viewport = {
   width: 'device-width',
