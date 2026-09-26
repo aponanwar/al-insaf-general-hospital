@@ -1,10 +1,60 @@
 import Link from 'next/link';
 import { ShieldCheck, Droplet, CheckCircle2, Phone, Calendar, Clock, Heart } from 'lucide-react';
 import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
+import type { Metadata } from 'next';
+import { HOSPITAL_CONFIG } from '@/lib/constants';
 
-export const metadata = {
-  title: 'Vaccination Centre & Blood Bank | Al Insaf General Hospital Ltd.',
-  description: 'Comprehensive immunization schedules for infants, children, adults, travelers, and 24/7 blood bank transfusion services.',
+const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+
+export const metadata: Metadata = {
+  title: 'Vaccination Center, Child Immunization & Blood Bank | Al Insaf General Hospital',
+  description:
+    'EPI routine child immunization, adult vaccines (Hepatitis, HPV, Influenza), cold-chain vaccine storage, and 24/7 blood transfusion bank at Al Insaf General Hospital, Dewanganj.',
+  keywords: [
+    'Vaccination Center Dewanganj',
+    'Child Immunization EPI Jamalpur',
+    'Hepatitis HPV Vaccine Dewanganj',
+    'Blood Bank Dewanganj',
+    'টিকা কেন্দ্র দেওয়ানগঞ্জ',
+    'ব্লাড ব্যাংক জামালপুর',
+  ],
+  alternates: {
+    canonical: '/patient-guide/vaccination',
+  },
+  openGraph: {
+    title: 'Vaccination Center & Blood Bank | Al Insaf General Hospital',
+    description:
+      'Safe immunizations for all age groups and 24/7 emergency blood transfusion services in Dewanganj, Jamalpur.',
+    url: `${baseUrl}/patient-guide/vaccination`,
+    images: [
+      {
+        url: `${baseUrl}/images/logo.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Vaccination Center Al Insaf General Hospital',
+      },
+    ],
+  },
+};
+
+const vaccinationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  name: 'Vaccination Center & Emergency Blood Bank',
+  description: 'Immunization services and 24/7 emergency blood transfusion bank at Al Insaf General Hospital.',
+  url: `${baseUrl}/patient-guide/vaccination`,
+  provider: {
+    '@type': 'Hospital',
+    name: HOSPITAL_CONFIG.nameEn,
+    telephone: HOSPITAL_CONFIG.phone,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: HOSPITAL_CONFIG.addressEn,
+      addressLocality: 'Dewanganj',
+      addressRegion: 'Jamalpur',
+      addressCountry: 'BD',
+    },
+  },
 };
 
 export default function VaccinationPage() {
@@ -19,6 +69,10 @@ export default function VaccinationPage() {
 
   return (
     <div className="bg-slate-50 min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(vaccinationSchema) }}
+      />
       {/* Glossy Header Banner */}
       <PageHeaderBanner
         badge="Preventive & Transfusion Medicine"

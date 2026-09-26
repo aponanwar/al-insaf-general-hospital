@@ -1,11 +1,72 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Calendar, ArrowRight, Bell, Newspaper, Sparkles } from 'lucide-react';
 import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
 import { INITIAL_NEWS } from '@/lib/seed-data';
+import { HOSPITAL_CONFIG } from '@/lib/constants';
 
-export const metadata = {
-  title: 'Media, News & Events | Al Insaf General Hospital Ltd.',
-  description: 'Read the latest announcements, health awareness campaigns, academic conferences, and notices from Al Insaf General Hospital.',
+const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+
+export const metadata: Metadata = {
+  title: 'Hospital News, Medical Events & Health Camps | Al Insaf General Hospital',
+  description:
+    'Stay updated with the latest news, free health screening camps, doctor schedules, mother & child wing announcements, and health bulletins from Al Insaf General Hospital, Dewanganj.',
+  keywords: [
+    'Al Insaf Hospital News',
+    'Health Camp Dewanganj',
+    'Medical News Jamalpur',
+    'Hospital Notices Dewanganj',
+    'Free Medical Camp Dewanganj',
+    'হাসপাতাল সংবাদ দেওয়ানগঞ্জ',
+    'ফ্রি মেডিকেল ক্যাম্প জামালপুর',
+  ],
+  alternates: {
+    canonical: '/news',
+  },
+  openGraph: {
+    title: 'Hospital News, Events & Notices | Al Insaf General Hospital',
+    description:
+      'Latest clinical milestones, free health camps, and institutional announcements at Al Insaf General Hospital.',
+    url: `${baseUrl}/news`,
+    images: [
+      {
+        url: `${baseUrl}/images/logo.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Al Insaf General Hospital News and Events',
+      },
+    ],
+  },
+};
+
+const newsListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Hospital News, Events & Health Notices',
+  description: 'Announcements, clinical achievements, and health camp bulletins from Al Insaf General Hospital.',
+  url: `${baseUrl}/news`,
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: INITIAL_NEWS.map((item, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      item: {
+        '@type': 'NewsArticle',
+        headline: item.title,
+        datePublished: item.publishDate,
+        url: `${baseUrl}/news/${item.slug}`,
+        image: item.imageUrl,
+        publisher: {
+          '@type': 'Hospital',
+          name: HOSPITAL_CONFIG.nameEn,
+          logo: {
+            '@type': 'ImageObject',
+            url: `${baseUrl}/images/logo.png`,
+          },
+        },
+      },
+    })),
+  },
 };
 
 export default function NewsPage() {
@@ -13,6 +74,10 @@ export default function NewsPage() {
 
   return (
     <div className="bg-slate-50 min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(newsListSchema) }}
+      />
       {/* Glossy Header Banner */}
       <PageHeaderBanner
         badge="Media & Communication"

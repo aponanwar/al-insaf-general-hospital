@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation';
 import { INITIAL_NEWS } from '@/lib/seed-data';
 import { Calendar, ArrowLeft, Share2, Tag, ShieldCheck } from 'lucide-react';
 
+import type { Metadata } from 'next';
+import { HOSPITAL_CONFIG } from '@/lib/constants';
+
 interface Props {
   params: {
     slug: string;
@@ -15,15 +18,121 @@ export function generateStaticParams() {
   }));
 }
 
+export function generateMetadata({ params }: Props): Metadata {
+  const article = INITIAL_NEWS.find((n) => n.slug === params.slug);
+  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+
+  if (!article) {
+    return {
+      title: 'Article Not Found | Al Insaf General Hospital',
+    };
+  }
+
+  return {
+    title: `${article.title} | Al Insaf General Hospital`,
+    description: article.summary,
+    keywords: [
+      article.category,
+      'Al Insaf Hospital News',
+      'Hospital Notice Dewanganj',
+      'Health Update Jamalpur',
+    ],
+    alternates: {
+      canonical: `/news/${article.slug}`,
+    },
+    openGraph: {
+      type: 'article',
+      title: article.title,
+      description: article.summary,
+      url: `${baseUrl}/news/${article.slug}`,
+      publishedTime: article.publishDate,
+      images: [
+        {
+          url: article.imageUrl || `${baseUrl}/images/logo.png`,
+          width: 1200,
+          height: 630,
+          alt: article.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: article.summary,
+      images: [article.imageUrl || `${baseUrl}/images/logo.png`],
+    },
+  };
+}
+
 export default function NewsDetailPage({ params }: Props) {
   const article = INITIAL_NEWS.find((n) => n.slug === params.slug);
+  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
 
   if (!article) {
     notFound();
   }
 
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'NewsArticle',
+        headline: article.title,
+        description: article.summary,
+        articleBody: article.content,
+        datePublished: article.publishDate,
+        dateModified: article.publishDate,
+        image: [article.imageUrl],
+        author: {
+          '@type': 'Hospital',
+          name: HOSPITAL_CONFIG.nameEn,
+          url: baseUrl,
+        },
+        publisher: {
+          '@type': 'Hospital',
+          name: HOSPITAL_CONFIG.nameEn,
+          logo: {
+            '@type': 'ImageObject',
+            url: `${baseUrl}/images/logo.png`,
+          },
+        },
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': `${baseUrl}/news/${article.slug}`,
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: `${baseUrl}/`,
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'News & Events',
+            item: `${baseUrl}/news`,
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: article.title,
+            item: `${baseUrl}/news/${article.slug}`,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="bg-slate-50 min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       {/* Glossy Header Banner */}
       <div className="relative bg-gradient-to-b from-[#2a3338] via-[#384349] to-[#232a2e] text-white py-14 sm:py-16 overflow-hidden border-b border-slate-700/60 shadow-lg">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-400/20 via-white/5 to-transparent pointer-events-none" />

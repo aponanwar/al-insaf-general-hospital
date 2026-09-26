@@ -11,11 +11,60 @@ import {
   CheckCircle,
 } from "lucide-react";
 import PageHeaderBanner from "@/components/layout/PageHeaderBanner";
+import type { Metadata } from 'next';
+import { HOSPITAL_CONFIG } from '@/lib/constants';
 
-export const metadata = {
-  title: "In-Patient Facilities & ICU | Al Insaf General Hospital Ltd.",
+const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+
+export const metadata: Metadata = {
+  title: 'Hospital Facilities, Modern ICU, Modular OT & Diagnostic Labs | Al Insaf General Hospital',
   description:
-    "Learn about our 50-bed ICU, CCU, NICU, Dialysis Center, Laminar Flow Operation Theaters, and 24/7 Ambulance services.",
+    'Advanced healthcare infrastructure at Al Insaf General Hospital, Dewanganj. Featuring modern ICU/HDU, CCU, Level-3 NICU, Modular Operation Theaters, 24/7 Ambulance, and Digital Diagnostic Labs.',
+  keywords: [
+    'ICU Facilities Dewanganj',
+    'Operation Theater Dewanganj',
+    'NICU Child Care Jamalpur',
+    'Ambulance Service Dewanganj',
+    'Diagnostic Pathology Dewanganj',
+    'হাসপাতাল সুযোগ সুবিধা দেওয়ানগঞ্জ',
+  ],
+  alternates: {
+    canonical: '/services/facilities',
+  },
+  openGraph: {
+    title: 'Hospital Facilities & Infrastructure | Al Insaf General Hospital',
+    description:
+      'Explore our modern ICU, CCU, NICU, Operation Theaters, and 24/7 Ambulance services in Dewanganj, Jamalpur.',
+    url: `${baseUrl}/services/facilities`,
+    images: [
+      {
+        url: `${baseUrl}/images/logo.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Hospital Facilities at Al Insaf General Hospital',
+      },
+    ],
+  },
+};
+
+const facilitiesSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  name: 'Hospital Facilities & Critical Care Infrastructure',
+  description: 'Critical care units, operation theaters, and diagnostic infrastructure at Al Insaf General Hospital.',
+  url: `${baseUrl}/services/facilities`,
+  provider: {
+    '@type': 'Hospital',
+    name: HOSPITAL_CONFIG.nameEn,
+    telephone: HOSPITAL_CONFIG.phone,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: HOSPITAL_CONFIG.addressEn,
+      addressLocality: 'Dewanganj',
+      addressRegion: 'Jamalpur',
+      addressCountry: 'BD',
+    },
+  },
 };
 
 export default function FacilitiesPage() {
@@ -84,6 +133,10 @@ export default function FacilitiesPage() {
 
   return (
     <div className="bg-slate-50 min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(facilitiesSchema) }}
+      />
       {/* Glossy Header Banner */}
       <PageHeaderBanner
         badge="High-Tech Infrastructure"

@@ -9,10 +9,72 @@ import {
   Calendar
 } from 'lucide-react';
 import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
+import type { Metadata } from 'next';
+import { HOSPITAL_CONFIG } from '@/lib/constants';
 
-export const metadata = {
-  title: 'Admission & Payment Guide | Al Insaf General Hospital Ltd.',
-  description: 'Comprehensive patient guide on hospital admission procedures, required documents, advance payment policies, and discharge guidelines.',
+const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+
+export const metadata: Metadata = {
+  title: 'Patient Admission & Payment Guide | Al Insaf General Hospital',
+  description:
+    'Step-by-step patient admission guide, required documents, cabin selection, insurance support, and discharge procedures at Al Insaf General Hospital, Dewanganj.',
+  keywords: [
+    'Hospital Admission Guide Dewanganj',
+    'Patient Admission Process Jamalpur',
+    'Al Insaf Hospital Admission',
+    'Cabin Booking Dewanganj Hospital',
+    'ভর্তি নির্দেশিকা আল ইনসাফ হাসপাতাল',
+  ],
+  alternates: {
+    canonical: '/patient-guide/admission',
+  },
+  openGraph: {
+    title: 'Patient Admission & Payment Guide | Al Insaf General Hospital',
+    description:
+      'Comprehensive guide to hospital admission, bed selection, documentation, and discharge at Al Insaf General Hospital.',
+    url: `${baseUrl}/patient-guide/admission`,
+    images: [
+      {
+        url: `${baseUrl}/images/logo.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Patient Admission Guide Al Insaf General Hospital',
+      },
+    ],
+  },
+};
+
+const admissionSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'Hospital Patient Admission Process',
+  description: 'How to register and get admitted to inpatient wards, cabins, or ICU at Al Insaf General Hospital.',
+  step: [
+    {
+      '@type': 'HowToStep',
+      position: 1,
+      name: 'Doctor Recommendation & Admission Order',
+      text: 'Admission begins with an official admission advice issued by a hospital consultant from Emergency or OPD.',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 2,
+      name: 'Registration & Bed Selection Desk',
+      text: 'Visit the 24/7 Inpatient Admission Desk on the Ground Floor to choose preferred accommodation.',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 3,
+      name: 'Initial Deposit & Documentation',
+      text: 'Submit patient ID/NID, complete the agreement form, and deposit initial advance payment.',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 4,
+      name: 'Escort to Inpatient Ward or Cabin',
+      text: 'Our duty staff escorts patient to the designated room with continuous nursing handover.',
+    },
+  ],
 };
 
 export default function AdmissionGuidePage() {
@@ -41,6 +103,10 @@ export default function AdmissionGuidePage() {
 
   return (
     <div className="bg-slate-50 min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(admissionSchema) }}
+      />
       {/* Glossy Header Banner */}
       <PageHeaderBanner
         badge="Patient Support & Guidelines"

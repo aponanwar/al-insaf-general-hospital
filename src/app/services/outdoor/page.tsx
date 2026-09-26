@@ -1,16 +1,69 @@
 import Link from 'next/link';
 import { Stethoscope, Clock, Calendar, CheckCircle2, ShieldCheck, ArrowRight } from 'lucide-react';
 import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
+import type { Metadata } from 'next';
+import { HOSPITAL_CONFIG } from '@/lib/constants';
 import { INITIAL_DEPARTMENTS } from '@/lib/seed-data';
 
-export const metadata = {
-  title: 'Outdoor & OPD Consultation Services | Al Insaf General Hospital Ltd.',
-  description: 'Explore our specialized outpatient department (OPD) consultation clinics, diagnostic testing, and visiting schedules.',
+const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+
+export const metadata: Metadata = {
+  title: 'Outdoor Patient Consultation (OPD) & Emergency Services | Al Insaf General Hospital',
+  description:
+    'Outpatient department (OPD) specialist chambers, Morning/Evening consultation shifts, digital diagnostic sample collection, and 24/7 emergency care at Al Insaf General Hospital, Dewanganj.',
+  keywords: [
+    'Outdoor Doctor Consultation Dewanganj',
+    'OPD Chamber Dewanganj Jamalpur',
+    'Specialist OPD Dewanganj',
+    'Emergency Outdoor Dewanganj',
+    'আউটডোর ওপিডি সেবা দেওয়ানগঞ্জ',
+  ],
+  alternates: {
+    canonical: '/services/outdoor',
+  },
+  openGraph: {
+    title: 'Outdoor Consultation (OPD) | Al Insaf General Hospital',
+    description:
+      'Convenient consultation shifts with country leading medical specialists and fast diagnostic testing in Dewanganj, Jamalpur.',
+    url: `${baseUrl}/services/outdoor`,
+    images: [
+      {
+        url: `${baseUrl}/images/logo.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Outdoor Medical Services at Al Insaf General Hospital',
+      },
+    ],
+  },
+};
+
+const outdoorSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  name: 'Outdoor Patient Department (OPD) & Emergency Consultation',
+  description: 'Specialist doctor outpatient consultations, sample collection, and emergency care at Al Insaf General Hospital.',
+  url: `${baseUrl}/services/outdoor`,
+  provider: {
+    '@type': 'Hospital',
+    name: HOSPITAL_CONFIG.nameEn,
+    telephone: HOSPITAL_CONFIG.phone,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: HOSPITAL_CONFIG.addressEn,
+      addressLocality: 'Dewanganj',
+      addressRegion: 'Jamalpur',
+      addressCountry: 'BD',
+    },
+  },
 };
 
 export default function OutdoorServicesPage() {
   return (
     <div className="bg-slate-50 min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(outdoorSchema) }}
+      />
       {/* Glossy Header Banner */}
       <PageHeaderBanner
         badge="Outpatient Department (OPD)"

@@ -11,10 +11,65 @@ import {
   MapPin,
 } from "lucide-react";
 
-export const metadata = {
-  title: "About Us | Al Insaf General Hospital Ltd. (AIGH)",
+import type { Metadata } from 'next';
+import { HOSPITAL_CONFIG } from '@/lib/constants';
+
+const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+
+export const metadata: Metadata = {
+  title: 'About Us, Leadership & Mission | Al Insaf General Hospital',
   description:
-    "Learn about Al Insaf General Hospital, our mission, vision, management team, and modern healthcare facilities in Dhaka.",
+    'Learn about Al Insaf General Hospital Ltd. (AIGH) in Dewanganj, Jamalpur. Discover our mission, clinical excellence, modern infrastructure, and leadership committed to compassionate healthcare.',
+  keywords: [
+    'About Al Insaf Hospital',
+    'Hospital in Dewanganj History',
+    'Best Hospital in Jamalpur',
+    'Al Insaf Hospital Management',
+    'Dewanganj Healthcare Mission',
+    'আল ইনসাফ হাসপাতাল পরিচিতি',
+  ],
+  alternates: {
+    canonical: '/about-us',
+  },
+  openGraph: {
+    title: 'About Us & Mission | Al Insaf General Hospital',
+    description:
+      'Discover the vision, modern infrastructure, and patient care values of Al Insaf General Hospital Dewanganj.',
+    url: `${baseUrl}/about-us`,
+    images: [
+      {
+        url: `${baseUrl}/images/logo.png`,
+        width: 1200,
+        height: 630,
+        alt: 'About Al Insaf General Hospital',
+      },
+    ],
+  },
+};
+
+const aboutSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'About Al Insaf General Hospital',
+  description: 'Mission, vision, leadership, and clinical milestones of Al Insaf General Hospital.',
+  url: `${baseUrl}/about-us`,
+  mainEntity: {
+    '@type': 'Hospital',
+    name: HOSPITAL_CONFIG.nameEn,
+    alternateName: HOSPITAL_CONFIG.nameBn,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: HOSPITAL_CONFIG.addressEn,
+      addressLocality: 'Dewanganj',
+      addressRegion: 'Jamalpur',
+      addressCountry: 'BD',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 25.1437,
+      longitude: 89.7717,
+    },
+  },
 };
 
 const imageUrl = "https://i.ibb.co.com/8nCy2WB3/shamim-updated-image.jpg";
@@ -22,6 +77,10 @@ const imageUrl = "https://i.ibb.co.com/8nCy2WB3/shamim-updated-image.jpg";
 export default function AboutUsPage() {
   return (
     <div className="bg-slate-50 min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutSchema) }}
+      />
       {/* Header Banner */}
       <PageHeaderBanner
         badge="About Al Insaf Hospital"
@@ -83,22 +142,22 @@ export default function AboutUsPage() {
           <div className="lg:col-span-6 grid grid-cols-2 gap-4">
             <img
               src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=600"
-              alt="Hospital Facility 1"
+              alt="Modern hospital patient ward and recovery beds at Al Insaf General Hospital"
               className="rounded-2xl shadow-md h-56 w-full object-cover"
             />
             <img
               src="https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&q=80&w=600"
-              alt="Hospital Facility 2"
+              alt="Digital diagnostic laboratory and automated medical testing equipment"
               className="rounded-2xl shadow-md h-56 w-full object-cover mt-6"
             />
             <img
               src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=600"
-              alt="Hospital Facility 3"
+              alt="Specialist physician consulting patient in modern clinic chamber"
               className="rounded-2xl shadow-md h-56 w-full object-cover"
             />
             <img
               src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=600"
-              alt="Hospital Facility 4"
+              alt="Modular surgical operation theater with advanced monitoring systems"
               className="rounded-2xl shadow-md h-56 w-full object-cover mt-6"
             />
           </div>
