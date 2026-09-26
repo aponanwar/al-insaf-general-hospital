@@ -4,7 +4,7 @@ import { INITIAL_NEWS } from '@/lib/seed-data';
 import { Calendar, ArrowLeft, Share2, Tag, ShieldCheck } from 'lucide-react';
 
 import type { Metadata } from 'next';
-import { HOSPITAL_CONFIG } from '@/lib/constants';
+import { HOSPITAL_CONFIG, getBaseUrl } from '@/lib/constants';
 
 interface Props {
   params: {
@@ -20,7 +20,7 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: Props): Metadata {
   const article = INITIAL_NEWS.find((n) => n.slug === params.slug);
-  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+  const baseUrl = getBaseUrl();
 
   if (!article) {
     return {
@@ -66,7 +66,7 @@ export function generateMetadata({ params }: Props): Metadata {
 
 export default function NewsDetailPage({ params }: Props) {
   const article = INITIAL_NEWS.find((n) => n.slug === params.slug);
-  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+  const baseUrl = getBaseUrl();
 
   if (!article) {
     notFound();

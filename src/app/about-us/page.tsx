@@ -12,9 +12,9 @@ import {
 } from "lucide-react";
 
 import type { Metadata } from 'next';
-import { HOSPITAL_CONFIG } from '@/lib/constants';
+import { HOSPITAL_CONFIG, getBaseUrl } from '@/lib/constants';
 
-const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+const baseUrl = getBaseUrl();
 
 export const metadata: Metadata = {
   title: 'About Us, Leadership & Mission | Al Insaf General Hospital',

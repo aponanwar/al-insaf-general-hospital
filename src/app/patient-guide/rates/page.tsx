@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import RatesClient from '@/components/rates/RatesClient';
-import { HOSPITAL_CONFIG } from '@/lib/constants';
+import { HOSPITAL_CONFIG, getBaseUrl } from '@/lib/constants';
 
-const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+const baseUrl = getBaseUrl();
 
 export const metadata: Metadata = {
   title: 'Diagnostic Test Rates, ICU & Cabin Tariffs | Al Insaf General Hospital',

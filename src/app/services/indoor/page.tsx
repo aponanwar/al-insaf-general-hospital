@@ -2,9 +2,9 @@ import Link from 'next/link';
 import { BedDouble, HeartPulse, CheckCircle2, ShieldAlert, Phone, Users, Clock } from 'lucide-react';
 import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
 import type { Metadata } from 'next';
-import { HOSPITAL_CONFIG } from '@/lib/constants';
+import { HOSPITAL_CONFIG, getBaseUrl } from '@/lib/constants';
 
-const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+const baseUrl = getBaseUrl();
 
 export const metadata: Metadata = {
   title: 'Indoor Patient Services, VIP Cabins & Inpatient Wards | Al Insaf General Hospital',

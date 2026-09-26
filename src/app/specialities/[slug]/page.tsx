@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 
 import type { Metadata } from 'next';
-import { HOSPITAL_CONFIG } from '@/lib/constants';
+import { HOSPITAL_CONFIG, getBaseUrl } from '@/lib/constants';
 
 interface Props {
   params: {
@@ -30,7 +30,7 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: Props): Metadata {
   const department = INITIAL_DEPARTMENTS.find((d) => d.slug === params.slug);
-  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+  const baseUrl = getBaseUrl();
 
   if (!department) {
     return {
@@ -69,7 +69,7 @@ export function generateMetadata({ params }: Props): Metadata {
 
 export default function DepartmentDetailPage({ params }: Props) {
   const department = INITIAL_DEPARTMENTS.find((d) => d.slug === params.slug);
-  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+  const baseUrl = getBaseUrl();
 
   if (!department) {
     notFound();

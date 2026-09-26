@@ -1,8 +1,9 @@
 import { MetadataRoute } from 'next';
 import { INITIAL_DEPARTMENTS, INITIAL_NEWS } from '@/lib/seed-data';
+import { getBaseUrl } from '@/lib/constants';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+  const baseUrl = getBaseUrl();
   const now = new Date();
 
   // Core Static Routes

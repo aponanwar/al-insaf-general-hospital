@@ -7,9 +7,9 @@ import StatsCounter from '@/components/home/StatsCounter';
 import LatestNewsSection from '@/components/home/LatestNewsSection';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
 import FloatingHotline from '@/components/home/FloatingHotline';
-import { HOSPITAL_CONFIG } from '@/lib/constants';
+import { HOSPITAL_CONFIG, getBaseUrl } from '@/lib/constants';
 
-const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+const baseUrl = getBaseUrl();
 
 export const metadata: Metadata = {
   title: `${HOSPITAL_CONFIG.nameEn} (AIGH) | Premier Tertiary Healthcare & Diagnostics in Dewanganj`,

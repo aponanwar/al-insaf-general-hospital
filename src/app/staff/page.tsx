@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import StaffClient from '@/components/staff/StaffClient';
-import { HOSPITAL_CONFIG } from '@/lib/constants';
+import { HOSPITAL_CONFIG, getBaseUrl } from '@/lib/constants';
 
-const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+const baseUrl = getBaseUrl();
 
 export const metadata: Metadata = {
   title: 'Hospital Staff & Medical Team Directory | Al Insaf General Hospital',

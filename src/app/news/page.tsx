@@ -3,9 +3,9 @@ import Link from 'next/link';
 import { Calendar, ArrowRight, Bell, Newspaper, Sparkles } from 'lucide-react';
 import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
 import { INITIAL_NEWS } from '@/lib/seed-data';
-import { HOSPITAL_CONFIG } from '@/lib/constants';
+import { HOSPITAL_CONFIG, getBaseUrl } from '@/lib/constants';
 
-const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+const baseUrl = getBaseUrl();
 
 export const metadata: Metadata = {
   title: 'Hospital News, Medical Events & Health Camps | Al Insaf General Hospital',

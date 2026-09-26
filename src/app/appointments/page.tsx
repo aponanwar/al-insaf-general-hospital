@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import AppointmentsClient from '@/components/appointments/AppointmentsClient';
-import { HOSPITAL_CONFIG } from '@/lib/constants';
+import { HOSPITAL_CONFIG, getBaseUrl } from '@/lib/constants';
 
-const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+const baseUrl = getBaseUrl();
 
 export const metadata: Metadata = {
   title: 'Book Doctor Appointment Online & Get Serial | Al Insaf General Hospital',

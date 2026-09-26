@@ -2,10 +2,10 @@ import Link from 'next/link';
 import { Stethoscope, Clock, Calendar, CheckCircle2, ShieldCheck, ArrowRight } from 'lucide-react';
 import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
 import type { Metadata } from 'next';
-import { HOSPITAL_CONFIG } from '@/lib/constants';
+import { HOSPITAL_CONFIG, getBaseUrl } from '@/lib/constants';
 import { INITIAL_DEPARTMENTS } from '@/lib/seed-data';
 
-const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://alinsafhospital.com').replace(/\/$/, '');
+const baseUrl = getBaseUrl();
 
 export const metadata: Metadata = {
   title: 'Outdoor Patient Consultation (OPD) & Emergency Services | Al Insaf General Hospital',

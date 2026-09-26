@@ -1,8 +1,22 @@
+export const getBaseUrl = (): string => {
+  if (process.env.NEXT_PUBLIC_APP_URL && process.env.NEXT_PUBLIC_APP_URL !== 'http://localhost:3000') {
+    return process.env.NEXT_PUBLIC_APP_URL.replace(/\/$/, '');
+  }
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  return (process.env.NEXT_PUBLIC_APP_URL || 'https://al-insaf-general-hospital.vercel.app').replace(/\/$/, '');
+};
+
+export const SITE_URL = getBaseUrl();
+
 /**
  * Centralized Hospital Configuration & Public Metadata
  * Collects values dynamically from .env.local (NEXT_PUBLIC_*) with robust defaults.
  */
-
 export const HOSPITAL_CONFIG = {
   nameEn: process.env.NEXT_PUBLIC_HOSPITAL_NAME || 'Al Insaf General Hospital',
   nameBn: 'আল ইনসাফ জেনারেল হাসপাতাল',
@@ -24,3 +38,5 @@ export const HOSPITAL_CONFIG = {
     process.env.NEXT_PUBLIC_HOSPITAL_MAPS_EMBED ||
     'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14456.289196886367!2d89.7716999!3d25.1437000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fc561491764653%3A0x6b78d2b7754b2efc!2sDewanganj%20Govt.%20High%20School!5e0!3m2!1sen!2sbd!4v1711234567890!5m2!1sen!2sbd',
 };
+
+
