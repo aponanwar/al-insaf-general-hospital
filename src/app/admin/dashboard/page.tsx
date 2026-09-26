@@ -337,16 +337,12 @@ export default function AdminDashboardPage() {
           )}
         </div>
 
-        {/* Metric Cards with Centered Numbers & Healthcare Motifs */}
+        {/* Metric Cards with Centered Numbers */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           <Link
             href="/admin/appointments"
             className="group relative bg-white overflow-hidden p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-primary-500 hover:shadow-md transition-all flex flex-col items-center justify-center text-center"
           >
-            {/* Background Medical Cross Watermark */}
-            <div className="absolute -right-3 -bottom-3 text-primary-500/5 group-hover:text-primary-500/10 transition-colors pointer-events-none">
-              <Calendar className="w-20 h-20" />
-            </div>
             <div className="w-10 h-10 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center mb-2 shadow-xs group-hover:scale-105 transition-transform">
               <Calendar className="w-5 h-5" />
             </div>
@@ -359,9 +355,6 @@ export default function AdminDashboardPage() {
             href="/admin/appointments"
             className="group relative bg-white overflow-hidden p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-amber-500 hover:shadow-md transition-all flex flex-col items-center justify-center text-center"
           >
-            <div className="absolute -right-3 -bottom-3 text-amber-500/5 group-hover:text-amber-500/10 transition-colors pointer-events-none">
-              <Clock className="w-20 h-20" />
-            </div>
             <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-2 shadow-xs group-hover:scale-105 transition-transform">
               <Clock className="w-5 h-5" />
             </div>
@@ -374,9 +367,6 @@ export default function AdminDashboardPage() {
             href="/admin/doctors"
             className="group relative bg-white overflow-hidden p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-emerald-500 hover:shadow-md transition-all flex flex-col items-center justify-center text-center"
           >
-            <div className="absolute -right-3 -bottom-3 text-emerald-500/5 group-hover:text-emerald-500/10 transition-colors pointer-events-none">
-              <Users className="w-20 h-20" />
-            </div>
             <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-2 shadow-xs group-hover:scale-105 transition-transform">
               <Users className="w-5 h-5" />
             </div>
@@ -389,9 +379,6 @@ export default function AdminDashboardPage() {
             href="/admin/staff"
             className="group relative bg-white overflow-hidden p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-teal-500 hover:shadow-md transition-all flex flex-col items-center justify-center text-center"
           >
-            <div className="absolute -right-3 -bottom-3 text-teal-500/5 group-hover:text-teal-500/10 transition-colors pointer-events-none">
-              <Contact className="w-20 h-20" />
-            </div>
             <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center mb-2 shadow-xs group-hover:scale-105 transition-transform">
               <Contact className="w-5 h-5" />
             </div>
@@ -404,9 +391,6 @@ export default function AdminDashboardPage() {
             href="/admin/rates"
             className="group relative bg-white overflow-hidden p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-purple-500 hover:shadow-md transition-all flex flex-col items-center justify-center text-center"
           >
-            <div className="absolute -right-3 -bottom-3 text-purple-500/5 group-hover:text-purple-500/10 transition-colors pointer-events-none">
-              <Activity className="w-20 h-20" />
-            </div>
             <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-2 shadow-xs group-hover:scale-105 transition-transform">
               <Activity className="w-5 h-5" />
             </div>
@@ -423,9 +407,6 @@ export default function AdminDashboardPage() {
                 : 'bg-white border-slate-200 hover:border-blue-500'
             }`}
           >
-            <div className="absolute -right-3 -bottom-3 text-rose-500/5 group-hover:text-rose-500/10 transition-colors pointer-events-none">
-              <MessageSquare className="w-20 h-20" />
-            </div>
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-2 shadow-xs group-hover:scale-105 transition-transform ${
               inquiries.filter((i) => i.status === 'Unread').length > 0
                 ? 'bg-rose-100 text-rose-600'

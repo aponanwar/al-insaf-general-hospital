@@ -30,6 +30,19 @@ export async function GET(req: NextRequest) {
     let doctors: Doctor[] = [];
     try {
       const collection = await getCollection<Doctor>('doctors');
+      
+      // Auto-sync: Ensure any initial doctors (e.g. Dr. Mahbuba Rahman Munni) exist in MongoDB
+      const allDbDoctors = await collection.find({}, { projection: { slug: 1 } }).toArray();
+      if (allDbDoctors.length === 0) {
+        await collection.insertMany(INITIAL_DOCTORS as any[]);
+      } else {
+        const existingSlugs = new Set(allDbDoctors.map((d) => d.slug));
+        const missingDoctors = INITIAL_DOCTORS.filter((d) => !existingSlugs.has(d.slug));
+        if (missingDoctors.length > 0) {
+          await collection.insertMany(missingDoctors as any[]);
+        }
+      }
+
       doctors = await collection.find(query).toArray();
     } catch (dbErr) {
       console.warn('Database error while fetching doctors, using fallback list');
@@ -52,9 +65,7 @@ export async function GET(req: NextRequest) {
       { success: true, doctors },
       {
         headers: {
-          'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600',
-          'CDN-Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600',
-          'Vercel-CDN-Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600',
+          'Cache-Control': 'no-store, max-age=0',
         },
       }
     );
