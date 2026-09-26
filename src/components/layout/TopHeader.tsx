@@ -14,35 +14,53 @@ export default function TopHeader() {
           {/* Left Quick Links & Contact Info */}
           <div className="flex items-center space-x-4 lg:space-x-6">
             <div className="flex items-center space-x-3 text-slate-300">
-              <Link href="/patient-guide/admission" className="hover:text-emerald-400 transition-colors flex items-center">
+              <Link
+                href="/patient-guide/admission"
+                className="hover:text-emerald-400 transition-colors flex items-center"
+              >
                 <ChevronRight className="w-3 h-3 mr-0.5 text-emerald-400" />
-                {t('top.admission')}
+                {t("top.admission")}
               </Link>
               <span className="text-slate-600">|</span>
-              <Link href="/services/facilities" className="hover:text-emerald-400 transition-colors flex items-center">
+              <Link
+                href="/services/facilities"
+                className="hover:text-emerald-400 transition-colors flex items-center"
+              >
                 <ChevronRight className="w-3 h-3 mr-0.5 text-emerald-400" />
-                {t('top.amenities')}
+                {t("top.amenities")}
               </Link>
               <span className="text-slate-600">|</span>
-              <Link href="/news" className="hover:text-emerald-400 transition-colors flex items-center">
+              <Link
+                href="/news"
+                className="hover:text-emerald-400 transition-colors flex items-center"
+              >
                 <ChevronRight className="w-3 h-3 mr-0.5 text-emerald-400" />
-                {t('top.newsEvents')}
+                {t("top.newsEvents")}
               </Link>
               <span className="text-slate-600">|</span>
-              <Link href="/patient-guide/rates" className="hover:text-emerald-400 transition-colors flex items-center">
+              <Link
+                href="/patient-guide/rates"
+                className="hover:text-emerald-400 transition-colors flex items-center"
+              >
                 <ChevronRight className="w-3 h-3 mr-0.5 text-emerald-400" />
-                {t('top.rateCharts')}
+                {t("top.rateCharts")}
               </Link>
             </div>
 
             <div className="h-3 w-px bg-slate-600 hidden lg:block" />
 
             <div className="flex items-center space-x-4">
-              <a href="tel:01303359905" className="flex items-center text-slate-200 hover:text-white font-medium">
+              <a
+                href="tel:01303359905"
+                className="flex items-center text-slate-200 hover:text-white font-medium"
+              >
                 <Phone className="w-3.5 h-3.5 mr-1.5 text-emerald-400 animate-pulse" />
-                <span>{t('hotline')}</span>
+                <span>{t("hotline")}</span>
               </a>
-              <a href="mailto:alinsafhospital2025@gmail.com" className="flex items-center text-slate-200 hover:text-white">
+              <a
+                href="mailto:alinsafhospital2025@gmail.com"
+                className="flex items-center text-slate-200 hover:text-white"
+              >
                 <Mail className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
                 <span>alinsafhospital2025@gmail.com</span>
               </a>
@@ -61,13 +79,13 @@ export default function TopHeader() {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
               </span>
               <Clock className="w-3 h-3 mr-1 shrink-0" />
-              <span>{t('top.emergency')}</span>
+              <span>{t("top.emergency")}</span>
             </a>
 
             <div className="flex items-center space-x-2 text-slate-300">
               {/* Facebook */}
               <a
-                href="https://www.facebook.com"
+                href="https://www.facebook.com/profile.php?id=61565022146996"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-white hover:scale-110 transition-transform p-1"
@@ -78,7 +96,7 @@ export default function TopHeader() {
               </a>
 
               {/* Twitter / X */}
-              <a
+              {/* <a
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -87,7 +105,7 @@ export default function TopHeader() {
                 title="Twitter"
               >
                 <Twitter className="w-3.5 h-3.5" />
-              </a>
+              </a> */}
 
               {/* WhatsApp */}
               <a
@@ -117,7 +135,6 @@ export default function TopHeader() {
                 aria-label="Gmail"
                 title="Send via Gmail"
               >
-
                 {/* Custom Crisp Gmail M-envelope SVG Icon */}
                 <svg
                   className="w-3.5 h-3.5 fill-current"
@@ -129,7 +146,7 @@ export default function TopHeader() {
               </a>
 
               {/* Instagram */}
-              <a
+              {/* <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -138,7 +155,7 @@ export default function TopHeader() {
                 title="Instagram"
               >
                 <Instagram className="w-3.5 h-3.5" />
-              </a>
+              </a> */}
             </div>
           </div>
         </div>
