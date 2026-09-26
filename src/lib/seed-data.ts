@@ -333,7 +333,7 @@ export const INITIAL_DOCTORS: Doctor[] = [
     consultationFee: 600,
     phone: '01303-359905',
     email: 'dr.munni@alinsafhospital.com',
-    imageUrl: 'https://images.unsplash.com/photo-1594824813571-638f026361a9?auto=format&fit=crop&q=80&w=600',
+    imageUrl: '/images/doctors/dr-mahbuba-rahman-munni.jpg',
     isActive: true,
   },
   {

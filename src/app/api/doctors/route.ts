@@ -41,6 +41,11 @@ export async function GET(req: NextRequest) {
         if (missingDoctors.length > 0) {
           await collection.insertMany(missingDoctors as any[]);
         }
+        // Ensure image URL for Dr. Munni is up to date if previously placeholder
+        await collection.updateOne(
+          { slug: 'dr-mahbuba-rahman-munni', imageUrl: { $regex: '^https://images.unsplash.com' } },
+          { $set: { imageUrl: '/images/doctors/dr-mahbuba-rahman-munni.jpg' } }
+        );
       }
 
       doctors = await collection.find(query).toArray();
