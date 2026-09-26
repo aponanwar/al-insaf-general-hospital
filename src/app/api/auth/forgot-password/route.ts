@@ -25,6 +25,7 @@ export async function POST(req: NextRequest) {
 
     const normalizedEmail = email.trim().toLowerCase();
     const defaultAdminEmail = (process.env.ADMIN_DEFAULT_EMAIL || 'admin@hospital.com').trim().toLowerCase();
+    const smtpUser = (process.env.SMTP_USER || '').trim().toLowerCase();
 
     let adminName = 'Administrator';
     let userExists = false;
@@ -32,7 +33,12 @@ export async function POST(req: NextRequest) {
     // Check if user exists in database or default credentials
     try {
       const usersCol = await getCollection<User>('users');
-      const user = await usersCol.findOne({ email: normalizedEmail });
+      const user = await usersCol.findOne({
+        $or: [
+          { email: normalizedEmail },
+          { email: { $regex: new RegExp(`^${normalizedEmail}$`, 'i') } },
+        ],
+      });
       if (user) {
         userExists = true;
         adminName = user.name || 'Administrator';
@@ -44,6 +50,11 @@ export async function POST(req: NextRequest) {
     if (normalizedEmail === defaultAdminEmail) {
       userExists = true;
       adminName = 'Hospital Chief Administrator';
+    } else if (smtpUser && normalizedEmail === smtpUser) {
+      userExists = true;
+      if (adminName === 'Administrator') {
+        adminName = 'Hospital System Administrator';
+      }
     }
 
     if (!userExists) {
@@ -71,10 +82,23 @@ export async function POST(req: NextRequest) {
         createdAt: new Date().toISOString(),
       });
     } catch (dbErr) {
-      console.warn('Could not store reset token in Mongo, proceeding with signed delivery:', dbErr);
+      console.warn('Could not store reset token in Mongo:', dbErr);
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Database connection failed while generating reset token. Please try again.',
+        },
+        { status: 500 }
+      );
     }
 
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    // Determine application base URL dynamically from request
+    const origin = req.headers.get('origin');
+    const host = req.headers.get('host');
+    const protocol = host?.includes('localhost') || host?.includes('127.0.0.1') ? 'http' : 'https';
+    const dynamicBaseUrl = origin || (host ? `${protocol}://${host}` : null);
+    const appUrl = dynamicBaseUrl || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+
     const resetUrl = `${appUrl}/admin/reset-password?token=${rawToken}&email=${encodeURIComponent(normalizedEmail)}`;
 
     const html = getPasswordResetHtmlTemplate(resetUrl, adminName);
@@ -86,10 +110,21 @@ export async function POST(req: NextRequest) {
       text: `Reset your password by opening: ${resetUrl} (Valid for 15 minutes)`,
     });
 
+    if (!mailResult.success) {
+      console.error('[FORGOT_PASSWORD] Failed to deliver recovery email:', mailResult.error);
+      return NextResponse.json(
+        {
+          success: false,
+          error: mailResult.error || 'Failed to send recovery email. Please check your SMTP configuration.',
+        },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Password recovery email sent. Please check your inbox (and spam folder).',
-      // In development mode when SMTP is not configured, provide direct resetUrl helper
+      // In development mode, provide direct resetUrl helper
       devResetUrl: process.env.NODE_ENV !== 'production' ? resetUrl : undefined,
     });
   } catch (error: any) {

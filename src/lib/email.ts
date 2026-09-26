@@ -21,22 +21,32 @@ export interface SendMailResult {
  * Zero external dependencies — built using standard Node.js net/tls sockets.
  */
 export async function sendMail({ to, subject, html, text }: SendMailOptions): Promise<SendMailResult> {
-  const host = process.env.SMTP_HOST || '';
+  const host = (process.env.SMTP_HOST || '').trim();
   const port = parseInt(process.env.SMTP_PORT || '587', 10);
-  const user = process.env.SMTP_USER || '';
-  const pass = process.env.SMTP_PASS || '';
-  const from = process.env.SMTP_FROM || `"${HOSPITAL_CONFIG.nameEn}" <${user || HOSPITAL_CONFIG.email}>`;
+  const user = (process.env.SMTP_USER || '').trim();
+  const pass = (process.env.SMTP_PASS || '').trim();
+  const rawFrom = (process.env.SMTP_FROM || '').trim();
   const secure = process.env.SMTP_SECURE === 'true' || port === 465;
 
+  // Clean and format From header & envelope sender
+  const fromHeader = rawFrom || `"${HOSPITAL_CONFIG.nameEn}" <${user || HOSPITAL_CONFIG.email}>`;
+  const envelopeSender = user || rawFrom.match(/<([^>]+)>/)?.[1] || rawFrom || HOSPITAL_CONFIG.email;
+
   // Check if SMTP is configured with real credentials
-  const isConfigured = host && user && pass && !user.includes('your_email') && !pass.includes('your_app_password');
+  const isConfigured = Boolean(
+    host &&
+    user &&
+    pass &&
+    !user.includes('your_email') &&
+    !pass.includes('your_app_password')
+  );
 
   if (!isConfigured) {
     console.log('\n==================================================');
     console.log('📧 [EMAIL SIMULATION / DEV MODE - SMTP NOT CONFIGURED]');
     console.log(`To: ${to}`);
     console.log(`Subject: ${subject}`);
-    console.log(`From: ${from}`);
+    console.log(`From: ${fromHeader}`);
     console.log('--------------------------------------------------');
     console.log(text || html);
     console.log('==================================================\n');
@@ -47,140 +57,205 @@ export async function sendMail({ to, subject, html, text }: SendMailOptions): Pr
   }
 
   return new Promise<SendMailResult>((resolve) => {
+    let resolved = false;
+    const finish = (result: SendMailResult) => {
+      if (!resolved) {
+        resolved = true;
+        resolve(result);
+      }
+    };
+
     try {
-      const socket = secure
-        ? tls.connect({ host, port, servername: host }, onConnect)
-        : net.connect({ host, port }, onConnect);
-
       let step = 0;
-      let secureSocket: tls.TLSSocket | null = null;
-      let activeSocket: net.Socket | tls.TLSSocket = socket;
+      let currentSocket: net.Socket | tls.TLSSocket;
 
-      function onConnect() {
-        // Connected, waiting for server 220 banner
-      }
+      const sendCommand = (cmd: string) => {
+        if (currentSocket && !currentSocket.destroyed) {
+          currentSocket.write(cmd + '\r\n');
+        }
+      };
 
-      function sendCommand(cmd: string) {
-        activeSocket.write(cmd + '\r\n');
-      }
+      const handleResponse = (response: string, socket: net.Socket | tls.TLSSocket) => {
+        const lines = response.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+        if (lines.length === 0) return;
 
-      activeSocket.on('data', (data) => {
-        const response = data.toString();
-        const code = parseInt(response.slice(0, 3), 10);
+        const lastLine = lines[lines.length - 1];
+        const code = parseInt(lastLine.slice(0, 3), 10);
 
         if (code >= 400 && step < 99) {
-          activeSocket.end();
-          resolve({ success: false, error: `SMTP Error (${code}): ${response.trim()}` });
+          socket.destroy();
+          finish({ success: false, error: `SMTP Error (${code}): ${lastLine}` });
           return;
         }
 
         switch (step) {
-          case 0: // 220 Server Greeting
-            step = 1;
-            sendCommand(`EHLO ${host || 'localhost'}`);
+          case 0: // 220 Greeting
+            if (code === 220) {
+              step = 1;
+              sendCommand(`EHLO ${host || 'localhost'}`);
+            }
             break;
 
           case 1: // 250 EHLO Response
-            if (!secure && response.includes('STARTTLS')) {
-              step = 2;
-              sendCommand('STARTTLS');
-            } else {
+            if (code === 250) {
+              if (!secure && (response.includes('STARTTLS') || response.includes('starttls'))) {
+                step = 2;
+                sendCommand('STARTTLS');
+              } else {
+                step = 3;
+                sendCommand('AUTH LOGIN');
+              }
+            }
+            break;
+
+          case 2: // 220 STARTTLS Ready
+            if (code === 220) {
+              const plainSocket = socket as net.Socket;
+              plainSocket.removeAllListeners('data');
+              plainSocket.removeAllListeners('error');
+              plainSocket.removeAllListeners('timeout');
+
+              const tlsSocket = tls.connect(
+                {
+                  socket: plainSocket,
+                  host,
+                  servername: host,
+                },
+                () => {
+                  currentSocket = tlsSocket;
+                  step = 101;
+                  sendCommand(`EHLO ${host || 'localhost'}`);
+                }
+              );
+
+              tlsSocket.on('data', (data) => {
+                handleResponse(data.toString(), tlsSocket);
+              });
+
+              tlsSocket.on('error', (err) => {
+                finish({ success: false, error: `TLS Socket Error: ${err.message}` });
+              });
+
+              tlsSocket.setTimeout(15000, () => {
+                tlsSocket.destroy();
+                finish({ success: false, error: 'SMTP TLS connection timed out after 15s' });
+              });
+            }
+            break;
+
+          case 101: // 250 EHLO Response after TLS handshake
+            if (code === 250) {
               step = 3;
               sendCommand('AUTH LOGIN');
             }
             break;
 
-          case 2: // 220 STARTTLS Ready
-            secureSocket = tls.connect({
-              socket: socket,
-              host: host,
-              servername: host,
-            });
-
-            activeSocket = secureSocket;
-            activeSocket.on('data', (tlsData) => {
-              const tlsRes = tlsData.toString();
-              const tlsCode = parseInt(tlsRes.slice(0, 3), 10);
-
-              if (step === 2) {
-                step = 1;
-                sendCommand(`EHLO ${host || 'localhost'}`);
-              }
-            });
-
-            step = 1;
-            sendCommand(`EHLO ${host || 'localhost'}`);
-            break;
-
           case 3: // 334 Username Challenge
-            step = 4;
-            sendCommand(Buffer.from(user).toString('base64'));
+            if (code === 334) {
+              step = 4;
+              sendCommand(Buffer.from(user).toString('base64'));
+            }
             break;
 
           case 4: // 334 Password Challenge
-            step = 5;
-            sendCommand(Buffer.from(pass).toString('base64'));
+            if (code === 334) {
+              step = 5;
+              sendCommand(Buffer.from(pass).toString('base64'));
+            }
             break;
 
           case 5: // 235 Authentication Succeeded
-            step = 6;
-            // Extract email address from 'from' string
-            const fromEmail = from.match(/<([^>]+)>/)?.[1] || from;
-            sendCommand(`MAIL FROM:<${fromEmail}>`);
+            if (code === 235) {
+              step = 6;
+              sendCommand(`MAIL FROM:<${envelopeSender}>`);
+            }
             break;
 
           case 6: // 250 Sender OK
-            step = 7;
-            sendCommand(`RCPT TO:<${to}>`);
+            if (code === 250) {
+              step = 7;
+              sendCommand(`RCPT TO:<${to}>`);
+            }
             break;
 
           case 7: // 250 Recipient OK
-            step = 8;
-            sendCommand('DATA');
+            if (code === 250) {
+              step = 8;
+              sendCommand('DATA');
+            }
             break;
 
-          case 8: // 354 Start mail input
-            step = 9;
-            const messageId = `<${Date.now()}.${Math.random().toString(36).substring(2)}@alinsafhospital.com>`;
-            const emailBody = [
-              `From: ${from}`,
-              `To: ${to}`,
-              `Subject: ${subject}`,
-              `Date: ${new Date().toUTCString()}`,
-              `Message-ID: ${messageId}`,
-              `MIME-Version: 1.0`,
-              `Content-Type: text/html; charset=UTF-8`,
-              '',
-              html,
-              '',
-              '.',
-            ].join('\r\n');
-
-            sendCommand(emailBody);
+          case 8: // 354 Start Mail Input
+            if (code === 354) {
+              step = 9;
+              const messageId = `<${Date.now()}.${Math.random().toString(36).substring(2)}@${host || 'alinsafhospital.com'}>`;
+              const emailLines = [
+                `From: ${fromHeader}`,
+                `To: <${to}>`,
+                `Subject: ${subject}`,
+                `Date: ${new Date().toUTCString()}`,
+                `Message-ID: ${messageId}`,
+                `MIME-Version: 1.0`,
+                `Content-Type: text/html; charset=UTF-8`,
+                `Content-Transfer-Encoding: 8bit`,
+                '',
+                html,
+                '',
+                '.',
+              ];
+              sendCommand(emailLines.join('\r\n'));
+            }
             break;
 
-          case 9: // 250 Message accepted
-            step = 10;
-            sendCommand('QUIT');
-            activeSocket.end();
-            resolve({ success: true, messageId: `sent-${Date.now()}` });
+          case 9: // 250 Message Accepted
+            if (code === 250) {
+              step = 10;
+              sendCommand('QUIT');
+              socket.end();
+              finish({ success: true, messageId: `sent-${Date.now()}` });
+            }
             break;
 
           default:
             break;
         }
-      });
+      };
 
-      activeSocket.on('error', (err) => {
-        resolve({ success: false, error: err.message });
-      });
+      if (secure) {
+        const tlsSocket = tls.connect({ host, port, servername: host }, () => {});
+        currentSocket = tlsSocket;
 
-      activeSocket.setTimeout(15000, () => {
-        activeSocket.destroy();
-        resolve({ success: false, error: 'SMTP connection timed out after 15s' });
-      });
+        tlsSocket.on('data', (data) => {
+          handleResponse(data.toString(), tlsSocket);
+        });
+
+        tlsSocket.on('error', (err) => {
+          finish({ success: false, error: `SMTP SSL Error: ${err.message}` });
+        });
+
+        tlsSocket.setTimeout(15000, () => {
+          tlsSocket.destroy();
+          finish({ success: false, error: 'SMTP connection timed out after 15s' });
+        });
+      } else {
+        const plainSocket = net.connect({ host, port }, () => {});
+        currentSocket = plainSocket;
+
+        plainSocket.on('data', (data) => {
+          handleResponse(data.toString(), plainSocket);
+        });
+
+        plainSocket.on('error', (err) => {
+          finish({ success: false, error: `SMTP TCP Error: ${err.message}` });
+        });
+
+        plainSocket.setTimeout(15000, () => {
+          plainSocket.destroy();
+          finish({ success: false, error: 'SMTP connection timed out after 15s' });
+        });
+      }
     } catch (err: any) {
-      resolve({ success: false, error: err.message });
+      finish({ success: false, error: err.message || 'Unknown SMTP Error' });
     }
   });
 }
