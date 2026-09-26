@@ -6,9 +6,9 @@ import { rateLimitMiddleware } from '@/lib/rate-limit';
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
-  // Rate limit uploads: max 15 uploads per minute
+  // Rate limit uploads: max 60 uploads per minute for admins
   const rateLimitError = rateLimitMiddleware(req, {
-    limit: 15,
+    limit: 60,
     windowMs: 60000,
     identifier: 'upload-image',
   });
@@ -20,13 +20,38 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized. Admin login required.' }, { status: 401 });
     }
 
-    const { file, folder } = await req.json();
+    const contentType = req.headers.get('content-type') || '';
+    let fileData = '';
+    let targetFolder = 'hospital/staff';
 
-    if (!file) {
-      return NextResponse.json({ error: 'File data is required (base64 string or image URL)' }, { status: 400 });
+    if (contentType.includes('multipart/form-data')) {
+      const formData = await req.formData();
+      const file = formData.get('file') as File | null;
+      const folderParam = formData.get('folder') as string | null;
+      if (folderParam) targetFolder = folderParam;
+
+      if (!file) {
+        return NextResponse.json({ error: 'No file provided in form data' }, { status: 400 });
+      }
+
+      const arrayBuffer = await file.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      const mimeType = file.type || 'image/jpeg';
+      fileData = `data:${mimeType};base64,${buffer.toString('base64')}`;
+    } else {
+      const body = await req.json();
+      fileData = body.file;
+      if (body.folder) targetFolder = body.folder;
     }
 
-    const result = await uploadToCloudinary(file, folder || 'hospital/doctors');
+    if (!fileData) {
+      return NextResponse.json(
+        { error: 'File data is required (base64 string, image file, or image URL)' },
+        { status: 400 }
+      );
+    }
+
+    const result = await uploadToCloudinary(fileData, targetFolder);
 
     return NextResponse.json({
       success: true,
@@ -34,6 +59,7 @@ export async function POST(req: NextRequest) {
       publicId: result.publicId,
     });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    console.error('API Upload error:', error);
+    return NextResponse.json({ success: false, error: error.message || 'Upload failed' }, { status: 500 });
   }
 }

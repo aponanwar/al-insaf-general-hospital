@@ -59,7 +59,7 @@ export async function GET(req: NextRequest) {
         staffId: `AIGH-DOC-${100 + (idx + 1)}`,
         name: doc.name,
         role: 'doctor' as StaffRole,
-        phone: doc.phone || '01712-345678',
+        phone: '',
         imageUrl: doc.imageUrl || 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400',
         department: doc.department,
         designation: doc.designation || 'Consultant Specialist',
@@ -105,7 +105,7 @@ export async function GET(req: NextRequest) {
       staffList = staffList.filter((s) =>
         s.name?.toLowerCase().includes(searchQuery) ||
         s.staffId?.toLowerCase().includes(searchQuery) ||
-        s.phone?.includes(searchQuery) ||
+        (s.role !== 'doctor' && s.phone?.includes(searchQuery)) ||
         s.department?.toLowerCase().includes(searchQuery) ||
         s.designation?.toLowerCase().includes(searchQuery)
       );
@@ -113,13 +113,18 @@ export async function GET(req: NextRequest) {
 
     // Public sanitization: If not logged in as admin, strip confidential fields
     const sanitizedStaff = staffList.map((s) => {
-      if (isAdmin) return s;
+      if (isAdmin) {
+        return {
+          ...s,
+          phone: s.role === 'doctor' ? '' : s.phone,
+        };
+      }
       return {
         _id: s._id,
         staffId: s.staffId,
         name: s.name,
         role: s.role,
-        phone: s.phone,
+        phone: s.role === 'doctor' ? '' : s.phone,
         imageUrl: s.imageUrl,
         department: s.department,
         designation: s.designation,

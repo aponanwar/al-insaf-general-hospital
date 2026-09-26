@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { TableSkeleton } from '@/components/ui/Skeleton';
 import { Staff, StaffRole, EmploymentStatus } from '@/lib/types';
+import ImageUploadInput from '@/components/admin/ImageUploadInput';
 
 const ROLE_SERIAL_ORDER: { key: StaffRole | 'all'; label: string; bg: string; text: string }[] = [
   { key: 'all', label: 'All Staff', bg: 'bg-slate-100', text: 'text-slate-700' },
@@ -77,6 +78,7 @@ export default function AdminStaffPage() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const [currentStaff, setCurrentStaff] = useState<Partial<Staff>>(EMPTY_FORM);
+  const [staffFile, setStaffFile] = useState<File | null>(null);
   const [selectedForView, setSelectedForView] = useState<Staff | null>(null);
   const [selectedForDelete, setSelectedForDelete] = useState<Staff | null>(null);
 
@@ -163,6 +165,7 @@ export default function AdminStaffPage() {
 
   // Open Create Modal
   const openAddModal = () => {
+    setStaffFile(null);
     setCurrentStaff({
       ...EMPTY_FORM,
       role: selectedRole !== 'all' && selectedRole !== 'doctor' ? selectedRole : 'administrative',
@@ -172,6 +175,7 @@ export default function AdminStaffPage() {
 
   // Open Edit Modal
   const openEditModal = (staff: Staff) => {
+    setStaffFile(null);
     setCurrentStaff({ ...staff });
     setIsEditModalOpen(true);
   };
@@ -187,15 +191,37 @@ export default function AdminStaffPage() {
     setActionLoading(true);
     setFeedbackMsg(null);
     try {
+      let finalImageUrl = currentStaff.imageUrl;
+
+      // If user picked a local file, upload to Cloudinary via /api/upload
+      if (staffFile && currentStaff.imageUrl) {
+        try {
+          const uploadRes = await fetch('/api/upload', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ file: currentStaff.imageUrl, folder: 'hospital/staff' }),
+          });
+          if (uploadRes.ok) {
+            const uploadData = await uploadRes.json();
+            if (uploadData.success && uploadData.url) {
+              finalImageUrl = uploadData.url;
+            }
+          }
+        } catch (uploadErr) {
+          console.error('Cloudinary upload error, continuing with available image:', uploadErr);
+        }
+      }
+
       const res = await fetch('/api/staff', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(currentStaff),
+        body: JSON.stringify({ ...currentStaff, imageUrl: finalImageUrl }),
       });
       const data = await res.json();
       if (res.ok && data.success) {
         setFeedbackMsg({ type: 'success', text: `Staff member ${data.staff?.name} added successfully!` });
         setIsAddModalOpen(false);
+        setStaffFile(null);
         fetchStaff();
       } else {
         setFeedbackMsg({ type: 'error', text: data.error || 'Failed to add staff member.' });
@@ -217,15 +243,37 @@ export default function AdminStaffPage() {
     setActionLoading(true);
     setFeedbackMsg(null);
     try {
+      let finalImageUrl = currentStaff.imageUrl;
+
+      // If user uploaded a new image file on edit, upload to Cloudinary
+      if (staffFile && currentStaff.imageUrl && currentStaff.imageUrl.startsWith('data:')) {
+        try {
+          const uploadRes = await fetch('/api/upload', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ file: currentStaff.imageUrl, folder: 'hospital/staff' }),
+          });
+          if (uploadRes.ok) {
+            const uploadData = await uploadRes.json();
+            if (uploadData.success && uploadData.url) {
+              finalImageUrl = uploadData.url;
+            }
+          }
+        } catch (uploadErr) {
+          console.error('Cloudinary update upload error:', uploadErr);
+        }
+      }
+
       const res = await fetch('/api/staff', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(currentStaff),
+        body: JSON.stringify({ ...currentStaff, imageUrl: finalImageUrl }),
       });
       const data = await res.json();
       if (res.ok && data.success) {
         setFeedbackMsg({ type: 'success', text: 'Staff record updated successfully!' });
         setIsEditModalOpen(false);
+        setStaffFile(null);
         fetchStaff();
       } else {
         setFeedbackMsg({ type: 'error', text: data.error || 'Failed to update staff record.' });
@@ -514,10 +562,16 @@ export default function AdminStaffPage() {
 
                     {/* Contact */}
                     <td className="py-3 px-4">
-                      <div className="font-semibold text-slate-800 flex items-center space-x-1">
-                        <Phone className="w-3 h-3 text-slate-400" />
-                        <span>{staff.phone}</span>
-                      </div>
+                      {staff.role === 'doctor' ? (
+                        <div className="text-[11px] text-slate-500 font-medium italic">
+                          <span>Doctor (Direct Serial)</span>
+                        </div>
+                      ) : (
+                        <div className="font-semibold text-slate-800 flex items-center space-x-1">
+                          <Phone className="w-3 h-3 text-slate-400" />
+                          <span>{staff.phone}</span>
+                        </div>
+                      )}
                       {staff.email && (
                         <div className="text-[11px] text-slate-400 truncate flex items-center space-x-1 mt-0.5">
                           <Mail className="w-3 h-3 text-slate-400" />
@@ -797,13 +851,14 @@ export default function AdminStaffPage() {
                   </div>
 
                   <div className="sm:col-span-2">
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Photo Image URL</label>
-                    <input
-                      type="url"
-                      value={currentStaff.imageUrl || ''}
-                      onChange={(e) => setCurrentStaff({ ...currentStaff, imageUrl: e.target.value })}
-                      placeholder="https://..."
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:bg-white"
+                    <ImageUploadInput
+                      label="Staff Photo"
+                      imageUrl={currentStaff.imageUrl || ''}
+                      onImageUrlChange={(url) => setCurrentStaff({ ...currentStaff, imageUrl: url })}
+                      selectedFile={staffFile}
+                      onFileSelect={setStaffFile}
+                      folder="hospital/staff"
+                      defaultPlaceholder="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400"
                     />
                   </div>
 
@@ -1035,12 +1090,14 @@ export default function AdminStaffPage() {
                   </div>
 
                   <div className="sm:col-span-2">
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Photo Image URL</label>
-                    <input
-                      type="url"
-                      value={currentStaff.imageUrl || ''}
-                      onChange={(e) => setCurrentStaff({ ...currentStaff, imageUrl: e.target.value })}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:bg-white"
+                    <ImageUploadInput
+                      label="Staff Photo"
+                      imageUrl={currentStaff.imageUrl || ''}
+                      onImageUrlChange={(url) => setCurrentStaff({ ...currentStaff, imageUrl: url })}
+                      selectedFile={staffFile}
+                      onFileSelect={setStaffFile}
+                      folder="hospital/staff"
+                      defaultPlaceholder="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400"
                     />
                   </div>
 
@@ -1191,7 +1248,11 @@ export default function AdminStaffPage() {
                 <div className="space-y-1.5">
                   <div className="flex items-center space-x-2">
                     <Phone className="w-3.5 h-3.5 text-slate-400" />
-                    <span className="font-bold text-slate-800">{selectedForView.phone}</span>
+                    <span className="font-bold text-slate-800">
+                      {selectedForView.role === 'doctor'
+                        ? 'Confidential (Doctor OPD Serial)'
+                        : selectedForView.phone}
+                    </span>
                   </div>
                   {selectedForView.email && (
                     <div className="flex items-center space-x-2">

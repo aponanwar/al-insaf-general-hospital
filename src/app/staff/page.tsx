@@ -169,7 +169,7 @@ export default function StaffDirectoryPage() {
         !query ||
         staff.name?.toLowerCase().includes(query) ||
         staff.staffId?.toLowerCase().includes(query) ||
-        staff.phone?.includes(query) ||
+        (staff.role !== 'doctor' && staff.phone?.includes(query)) ||
         staff.department?.toLowerCase().includes(query);
       return matchesRole && matchesQuery;
     });
@@ -413,9 +413,9 @@ export default function StaffDirectoryPage() {
                         </div>
                       </div>
 
-                      {/* Right: Phone Number Action & Quick Serial Info */}
+                      {/* Right: Phone Number Action (Non-Doctor Staff Only) & Serial Info */}
                       <div className="flex items-center space-x-3 w-full sm:w-auto justify-end pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
-                        {staff.phone && (
+                        {staff.role !== 'doctor' && staff.phone ? (
                           <a
                             href={`tel:${staff.phone.replace(/[^0-9+]/g, '')}`}
                             className="inline-flex items-center px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200 hover:border-emerald-300 transition-all shadow-sm"
@@ -424,13 +424,14 @@ export default function StaffDirectoryPage() {
                             <Phone className="w-3.5 h-3.5 mr-1.5 text-emerald-600" />
                             <span>{staff.phone}</span>
                           </a>
-                        )}
+                        ) : null}
 
                         {staff.role === 'doctor' && (
                           <Link
-                            href="/appointments"
-                            className="inline-flex items-center px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white transition-colors shadow-sm"
+                            href={`/appointments?doctor=${encodeURIComponent(staff.name)}`}
+                            className="inline-flex items-center px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white transition-all shadow-sm"
                           >
+                            <Calendar className="w-3.5 h-3.5 mr-1.5" />
                             <span>Book Serial</span>
                             <ChevronRight className="w-3.5 h-3.5 ml-1" />
                           </Link>
@@ -502,27 +503,38 @@ export default function StaffDirectoryPage() {
                 </p>
               </div>
 
-              <div className="bg-slate-50 p-3 rounded-2xl border border-slate-100 flex items-center justify-between text-xs text-slate-700">
-                <div className="flex items-center space-x-2">
-                  <Phone className="w-4 h-4 text-emerald-600" />
-                  <span className="font-bold">{selectedStaffForImage.phone}</span>
+              {selectedStaffForImage.role !== 'doctor' && selectedStaffForImage.phone && (
+                <div className="bg-slate-50 p-3 rounded-2xl border border-slate-100 flex items-center justify-between text-xs text-slate-700">
+                  <div className="flex items-center space-x-2">
+                    <Phone className="w-4 h-4 text-emerald-600" />
+                    <span className="font-bold">{selectedStaffForImage.phone}</span>
+                  </div>
+                  <a
+                    href={`tel:${selectedStaffForImage.phone.replace(/[^0-9+]/g, '')}`}
+                    className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition-colors"
+                  >
+                    Call Now
+                  </a>
                 </div>
-                <a
-                  href={`tel:${selectedStaffForImage.phone.replace(/[^0-9+]/g, '')}`}
-                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition-colors"
-                >
-                  Call Now
-                </a>
-              </div>
+              )}
 
               {selectedStaffForImage.role === 'doctor' && (
-                <Link
-                  href={`/appointments?doctor=${encodeURIComponent(selectedStaffForImage.name)}`}
-                  className="w-full py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-xs font-bold rounded-xl shadow transition-all text-center flex items-center justify-center space-x-1.5"
-                >
-                  <Calendar className="w-3.5 h-3.5" />
-                  <span>Book Doctor Appointment</span>
-                </Link>
+                <div className="space-y-2">
+                  <div className="bg-emerald-50 p-3 rounded-2xl border border-emerald-100 flex items-center justify-between text-xs text-emerald-900">
+                    <div className="flex items-center space-x-2">
+                      <Stethoscope className="w-4 h-4 text-emerald-600" />
+                      <span className="font-bold">OPD Chamber Serial</span>
+                    </div>
+                    <span className="font-mono font-bold text-emerald-700">01303-359905</span>
+                  </div>
+                  <Link
+                    href={`/appointments?doctor=${encodeURIComponent(selectedStaffForImage.name)}`}
+                    className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow transition-all text-center flex items-center justify-center space-x-1.5"
+                  >
+                    <Calendar className="w-3.5 h-3.5" />
+                    <span>Book Doctor Appointment</span>
+                  </Link>
+                </div>
               )}
 
               <button

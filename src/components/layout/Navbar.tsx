@@ -310,11 +310,11 @@ export default function Navbar() {
 
             {/* Right Action Buttons */}
             <div className="flex items-center space-x-2">
-              {/* Language Switcher Toggle (EN / বাংলা) */}
+              {/* Language Switcher Toggle (EN / বাংলা) - Hidden on Mobile, shown on Desktop */}
               <button
                 type="button"
                 onClick={toggleLanguage}
-                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:border-primary-500 bg-slate-50 hover:bg-white text-xs font-bold transition-all shadow-sm group"
+                className="hidden lg:flex items-center space-x-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:border-primary-500 bg-slate-50 hover:bg-white text-xs font-bold transition-all shadow-sm group"
                 title={language === 'en' ? 'বাংলা ভাষায় দেখুন' : 'Switch to English'}
                 aria-label="Toggle Language"
               >
@@ -444,16 +444,21 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Mobile Language Switcher Pill */}
-            <div className="px-5 pt-3">
-              <div className="flex items-center justify-between bg-slate-100 p-1.5 rounded-xl text-xs font-bold">
-                <span className="text-slate-500 text-[11px] px-2">ভাষা / Language:</span>
-                <div className="flex items-center space-x-1">
+            {/* Mobile Language Switcher Toggle in Hamburger Menu */}
+            <div className="px-5 pt-3 pb-1">
+              <div className="flex items-center justify-between bg-slate-100/90 p-2 rounded-2xl border border-slate-200/80 shadow-xs">
+                <div className="flex items-center space-x-2 pl-1">
+                  <Globe className="w-4 h-4 text-primary-600 shrink-0" />
+                  <span className="text-slate-700 text-xs font-bold">ভাষা / Language</span>
+                </div>
+                <div className="flex items-center space-x-1 bg-white p-0.5 rounded-xl border border-slate-200/80 shadow-xs">
                   <button
                     type="button"
                     onClick={() => language !== 'bn' && toggleLanguage()}
-                    className={`px-3 py-1 rounded-lg transition-all ${
-                      language === 'bn' ? 'bg-primary-600 text-white shadow' : 'text-slate-600 hover:bg-slate-200'
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                      language === 'bn'
+                        ? 'bg-primary-600 text-white shadow-sm'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                     }`}
                   >
                     বাংলা
@@ -461,8 +466,10 @@ export default function Navbar() {
                   <button
                     type="button"
                     onClick={() => language !== 'en' && toggleLanguage()}
-                    className={`px-3 py-1 rounded-lg transition-all ${
-                      language === 'en' ? 'bg-primary-600 text-white shadow' : 'text-slate-600 hover:bg-slate-200'
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                      language === 'en'
+                        ? 'bg-primary-600 text-white shadow-sm'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                     }`}
                   >
                     English
