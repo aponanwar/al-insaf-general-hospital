@@ -61,8 +61,47 @@ export async function POST(req: NextRequest) {
 
     const trackingId = generateTrackingId('APT');
 
+    // 5. Connect to collection and calculate sequential serial number for doctor & date
+    const collection = await getCollection<Appointment>('appointments');
+    let serialNumber = 1;
+    try {
+      const existingCount = await collection.countDocuments({
+        $or: [
+          { doctorId: validatedData.doctorId },
+          { doctorName: validatedData.doctorName },
+        ],
+        appointmentDate: validatedData.appointmentDate,
+      });
+      serialNumber = existingCount + 1;
+    } catch (countErr) {
+      console.warn('Error calculating appointment serial number, defaulting to 1:', countErr);
+    }
+
+    // 6. Send Confirmation SMS with Serial Number to patient mobile
+    let smsSent = false;
+    let smsStatus = 'Pending';
+    try {
+      const { sendAppointmentSms } = await import('@/lib/sms');
+      const smsResult = await sendAppointmentSms({
+        phone: validatedData.patientPhone,
+        patientName: validatedData.patientName,
+        serialNumber,
+        trackingId,
+        doctorName: validatedData.doctorName,
+        department: validatedData.department,
+        appointmentDate: validatedData.appointmentDate,
+        timeSlot: validatedData.preferredTimeSlot,
+      });
+      smsSent = smsResult.success;
+      smsStatus = smsResult.success ? `Delivered via ${smsResult.provider}` : (smsResult.error || 'Failed');
+    } catch (smsErr: any) {
+      console.warn('Failed to send initial appointment SMS:', smsErr.message);
+      smsStatus = smsErr.message || 'SMS Error';
+    }
+
     const newAppointment: Appointment = {
       trackingId,
+      serialNumber,
       patientName: validatedData.patientName,
       patientPhone: validatedData.patientPhone,
       patientEmail: validatedData.patientEmail || '',
@@ -76,11 +115,12 @@ export async function POST(req: NextRequest) {
       preferredTimeSlot: validatedData.preferredTimeSlot,
       symptoms: validatedData.symptoms || '',
       status: 'Pending',
+      smsSent,
+      smsSentAt: new Date().toISOString(),
+      smsStatus,
       createdAt: new Date().toISOString(),
     };
 
-    // 5. Store in raw MongoDB collection
-    const collection = await getCollection<Appointment>('appointments');
     const result = await collection.insertOne(newAppointment as any);
 
     return NextResponse.json({

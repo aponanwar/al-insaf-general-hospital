@@ -37,6 +37,7 @@ export interface Department {
 export interface Appointment {
   _id?: any;
   trackingId: string;
+  serialNumber?: number;
   patientName: string;
   patientPhone: string;
   patientEmail: string;
@@ -50,6 +51,9 @@ export interface Appointment {
   preferredTimeSlot: string;
   symptoms: string;
   status: 'Pending' | 'Confirmed' | 'Completed' | 'Cancelled';
+  smsSent?: boolean;
+  smsSentAt?: string;
+  smsStatus?: string;
   adminNotes?: string;
   createdAt: string;
   updatedAt?: string;

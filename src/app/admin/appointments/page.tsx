@@ -37,6 +37,8 @@ export default function AdminAppointmentsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [smsLoading, setSmsLoading] = useState<string | null>(null);
+  const [smsMessage, setSmsMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   const fetchAppointments = async () => {
     setLoading(true);
@@ -85,6 +87,44 @@ export default function AdminAppointmentsPage() {
       console.error('Failed to update appointment status', error);
     } finally {
       setActionLoading(null);
+    }
+  };
+
+  const handleSendSms = async (apt: Appointment) => {
+    const id = apt._id || apt.trackingId;
+    setSmsLoading(id);
+    setSmsMessage(null);
+    try {
+      const res = await fetch('/api/appointments/send-sms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setSmsMessage({
+          type: 'success',
+          text: data.message || `SMS delivered to ${apt.patientPhone} (Serial #${apt.serialNumber || 1})`,
+        });
+        if (data.appointment) {
+          setAppointments((prev) =>
+            prev.map((a) => (a._id === id || a.trackingId === id ? data.appointment : a))
+          );
+        }
+      } else {
+        setSmsMessage({
+          type: 'error',
+          text: data.error || 'Failed to dispatch SMS.',
+        });
+      }
+    } catch (err: any) {
+      setSmsMessage({
+        type: 'error',
+        text: err.message || 'Network error sending SMS.',
+      });
+    } finally {
+      setSmsLoading(null);
     }
   };
 
@@ -395,6 +435,28 @@ export default function AdminAppointmentsPage() {
           </div>
         </div>
 
+        {/* SMS Status Notification Banner */}
+        {smsMessage && (
+          <div
+            className={`p-4 rounded-2xl text-xs font-bold flex items-center justify-between shadow-sm animate-fadeIn ${
+              smsMessage.type === 'success'
+                ? 'bg-emerald-50 text-emerald-800 border border-emerald-300'
+                : 'bg-rose-50 text-rose-800 border border-rose-300'
+            }`}
+          >
+            <div className="flex items-center space-x-2">
+              <span className="text-base">{smsMessage.type === 'success' ? '📱' : '⚠️'}</span>
+              <span>{smsMessage.text}</span>
+            </div>
+            <button
+              onClick={() => setSmsMessage(null)}
+              className="text-slate-400 hover:text-slate-700 text-xs px-2"
+            >
+              ✕
+            </button>
+          </div>
+        )}
+
         {/* Filter & Search Bar */}
         <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col lg:flex-row gap-3 justify-between items-center print:hidden">
           <div className="flex flex-col sm:flex-row gap-2.5 w-full lg:w-auto">
@@ -454,46 +516,46 @@ export default function AdminAppointmentsPage() {
             <table className="w-full text-left border-collapse print:text-[10px]">
               <thead>
                 <tr className="bg-slate-50 text-[11px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 print:bg-slate-200 print:text-slate-900 print:text-[10px]">
-                  <th className="py-3.5 px-4 sm:px-6">Sl</th>
-                  <th className="py-3.5 px-4 sm:px-6">Tracking ID</th>
-                  <th className="py-3.5 px-4 sm:px-6">Patient Info</th>
-                  <th className="py-3.5 px-4 sm:px-6">Doctor & Department</th>
-                  <th className="py-3.5 px-4 sm:px-6">Date & Slot</th>
-                  <th className="py-3.5 px-4 sm:px-6">Symptoms</th>
-                  <th className="py-3.5 px-4 sm:px-6">Status</th>
-                  <th className="py-3.5 px-4 sm:px-6 text-right print:hidden">Actions</th>
+                  <th className="py-3.5 px-3 sm:px-4 text-center">Serial</th>
+                  <th className="py-3.5 px-4 sm:px-5">Tracking ID</th>
+                  <th className="py-3.5 px-4 sm:px-5">Patient Info</th>
+                  <th className="py-3.5 px-4 sm:px-5">Doctor & Wing</th>
+                  <th className="py-3.5 px-4 sm:px-5">Date & Slot</th>
+                  <th className="py-3.5 px-4 sm:px-5">Status & SMS</th>
+                  <th className="py-3.5 px-4 sm:px-5 text-right print:hidden">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-xs print:divide-slate-300">
                 {loading ? (
                   Array.from({ length: 6 }).map((_, i) => (
                     <tr key={i}>
-                      <td className="py-4 px-6"><Skeleton className="h-4 w-6" /></td>
-                      <td className="py-4 px-6"><Skeleton className="h-4 w-24" /></td>
-                      <td className="py-4 px-6"><Skeleton className="h-4 w-36 mb-1" /><Skeleton className="h-3 w-24" /></td>
-                      <td className="py-4 px-6"><Skeleton className="h-4 w-32 mb-1" /><Skeleton className="h-3 w-20" /></td>
-                      <td className="py-4 px-6"><Skeleton className="h-4 w-28" /></td>
-                      <td className="py-4 px-6"><Skeleton className="h-4 w-32" /></td>
-                      <td className="py-4 px-6"><Skeleton className="h-5 w-20 rounded-full" /></td>
-                      <td className="py-4 px-6 text-right print:hidden"><Skeleton className="h-8 w-20 ml-auto rounded-lg" /></td>
+                      <td className="py-4 px-4 text-center"><Skeleton className="h-6 w-8 mx-auto rounded" /></td>
+                      <td className="py-4 px-5"><Skeleton className="h-4 w-24" /></td>
+                      <td className="py-4 px-5"><Skeleton className="h-4 w-36 mb-1" /><Skeleton className="h-3 w-24" /></td>
+                      <td className="py-4 px-5"><Skeleton className="h-4 w-32 mb-1" /><Skeleton className="h-3 w-20" /></td>
+                      <td className="py-4 px-5"><Skeleton className="h-4 w-28" /></td>
+                      <td className="py-4 px-5"><Skeleton className="h-5 w-20 rounded-full" /></td>
+                      <td className="py-4 px-5 text-right print:hidden"><Skeleton className="h-8 w-28 ml-auto rounded-lg" /></td>
                     </tr>
                   ))
                 ) : filteredAppointments.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="py-12 text-center text-slate-400">
+                    <td colSpan={7} className="py-12 text-center text-slate-400">
                       No appointments found matching the selected doctor and filter.
                     </td>
                   </tr>
                 ) : (
                   filteredAppointments.map((apt, idx) => (
                     <tr key={apt._id || apt.trackingId || idx} className="hover:bg-slate-50/80 print:hover:bg-transparent">
-                      <td className="py-4 px-4 sm:px-6 text-slate-400 font-mono text-[11px]">
-                        {idx + 1}
+                      <td className="py-4 px-3 sm:px-4 text-center">
+                        <span className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-slate-900 text-white font-black text-xs shadow-xs">
+                          {String(apt.serialNumber || (idx + 1)).padStart(2, '0')}
+                        </span>
                       </td>
-                      <td className="py-4 px-4 sm:px-6 font-mono font-bold text-primary-700">
+                      <td className="py-4 px-4 sm:px-5 font-mono font-bold text-primary-700">
                         {apt.trackingId}
                       </td>
-                      <td className="py-4 px-4 sm:px-6">
+                      <td className="py-4 px-4 sm:px-5">
                         <div className="font-bold text-slate-900">{apt.patientName}</div>
                         <div className="text-[11px] text-slate-600 font-medium flex items-center mt-0.5">
                           <Phone className="w-3 h-3 mr-1 text-emerald-600 shrink-0" />
@@ -505,33 +567,54 @@ export default function AdminAppointmentsPage() {
                           {apt.patientAge} Yrs • {apt.patientGender} {apt.patientAddress ? `• ${apt.patientAddress}` : ''}
                         </div>
                       </td>
-                      <td className="py-4 px-4 sm:px-6">
+                      <td className="py-4 px-4 sm:px-5">
                         <div className="font-semibold text-slate-900">{apt.doctorName}</div>
                         <div className="text-[11px] text-slate-500">{apt.department}</div>
                       </td>
-                      <td className="py-4 px-4 sm:px-6">
+                      <td className="py-4 px-4 sm:px-5">
                         <div className="font-medium text-slate-800">{apt.appointmentDate}</div>
                         <div className="text-[11px] text-slate-500">{apt.preferredTimeSlot}</div>
                       </td>
-                      <td className="py-4 px-4 sm:px-6 max-w-[180px] truncate text-slate-600" title={apt.symptoms}>
-                        {apt.symptoms || 'General Consultation'}
+                      <td className="py-4 px-4 sm:px-5">
+                        <div className="space-y-1">
+                          <span
+                            className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                              apt.status === 'Confirmed'
+                                ? 'bg-emerald-100 text-emerald-800 print:border print:border-emerald-500'
+                                : apt.status === 'Completed'
+                                ? 'bg-blue-100 text-blue-800 print:border print:border-blue-500'
+                                : apt.status === 'Cancelled'
+                                ? 'bg-rose-100 text-rose-800 print:border print:border-rose-500'
+                                : 'bg-amber-100 text-amber-800 print:border print:border-amber-500'
+                            }`}
+                          >
+                            {apt.status}
+                          </span>
+                          <div className="text-[10px] flex items-center space-x-1">
+                            {apt.smsSent ? (
+                              <span className="text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded font-bold inline-flex items-center">
+                                📱 SMS Sent
+                              </span>
+                            ) : (
+                              <span className="text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded inline-flex items-center">
+                                💬 SMS Pending
+                              </span>
+                            )}
+                          </div>
+                        </div>
                       </td>
-                      <td className="py-4 px-4 sm:px-6">
-                        <span
-                          className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-                            apt.status === 'Confirmed'
-                              ? 'bg-emerald-100 text-emerald-800 print:border print:border-emerald-500'
-                              : apt.status === 'Completed'
-                              ? 'bg-blue-100 text-blue-800 print:border print:border-blue-500'
-                              : apt.status === 'Cancelled'
-                              ? 'bg-rose-100 text-rose-800 print:border print:border-rose-500'
-                              : 'bg-amber-100 text-amber-800 print:border print:border-amber-500'
-                          }`}
+                      <td className="py-4 px-4 sm:px-5 text-right space-x-1.5 whitespace-nowrap print:hidden">
+                        {/* Send / Resend SMS button */}
+                        <button
+                          onClick={() => handleSendSms(apt)}
+                          disabled={smsLoading === (apt._id || apt.trackingId)}
+                          title="Send SMS confirmation with serial number to patient mobile"
+                          className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-[11px] rounded-lg border border-slate-300 transition-all disabled:opacity-50 inline-flex items-center"
                         >
-                          {apt.status}
-                        </span>
-                      </td>
-                      <td className="py-4 px-4 sm:px-6 text-right space-x-1.5 whitespace-nowrap print:hidden">
+                          <span className="mr-1">📱</span>
+                          <span>{smsLoading === (apt._id || apt.trackingId) ? 'Sending...' : apt.smsSent ? 'Resend SMS' : 'Send SMS'}</span>
+                        </button>
+
                         {apt.status !== 'Confirmed' && (
                           <button
                             onClick={() => handleStatusChange(apt._id || apt.trackingId, 'Confirmed')}

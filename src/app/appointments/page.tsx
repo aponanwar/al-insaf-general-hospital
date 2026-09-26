@@ -112,17 +112,25 @@ function AppointmentContent() {
         /* Confirmation Receipt Card */
         <div className="bg-white rounded-3xl p-8 sm:p-10 border-2 border-primary-500 shadow-2xl space-y-6 animate-fadeIn">
           <div className="text-center space-y-2 pb-6 border-b border-slate-100">
-            <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-2">
+            <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-2 shadow-xs">
               <CheckCircle className="w-10 h-10" />
             </div>
             <span className="text-xs font-bold text-emerald-700 uppercase bg-emerald-50 px-3 py-1 rounded-full">
               Appointment Serial Confirmed
             </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
-              Booking Reference: {confirmedAppointment.trackingId}
+            <div className="pt-2">
+              <div className="inline-flex flex-col items-center justify-center px-6 py-2.5 bg-gradient-to-r from-primary-900 to-emerald-900 text-white rounded-2xl shadow-md my-2">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-emerald-300">Your Serial Number</span>
+                <span className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+                  #{String(confirmedAppointment.serialNumber || 1).padStart(2, '0')}
+                </span>
+              </div>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900">
+              Tracking ID: {confirmedAppointment.trackingId}
             </h2>
             <p className="text-xs text-slate-500">
-              Please save this tracking ID. An SMS confirmation will also be sent to {confirmedAppointment.patientPhone}.
+              An SMS confirmation with Serial #{confirmedAppointment.serialNumber || 1} has been sent to {confirmedAppointment.patientPhone}.
             </p>
           </div>
 
