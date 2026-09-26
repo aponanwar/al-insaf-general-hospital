@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { INITIAL_DEPARTMENTS } from '@/lib/seed-data';
 import { useLanguage } from '@/context/LanguageContext';
+import { HOSPITAL_CONFIG } from '@/lib/constants';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -569,7 +570,7 @@ export default function Navbar() {
                 {t('nav.appointmentBtn')}
               </Link>
               <a
-                href="tel:09666787800"
+                href={`tel:${HOSPITAL_CONFIG.phoneRaw}`}
                 className="w-full flex items-center justify-center py-2.5 text-sm font-semibold text-slate-700 bg-white border border-slate-200 rounded-xl"
               >
                 <PhoneCall className="w-4 h-4 mr-2 text-primary-600" />

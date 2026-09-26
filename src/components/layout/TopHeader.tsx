@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { Phone, Mail, Clock, ChevronRight, Facebook, Twitter, Instagram } from 'lucide-react';
+import { Phone, Mail, Clock, ChevronRight, Facebook } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { HOSPITAL_CONFIG } from '@/lib/constants';
 
 export default function TopHeader() {
   const { t } = useLanguage();
@@ -51,18 +52,18 @@ export default function TopHeader() {
 
             <div className="flex items-center space-x-4">
               <a
-                href="tel:01303359905"
+                href={`tel:${HOSPITAL_CONFIG.phoneRaw}`}
                 className="flex items-center text-slate-200 hover:text-white font-medium"
               >
                 <Phone className="w-3.5 h-3.5 mr-1.5 text-emerald-400 animate-pulse" />
-                <span>{t("hotline")}</span>
+                <span>{HOSPITAL_CONFIG.phone}</span>
               </a>
               <a
-                href="mailto:alinsafhospital2025@gmail.com"
+                href={`mailto:${HOSPITAL_CONFIG.email}`}
                 className="flex items-center text-slate-200 hover:text-white"
               >
                 <Mail className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
-                <span>alinsafhospital2025@gmail.com</span>
+                <span>{HOSPITAL_CONFIG.email}</span>
               </a>
             </div>
           </div>
@@ -70,9 +71,9 @@ export default function TopHeader() {
           {/* Right: 24/7 Hotline Badge & Social Links */}
           <div className="flex items-center space-x-4">
             <a
-              href="tel:01303359905"
+              href={`tel:${HOSPITAL_CONFIG.emergencyPhoneRaw}`}
               className="flex items-center bg-red-600 hover:bg-red-700 text-white px-2.5 py-1 rounded text-[11px] font-bold tracking-wide shadow-sm transition-colors duration-200"
-              title="24/7 Emergency & Ambulance: 01303-359905"
+              title={`24/7 Emergency & Ambulance: ${HOSPITAL_CONFIG.emergencyPhone}`}
             >
               <span className="relative flex h-2 w-2 mr-1.5 shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
@@ -95,21 +96,9 @@ export default function TopHeader() {
                 <Facebook className="w-3.5 h-3.5" />
               </a>
 
-              {/* Twitter / X */}
-              {/* <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white hover:scale-110 transition-transform p-1"
-                aria-label="Twitter"
-                title="Twitter"
-              >
-                <Twitter className="w-3.5 h-3.5" />
-              </a> */}
-
               {/* WhatsApp */}
               <a
-                href="https://wa.me/8801303359905?text=Hello%20Al%20Insaf%20General%20Hospital,%20I%20need%20information."
+                href={`https://wa.me/88${HOSPITAL_CONFIG.phoneRaw}?text=Hello%20Al%20Insaf%20General%20Hospital,%20I%20need%20information.`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-emerald-400 hover:scale-110 transition-transform p-1"
@@ -128,7 +117,7 @@ export default function TopHeader() {
 
               {/* Gmail / Webmail */}
               <a
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=alinsafhospital2025@gmail.com&su=Inquiry%20from%20Website"
+                href={`https://mail.google.com/mail/?view=cm&fs=1&to=${HOSPITAL_CONFIG.email}&su=Inquiry%20from%20Website`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-red-400 hover:scale-110 transition-transform p-1"
@@ -144,18 +133,6 @@ export default function TopHeader() {
                   <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" />
                 </svg>
               </a>
-
-              {/* Instagram */}
-              {/* <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-pink-400 hover:scale-110 transition-transform p-1"
-                aria-label="Instagram"
-                title="Instagram"
-              >
-                <Instagram className="w-3.5 h-3.5" />
-              </a> */}
             </div>
           </div>
         </div>

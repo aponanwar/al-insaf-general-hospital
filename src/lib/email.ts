@@ -1,5 +1,6 @@
 import net from 'net';
 import tls from 'tls';
+import { HOSPITAL_CONFIG } from './constants';
 
 interface SendMailOptions {
   to: string;
@@ -24,7 +25,7 @@ export async function sendMail({ to, subject, html, text }: SendMailOptions): Pr
   const port = parseInt(process.env.SMTP_PORT || '587', 10);
   const user = process.env.SMTP_USER || '';
   const pass = process.env.SMTP_PASS || '';
-  const from = process.env.SMTP_FROM || `"Al Insaf General Hospital" <${user || 'noreply@alinsafhospital.com'}>`;
+  const from = process.env.SMTP_FROM || `"${HOSPITAL_CONFIG.nameEn}" <${user || HOSPITAL_CONFIG.email}>`;
   const secure = process.env.SMTP_SECURE === 'true' || port === 465;
 
   // Check if SMTP is configured with real credentials
@@ -246,9 +247,9 @@ export function getPasswordResetHtmlTemplate(resetUrl: string, adminName: string
             <tr>
               <td style="background-color: #f8fafc; padding: 24px 40px; text-align: center; border-top: 1px solid #e2e8f0;">
                 <p style="color: #94a3b8; font-size: 11px; margin: 0;">
-                  © ${new Date().getFullYear()} Al Insaf General Hospital Ltd. All rights reserved.
+                  © ${new Date().getFullYear()} ${HOSPITAL_CONFIG.nameEn}. All rights reserved.
                   <br>
-                  Govt. High School Gate, Dewanganj Bazar, Dewanganj, Jamalpur, Bangladesh | Hotline: 01303-359905
+                  ${HOSPITAL_CONFIG.addressEn} | Hotline: ${HOSPITAL_CONFIG.phone}
 
                 </p>
               </td>
@@ -283,7 +284,7 @@ export function getInquiryReplyHtmlTemplate(
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Response to Your Inquiry - Al Insaf General Hospital</title>
+    <title>Response to Your Inquiry - ${HOSPITAL_CONFIG.nameEn}</title>
   </head>
   <body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; padding: 30px 15px;">
@@ -294,7 +295,7 @@ export function getInquiryReplyHtmlTemplate(
             <tr>
               <td style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 32px 36px; text-align: center;">
                 <div style="display: inline-block; background-color: #059669; color: #ffffff; width: 44px; height: 44px; line-height: 44px; border-radius: 12px; font-weight: 900; font-size: 22px; margin-bottom: 10px;">+</div>
-                <h1 style="color: #ffffff; margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.3px;">AL INSAF GENERAL HOSPITAL</h1>
+                <h1 style="color: #ffffff; margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.3px;">${HOSPITAL_CONFIG.nameEn.toUpperCase()}</h1>
                 <p style="color: #94a3b8; margin: 4px 0 0 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Patient Care & Customer Support</p>
               </td>
             </tr>
@@ -303,7 +304,7 @@ export function getInquiryReplyHtmlTemplate(
             <tr>
               <td style="background-color: #ecfdf5; padding: 10px 36px; border-bottom: 1px solid #d1fae5; text-align: center;">
                 <span style="color: #047857; font-size: 12px; font-weight: 700;">
-                  🏥 24/7 Helpline: 01303-359905 | Emergency & Doctor Serial Service
+                  🏥 24/7 Helpline: ${HOSPITAL_CONFIG.phone} | Emergency & Doctor Serial Service
                 </span>
               </td>
             </tr>
@@ -341,7 +342,7 @@ export function getInquiryReplyHtmlTemplate(
                   </p>
                   <p style="color: #64748b; font-size: 12px; margin: 2px 0 0 0;">
                     Patient Assistance & Inquiry Desk<br>
-                    <strong>Al Insaf General Hospital</strong>
+                    <strong>${HOSPITAL_CONFIG.nameEn}</strong>
                   </p>
                 </div>
               </td>
@@ -356,16 +357,16 @@ export function getInquiryReplyHtmlTemplate(
                   </h4>
                   <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-size: 12px; color: #475569;">
                     <tr>
-                      <td style="padding: 3px 0;">📞 <strong>Central Hotline:</strong> 01303-359905, 01913-129020</td>
+                      <td style="padding: 3px 0;">📞 <strong>Central Hotline:</strong> ${HOSPITAL_CONFIG.phone}, ${HOSPITAL_CONFIG.phoneAlt}</td>
                     </tr>
                     <tr>
-                      <td style="padding: 3px 0;">🚑 <strong>24/7 Emergency & Ambulance:</strong> 01715-156034</td>
+                      <td style="padding: 3px 0;">🚑 <strong>24/7 Emergency & Ambulance:</strong> ${HOSPITAL_CONFIG.emergencyPhone}</td>
                     </tr>
                     <tr>
-                      <td style="padding: 3px 0;">📍 <strong>Address:</strong> Govt. High School Gate, Dewanganj Bazar, Jamalpur</td>
+                      <td style="padding: 3px 0;">📍 <strong>Address:</strong> ${HOSPITAL_CONFIG.addressEn}</td>
                     </tr>
                     <tr>
-                      <td style="padding: 3px 0;">🌐 <strong>Website:</strong> <a href="https://alinsafhospital.com" style="color: #059669; text-decoration: none; font-weight: 600;">alinsafhospital.com</a></td>
+                      <td style="padding: 3px 0;">📧 <strong>Email:</strong> <a href="mailto:${HOSPITAL_CONFIG.email}" style="color: #059669; text-decoration: none; font-weight: 600;">${HOSPITAL_CONFIG.email}</a></td>
                     </tr>
                   </table>
                 </div>

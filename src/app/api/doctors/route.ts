@@ -4,6 +4,7 @@ import { getSession } from '@/lib/auth';
 import { Doctor } from '@/lib/types';
 import { sanitizeObject } from '@/lib/security';
 import { INITIAL_DOCTORS } from '@/lib/seed-data';
+import { HOSPITAL_CONFIG } from '@/lib/constants';
 import { ObjectId } from 'mongodb';
 
 export const dynamic = 'force-dynamic';
@@ -109,7 +110,7 @@ export async function POST(req: NextRequest) {
       roomNumber: sanitized.roomNumber || 'OPD Chamber',
       visitingHours: sanitized.visitingHours || '05:00 PM - 08:00 PM',
       visitingDays: sanitized.visitingDays || ['Saturday', 'Monday', 'Wednesday'],
-      phone: sanitized.phone || '09666 787800',
+      phone: sanitized.phone || HOSPITAL_CONFIG.phone,
       email: sanitized.email || '',
       consultationFee: sanitized.consultationFee || 1500,
       imageUrl:

@@ -4,6 +4,7 @@ import { getCollection } from '@/lib/mongodb';
 import { getSession } from '@/lib/auth';
 import { sendMail, getInquiryReplyHtmlTemplate } from '@/lib/email';
 import { Inquiry } from '@/lib/types';
+import { HOSPITAL_CONFIG } from '@/lib/constants';
 import { ObjectId } from 'mongodb';
 
 export const dynamic = 'force-dynamic';
@@ -58,9 +59,9 @@ export async function POST(req: NextRequest) {
     // Send the email to the patient's email address
     const emailResult = await sendMail({
       to: inquiry.email,
-      subject: validated.replySubject || `Re: ${inquiry.subject} - Al Insaf General Hospital`,
+      subject: validated.replySubject || `Re: ${inquiry.subject} - ${HOSPITAL_CONFIG.nameEn}`,
       html,
-      text: `${validated.replyMessage}\n\n---\nAl Insaf General Hospital\nHotline: 01303-359905, 01913-129020`,
+      text: `${validated.replyMessage}\n\n---\n${HOSPITAL_CONFIG.nameEn}\nHotline: ${HOSPITAL_CONFIG.phone}, ${HOSPITAL_CONFIG.phoneAlt}`,
     });
 
     if (!emailResult.success) {

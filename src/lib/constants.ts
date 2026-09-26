@@ -7,8 +7,11 @@ export const HOSPITAL_CONFIG = {
   nameEn: process.env.NEXT_PUBLIC_HOSPITAL_NAME || 'Al Insaf General Hospital',
   nameBn: 'আল ইনসাফ জেনারেল হাসপাতাল',
   phone: process.env.NEXT_PUBLIC_HOSPITAL_PHONE || '01303-359905',
+  phoneRaw: (process.env.NEXT_PUBLIC_HOSPITAL_PHONE || '01303-359905').replace(/[^0-9]/g, ''),
   phoneAlt: process.env.NEXT_PUBLIC_HOSPITAL_PHONE_ALT || '01913-129020',
+  phoneAltRaw: (process.env.NEXT_PUBLIC_HOSPITAL_PHONE_ALT || '01913-129020').replace(/[^0-9]/g, ''),
   emergencyPhone: process.env.NEXT_PUBLIC_EMERGENCY_PHONE || '01303-359905',
+  emergencyPhoneRaw: (process.env.NEXT_PUBLIC_EMERGENCY_PHONE || '01303-359905').replace(/[^0-9]/g, ''),
   email: process.env.NEXT_PUBLIC_HOSPITAL_EMAIL || 'alinsafhospital2025@gmail.com',
   addressEn:
     process.env.NEXT_PUBLIC_HOSPITAL_ADDRESS ||

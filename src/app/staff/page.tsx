@@ -30,6 +30,7 @@ import { StaffRowSkeleton } from '@/components/ui/Skeleton';
 import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
 import { INITIAL_STAFF } from '@/lib/seed-data';
 import { Staff, StaffRole } from '@/lib/types';
+import { HOSPITAL_CONFIG } from '@/lib/constants';
 
 // Exact serial order specified by the user
 const ROLE_CATEGORIES = [
@@ -525,7 +526,7 @@ export default function StaffDirectoryPage() {
                       <Stethoscope className="w-4 h-4 text-emerald-600" />
                       <span className="font-bold">OPD Chamber Serial</span>
                     </div>
-                    <span className="font-mono font-bold text-emerald-700">01303-359905</span>
+                    <span className="font-mono font-bold text-emerald-700">{HOSPITAL_CONFIG.phone}</span>
                   </div>
                   <Link
                     href={`/appointments?doctor=${encodeURIComponent(selectedStaffForImage.name)}`}

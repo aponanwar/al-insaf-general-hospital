@@ -9,6 +9,8 @@
  *  6. Simulation Mode (Fallback when no API key is set)
  */
 
+import { HOSPITAL_CONFIG } from './constants';
+
 export interface SendSmsOptions {
   to: string;
   message: string;
@@ -60,7 +62,7 @@ export function normalizeBdPhone(phone: string, withCountryCode = true): string 
 export function buildAppointmentSmsText(params: AppointmentSmsParams): string {
   const serialFormatted = String(params.serialNumber).padStart(2, '0');
   
-  return `আল-ইনসাফ জেনারেল হাসপাতাল
+  return `${HOSPITAL_CONFIG.nameBn}
 সিরিয়াল কনফার্মেশন:
 সিরিয়াল নং: #${serialFormatted}
 ট্র্যাকিং: ${params.trackingId}
@@ -68,7 +70,7 @@ export function buildAppointmentSmsText(params: AppointmentSmsParams): string {
 ডাক্তার: ${params.doctorName}
 তারিখ: ${params.appointmentDate} (${params.timeSlot})
 চেম্বার: ${params.roomNumber || '১ম তলা, ওপিডি'}
-জরুরি প্রয়োজনে: 01303-359905, 01913-129020`;
+জরুরি প্রয়োজনে: ${HOSPITAL_CONFIG.phone}, ${HOSPITAL_CONFIG.phoneAlt}`;
 }
 
 /**

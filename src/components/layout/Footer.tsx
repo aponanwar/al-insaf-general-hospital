@@ -12,6 +12,7 @@ import {
   Lock
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { HOSPITAL_CONFIG } from '@/lib/constants';
 
 export default function Footer() {
   const { language, t } = useLanguage();
@@ -45,18 +46,18 @@ export default function Footer() {
             <div className="space-y-2.5 pt-2 text-sm">
               <div className="flex items-start space-x-3">
                 <MapPin className="w-4 h-4 text-primary-400 mt-1 flex-shrink-0" />
-                <span>{t('hospital.address')}</span>
+                <span>{language === 'bn' ? HOSPITAL_CONFIG.addressBn : HOSPITAL_CONFIG.addressEn}</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-4 h-4 text-primary-400 flex-shrink-0" />
-                <a href="tel:01303359905" className="hover:text-white font-semibold text-emerald-400">
-                  {t('hotline')} ({language === 'bn' ? 'হটলাইন' : 'Hotline'})
+                <a href={`tel:${HOSPITAL_CONFIG.phoneRaw}`} className="hover:text-white font-semibold text-emerald-400">
+                  {HOSPITAL_CONFIG.phone} ({language === 'bn' ? 'হটলাইন' : 'Hotline'})
                 </a>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="w-4 h-4 text-primary-400 flex-shrink-0" />
-                <a href="mailto:alinsafhospital2025@gmail.com" className="hover:text-white">
-                  alinsafhospital2025@gmail.com
+                <a href={`mailto:${HOSPITAL_CONFIG.email}`} className="hover:text-white">
+                  {HOSPITAL_CONFIG.email}
                 </a>
               </div>
             </div>

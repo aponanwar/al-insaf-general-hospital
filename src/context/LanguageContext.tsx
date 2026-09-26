@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { HOSPITAL_CONFIG } from '@/lib/constants';
 
 export type Language = 'en' | 'bn';
 
@@ -13,7 +14,7 @@ interface LanguageContextType {
 
 export const translations: Record<string, { en: string; bn: string }> = {
   // Brand & General
-  'hospital.name': { en: 'AL INSAF HOSPITAL', bn: 'আল ইনসাফ হাসপাতাল' },
+  'hospital.name': { en: HOSPITAL_CONFIG.nameEn.toUpperCase(), bn: HOSPITAL_CONFIG.nameBn },
   'hospital.subname': { en: 'General Hospital Ltd.', bn: 'জেনারেল হাসপাতাল লিঃ' },
   'hospital.motto': { en: 'Excellence in Healthcare & Diagnostics', bn: 'উন্নত স্বাস্থ্যসেবা ও নির্ভুল রোগ নির্ণয়ে বিশ্বস্ত' },
   'hospital.tagline': {
@@ -21,20 +22,20 @@ export const translations: Record<string, { en: string; bn: string }> = {
     bn: 'আল ইনসাফ গ্রুপের প্রধান স্বাস্থ্যসেবা প্রতিষ্ঠান— ৫০০+ শয্যা, ২৪/৭ জরুরি সেবা, আধুনিক আইসিইউ এবং ২৪টিরও বেশি বিশেষায়িত চিকিৎসা বিভাগ নিয়ে দেওয়ানগঞ্জ, জামালপুরে অবস্থিত।'
   },
   'hospital.address': {
-    en: process.env.NEXT_PUBLIC_HOSPITAL_ADDRESS || 'Govt. High School Gate, Dewanganj Bazar, Dewanganj, Jamalpur, Bangladesh',
-    bn: 'সরকারি হাই স্কুল গেট সংলগ্ন, দেওয়ানগঞ্জ বাজার, দেওয়ানগঞ্জ, জামালপুর, বাংলাদেশ'
+    en: HOSPITAL_CONFIG.addressEn,
+    bn: HOSPITAL_CONFIG.addressBn
   },
   'hotline': {
-    en: process.env.NEXT_PUBLIC_HOSPITAL_PHONE || '01303-359905',
+    en: HOSPITAL_CONFIG.phone,
     bn: '০১৩০৩-৩৫৯৯০৫'
   },
   'hotline.alt': {
-    en: process.env.NEXT_PUBLIC_HOSPITAL_PHONE_ALT || '01913-129020',
+    en: HOSPITAL_CONFIG.phoneAlt,
     bn: '০১৯১৩-১২৯০২০'
   },
   'email': {
-    en: process.env.NEXT_PUBLIC_HOSPITAL_EMAIL || 'alinsafhospital2025@gmail.com',
-    bn: 'alinsafhospital2025@gmail.com'
+    en: HOSPITAL_CONFIG.email,
+    bn: HOSPITAL_CONFIG.email
   },
   'hotline.floating': { en: '24/7 Hotline', bn: '২৪/৭ হটলাইন' },
 
@@ -68,8 +69,8 @@ export const translations: Record<string, { en: string; bn: string }> = {
   'nav.matchingDepts': { en: 'Matching Departments & Specialties', bn: 'সম্পর্কিত বিভাগ ও স্পেশালিটি' },
   'nav.searchAllDoctors': { en: 'Search all doctors for', bn: 'ডাক্তার খুঁজুন' },
   'nav.callHotline': {
-    en: `Call Hotline: ${process.env.NEXT_PUBLIC_HOSPITAL_PHONE || '01303-359905'}`,
-    bn: 'হটলাইন কল করুন: ০১৩০৩-৩৫৯৯০৫'
+    en: `Call Hotline: ${HOSPITAL_CONFIG.phone}`,
+    bn: `হটলাইন কল করুন: ${HOSPITAL_CONFIG.phone}`
   },
 
 
@@ -115,7 +116,7 @@ export const translations: Record<string, { en: string; bn: string }> = {
   'hero.btn.appointment': { en: 'Book Appointment Online', bn: 'অনলাইনে অ্যাপয়েন্টমেন্ট নিন' },
   'hero.btn.findDoctor': { en: 'Find a Specialist Doctor', bn: 'বিশেষজ্ঞ ডাক্তার খুঁজুন' },
   'hero.btn.services': { en: 'Explore Services & Tariffs', bn: 'হাসপাতাল সেবাসমূহ ও ফি' },
-  'hero.btn.emergency': { en: 'Emergency: 09666 787800', bn: 'জরুরি সেবা: ০৯৬৬৬ ৭৮৭৮০০' },
+  'hero.btn.emergency': { en: `Emergency: ${HOSPITAL_CONFIG.emergencyPhone}`, bn: `জরুরি সেবা: ${HOSPITAL_CONFIG.emergencyPhone}` },
 
   // Quick Cards
   'quick.emergency.title': { en: '24/7 Emergency Care', bn: '২৪ ঘণ্টা জরুরি সেবা' },

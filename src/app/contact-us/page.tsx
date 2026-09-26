@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import PageHeaderBanner from '@/components/layout/PageHeaderBanner';
 import { INITIAL_DEPARTMENTS } from '@/lib/seed-data';
+import { HOSPITAL_CONFIG } from '@/lib/constants';
 
 export default function ContactUsPage() {
   const [name, setName] = useState('');
@@ -90,9 +91,9 @@ export default function ContactUsPage() {
             <h3 className="text-lg font-bold text-slate-900">Hospital Hotlines</h3>
             <p className="text-xs text-slate-500">24/7 Emergency & OPD Serial Desk</p>
             <div className="pt-2 space-y-1 text-sm font-semibold text-slate-800">
-              <div>Hotline: <a href="tel:01303359905" className="text-emerald-700 font-bold">01303-359905</a></div>
-              <div>Serial / Info: <a href="tel:01913129020" className="text-emerald-700 font-bold">01913-129020</a></div>
-              <div>Ambulance: <a href="tel:01715156034" className="text-emerald-700 font-bold">01715-156034</a></div>
+              <div>Hotline: <a href={`tel:${HOSPITAL_CONFIG.phoneRaw}`} className="text-emerald-700 font-bold">{HOSPITAL_CONFIG.phone}</a></div>
+              <div>Serial / Info: <a href={`tel:${HOSPITAL_CONFIG.phoneAltRaw}`} className="text-emerald-700 font-bold">{HOSPITAL_CONFIG.phoneAlt}</a></div>
+              <div>Emergency: <a href={`tel:${HOSPITAL_CONFIG.emergencyPhoneRaw}`} className="text-emerald-700 font-bold">{HOSPITAL_CONFIG.emergencyPhone}</a></div>
             </div>
           </div>
 
@@ -103,8 +104,8 @@ export default function ContactUsPage() {
             <h3 className="text-lg font-bold text-slate-900">Email & Inquiries</h3>
             <p className="text-xs text-slate-500">Official hospital communications</p>
             <div className="pt-2 space-y-1 text-sm font-semibold text-slate-800">
-              <div>Email: <a href="mailto:alinsafhospital2025@gmail.com" className="text-blue-700">alinsafhospital2025@gmail.com</a></div>
-              <div>Appointments: <a href="mailto:alinsafhospital2025@gmail.com" className="text-blue-700">alinsafhospital2025@gmail.com</a></div>
+              <div>Email: <a href={`mailto:${HOSPITAL_CONFIG.email}`} className="text-blue-700">{HOSPITAL_CONFIG.email}</a></div>
+              <div>Appointments: <a href={`mailto:${HOSPITAL_CONFIG.email}`} className="text-blue-700">{HOSPITAL_CONFIG.email}</a></div>
             </div>
           </div>
 
@@ -115,7 +116,7 @@ export default function ContactUsPage() {
             <h3 className="text-lg font-bold text-slate-900">Hospital Address</h3>
             <p className="text-xs text-slate-500">Beside Govt. High School Gate</p>
             <p className="pt-2 text-sm text-slate-700 leading-relaxed font-medium">
-              Govt. High School Gate, Dewanganj Bazar, Dewanganj, Jamalpur, Bangladesh
+              {HOSPITAL_CONFIG.addressEn}
             </p>
           </div>
         </div>
@@ -264,7 +265,7 @@ export default function ContactUsPage() {
               <div className="flex items-center justify-between">
                 <h3 className="text-base font-bold text-slate-900">Hospital Location Map</h3>
                 <a
-                  href="https://www.google.com/maps/search/Dewanganj+Government+High+School+Jamalpur"
+                  href={HOSPITAL_CONFIG.mapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xs font-bold text-primary-600 hover:text-primary-700 flex items-center hover:underline"
@@ -275,8 +276,8 @@ export default function ContactUsPage() {
               </div>
               <div className="w-full h-64 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200">
                 <iframe
-                  title="Al Insaf General Hospital Dewanganj Location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14456.289196886367!2d89.7716999!3d25.1437000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fc561491764653%3A0x6b78d2b7754b2efc!2sDewanganj%20Govt.%20High%20School!5e0!3m2!1sen!2sbd!4v1711234567890!5m2!1sen!2sbd"
+                  title="Al Insaf General Hospital Location"
+                  src={HOSPITAL_CONFIG.mapsEmbed}
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -286,7 +287,7 @@ export default function ContactUsPage() {
                 />
               </div>
               <div className="text-xs text-slate-600 space-y-1">
-                <p><strong>Landmark:</strong> Beside Dewanganj Govt. High School Gate, Dewanganj Bazar, Jamalpur.</p>
+                <p><strong>Landmark:</strong> {HOSPITAL_CONFIG.addressEn}</p>
                 <p><strong>Parking:</strong> Patient vehicle & ambulance parking available 24/7.</p>
               </div>
             </div>
@@ -301,10 +302,10 @@ export default function ContactUsPage() {
                 Our emergency ambulance and medical team can be dispatched across Dewanganj, Jamalpur, and surrounding areas promptly.
               </p>
               <a
-                href="tel:01303359905"
+                href={`tel:${HOSPITAL_CONFIG.emergencyPhoneRaw}`}
                 className="inline-block w-full text-center py-2.5 bg-emerald-600 hover:bg-emerald-500 font-bold text-xs rounded-xl transition-all shadow-md"
               >
-                Call Ambulance: 01303-359905
+                Call Ambulance: {HOSPITAL_CONFIG.emergencyPhone}
               </a>
             </div>
           </div>
