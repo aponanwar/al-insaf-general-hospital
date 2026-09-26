@@ -158,44 +158,70 @@ export default function AdminDashboardPage() {
   const confirmedAppointments = appointments.filter((a) => a.status === 'Confirmed').length;
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
-      {/* Dashboard Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center space-x-2 text-xs font-semibold text-slate-500 mb-1">
-            <span>Hospital Administration</span>
-            <span>/</span>
-            <span className="text-slate-800 font-bold">Control Center</span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-            Dashboard Overview
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-            Real-time status of appointments, medical staff, doctors, and inquiries
-          </p>
-        </div>
-
-        <div className="flex items-center space-x-3">
-          <button
-            onClick={fetchData}
-            disabled={loading}
-            className="inline-flex items-center px-3.5 py-2.5 bg-white border border-slate-200 text-slate-700 text-xs font-bold rounded-xl hover:bg-slate-50 shadow-sm transition-colors"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 mr-1.5 ${loading ? 'animate-spin' : ''}`} />
-            Refresh
-          </button>
-          <button
-            onClick={handleSeedDatabase}
-            disabled={seeding}
-            className="inline-flex items-center px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-md shadow-emerald-700/20 transition-all"
-          >
-            <Database className="w-3.5 h-3.5 mr-1.5" />
-            {seeding ? 'Syncing...' : 'Sync/Seed DB'}
-          </button>
-        </div>
+    <div className="relative min-h-screen p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+      {/* Artistic Hospital Medical Pattern Backdrop */}
+      <div className="fixed inset-0 pointer-events-none z-0 opacity-[0.03] overflow-hidden">
+        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+          <defs>
+            <pattern id="hospital-ambient-grid" width="160" height="160" patternUnits="userSpaceOnUse">
+              {/* Medical Cross */}
+              <path d="M70 50 h20 v20 h20 v20 h-20 v20 h-20 v-20 h-20 v-20 h20 z" fill="#0284c7" />
+              {/* Heartbeat ECG pulse wave */}
+              <path d="M0 80 h30 l8 -25 l12 50 l12 -50 l8 25 h90" fill="none" stroke="#059669" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              {/* Stethoscope / Ring Circle Accents */}
+              <circle cx="20" cy="20" r="4" fill="#0d9488" />
+              <circle cx="140" cy="140" r="4" fill="#0284c7" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#hospital-ambient-grid)" />
+        </svg>
       </div>
 
-      <div className="space-y-6">
+      <div className="relative z-10 space-y-6">
+        {/* Dashboard Top Header with Hospital Crest Banner */}
+        <div className="bg-gradient-to-r from-slate-900 via-primary-950 to-emerald-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+          {/* Subtle medical watermark in banner */}
+          <div className="absolute right-0 top-0 bottom-0 w-96 opacity-10 pointer-events-none flex items-center justify-end pr-6">
+            <svg viewBox="0 0 200 200" className="w-64 h-64 text-white" fill="currentColor">
+              <path d="M80 20 h40 v60 h60 v40 h-60 v60 h-40 v-60 h-60 v-40 h60 z" />
+            </svg>
+          </div>
+
+          <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <div className="space-y-1.5">
+              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-emerald-300 text-xs font-semibold border border-white/10">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>Al Insaf General Hospital (Pvt.) • Dewanganj</span>
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                Hospital Command Center
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-300 max-w-2xl">
+                Real-time operational dashboard for doctors roster, OPD appointments, HR staff, tariffs, and patient communications
+              </p>
+            </div>
+
+            <div className="flex items-center space-x-3 shrink-0">
+              <button
+                onClick={fetchData}
+                disabled={loading}
+                className="inline-flex items-center px-4 py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/15 text-white text-xs font-bold rounded-xl shadow-sm transition-all"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 mr-1.5 ${loading ? 'animate-spin' : ''}`} />
+                Refresh
+              </button>
+              <button
+                onClick={handleSeedDatabase}
+                disabled={seeding}
+                className="inline-flex items-center px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold text-xs rounded-xl shadow-lg shadow-emerald-500/20 transition-all"
+              >
+                <Database className="w-3.5 h-3.5 mr-1.5" />
+                {seeding ? 'Syncing...' : 'Sync/Seed DB'}
+              </button>
+            </div>
+          </div>
+        </div>
+
         {seedMessage && (
           <div className="p-4 bg-emerald-50 border border-emerald-300 rounded-2xl text-xs text-emerald-800 font-bold flex items-center justify-between">
             <span>{seedMessage}</span>
@@ -204,7 +230,7 @@ export default function AdminDashboardPage() {
         )}
 
         {/* MongoDB Live Diagnostics Banner */}
-        <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+        <div className="relative bg-white/95 backdrop-blur-sm rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4 overflow-hidden">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center space-x-3">
               <div className={`w-10 h-10 rounded-2xl flex items-center justify-center ${
@@ -291,129 +317,136 @@ export default function AdminDashboardPage() {
 
           {dbStatus && dbStatus.connected && dbStatus.counts && (
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 border-t border-slate-100">
-              <div className="bg-slate-50 p-3 rounded-xl">
+              <div className="bg-slate-50 p-3 rounded-xl text-center flex flex-col items-center justify-center">
                 <span className="text-[11px] text-slate-500 font-medium">Admin Users</span>
-                <div className="text-base font-bold text-slate-900">{dbStatus.counts.users}</div>
+                <div className="text-xl font-bold text-slate-900 mt-0.5">{dbStatus.counts.users}</div>
               </div>
-              <div className="bg-slate-50 p-3 rounded-xl">
+              <div className="bg-slate-50 p-3 rounded-xl text-center flex flex-col items-center justify-center">
                 <span className="text-[11px] text-slate-500 font-medium">Doctors in DB</span>
-                <div className="text-base font-bold text-slate-900">{dbStatus.counts.doctors}</div>
+                <div className="text-xl font-bold text-slate-900 mt-0.5">{dbStatus.counts.doctors}</div>
               </div>
-              <div className="bg-slate-50 p-3 rounded-xl">
+              <div className="bg-slate-50 p-3 rounded-xl text-center flex flex-col items-center justify-center">
                 <span className="text-[11px] text-slate-500 font-medium">Appointments</span>
-                <div className="text-base font-bold text-slate-900">{dbStatus.counts.appointments}</div>
+                <div className="text-xl font-bold text-slate-900 mt-0.5">{dbStatus.counts.appointments}</div>
               </div>
-              <div className="bg-slate-50 p-3 rounded-xl">
+              <div className="bg-slate-50 p-3 rounded-xl text-center flex flex-col items-center justify-center">
                 <span className="text-[11px] text-slate-500 font-medium">Inquiries</span>
-                <div className="text-base font-bold text-slate-900">{dbStatus.counts.inquiries}</div>
+                <div className="text-xl font-bold text-slate-900 mt-0.5">{dbStatus.counts.inquiries}</div>
               </div>
             </div>
           )}
         </div>
 
-        {/* Metric Cards */}
+        {/* Metric Cards with Centered Numbers & Healthcare Motifs */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           <Link
             href="/admin/appointments"
-            className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-primary-500 hover:shadow-md transition-all"
+            className="group relative bg-white overflow-hidden p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-primary-500 hover:shadow-md transition-all flex flex-col items-center justify-center text-center"
           >
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase text-slate-400">Total Serials</span>
-              <div className="w-8 h-8 rounded-lg bg-primary-50 text-primary-600 flex items-center justify-center">
-                <Calendar className="w-4 h-4" />
-              </div>
+            {/* Background Medical Cross Watermark */}
+            <div className="absolute -right-3 -bottom-3 text-primary-500/5 group-hover:text-primary-500/10 transition-colors pointer-events-none">
+              <Calendar className="w-20 h-20" />
             </div>
-            <div className="text-2xl font-black text-slate-900">{appointments.length}</div>
-            <p className="text-[10px] text-slate-500">Patient bookings</p>
+            <div className="w-10 h-10 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center mb-2 shadow-xs group-hover:scale-105 transition-transform">
+              <Calendar className="w-5 h-5" />
+            </div>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Total Serials</span>
+            <div className="text-3xl font-black text-slate-900 tracking-tight my-0.5">{appointments.length}</div>
+            <p className="text-[10px] text-slate-400 font-medium">Patient bookings</p>
           </Link>
 
           <Link
             href="/admin/appointments"
-            className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-amber-500 hover:shadow-md transition-all"
+            className="group relative bg-white overflow-hidden p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-amber-500 hover:shadow-md transition-all flex flex-col items-center justify-center text-center"
           >
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase text-amber-500">Pending</span>
-              <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
-                <Clock className="w-4 h-4" />
-              </div>
+            <div className="absolute -right-3 -bottom-3 text-amber-500/5 group-hover:text-amber-500/10 transition-colors pointer-events-none">
+              <Clock className="w-20 h-20" />
             </div>
-            <div className="text-2xl font-black text-amber-600">{pendingAppointments}</div>
-            <p className="text-[10px] text-slate-500">Awaiting approval</p>
+            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-2 shadow-xs group-hover:scale-105 transition-transform">
+              <Clock className="w-5 h-5" />
+            </div>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-amber-600 mb-1">Pending</span>
+            <div className="text-3xl font-black text-amber-600 tracking-tight my-0.5">{pendingAppointments}</div>
+            <p className="text-[10px] text-slate-400 font-medium">Awaiting review</p>
           </Link>
 
           <Link
             href="/admin/doctors"
-            className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-emerald-500 hover:shadow-md transition-all"
+            className="group relative bg-white overflow-hidden p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-emerald-500 hover:shadow-md transition-all flex flex-col items-center justify-center text-center"
           >
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase text-emerald-500">Doctors</span>
-              <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                <Users className="w-4 h-4" />
-              </div>
+            <div className="absolute -right-3 -bottom-3 text-emerald-500/5 group-hover:text-emerald-500/10 transition-colors pointer-events-none">
+              <Users className="w-20 h-20" />
             </div>
-            <div className="text-2xl font-black text-slate-900">{doctorsCount || 12}</div>
-            <p className="text-[10px] text-slate-500">Consultants roster</p>
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-2 shadow-xs group-hover:scale-105 transition-transform">
+              <Users className="w-5 h-5" />
+            </div>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-600 mb-1">Doctors</span>
+            <div className="text-3xl font-black text-slate-900 tracking-tight my-0.5">{doctorsCount || 10}</div>
+            <p className="text-[10px] text-slate-400 font-medium">Consultants roster</p>
           </Link>
 
           <Link
             href="/admin/staff"
-            className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-teal-500 hover:shadow-md transition-all"
+            className="group relative bg-white overflow-hidden p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-teal-500 hover:shadow-md transition-all flex flex-col items-center justify-center text-center"
           >
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase text-teal-600">Staff</span>
-              <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center">
-                <Contact className="w-4 h-4" />
-              </div>
+            <div className="absolute -right-3 -bottom-3 text-teal-500/5 group-hover:text-teal-500/10 transition-colors pointer-events-none">
+              <Contact className="w-20 h-20" />
             </div>
-            <div className="text-2xl font-black text-slate-900">{staffCount || 10}</div>
-            <p className="text-[10px] text-slate-500">9 HR categories</p>
+            <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center mb-2 shadow-xs group-hover:scale-105 transition-transform">
+              <Contact className="w-5 h-5" />
+            </div>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-teal-600 mb-1">Staff</span>
+            <div className="text-3xl font-black text-slate-900 tracking-tight my-0.5">{staffCount || 10}</div>
+            <p className="text-[10px] text-slate-400 font-medium">9 HR categories</p>
           </Link>
 
           <Link
             href="/admin/rates"
-            className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-purple-500 hover:shadow-md transition-all"
+            className="group relative bg-white overflow-hidden p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-purple-500 hover:shadow-md transition-all flex flex-col items-center justify-center text-center"
           >
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase text-purple-600">Tariff & Rates</span>
-              <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
-                <Activity className="w-4 h-4" />
-              </div>
+            <div className="absolute -right-3 -bottom-3 text-purple-500/5 group-hover:text-purple-500/10 transition-colors pointer-events-none">
+              <Activity className="w-20 h-20" />
             </div>
-            <div className="text-2xl font-black text-slate-900">{ratesCount || 17}</div>
-            <p className="text-[10px] text-slate-500">Tests & cabin rates</p>
+            <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-2 shadow-xs group-hover:scale-105 transition-transform">
+              <Activity className="w-5 h-5" />
+            </div>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-purple-600 mb-1">Tariff & Rates</span>
+            <div className="text-3xl font-black text-slate-900 tracking-tight my-0.5">{ratesCount || 17}</div>
+            <p className="text-[10px] text-slate-400 font-medium">Tests & cabin fees</p>
           </Link>
 
           <Link
             href="/admin/inquiries"
-            className={`p-4 sm:p-5 rounded-2xl border shadow-sm space-y-2 transition-all hover:shadow-md ${
+            className={`group relative overflow-hidden p-5 rounded-2xl border shadow-sm transition-all hover:shadow-md flex flex-col items-center justify-center text-center ${
               inquiries.filter((i) => i.status === 'Unread').length > 0
                 ? 'bg-rose-50/50 border-rose-300 hover:border-rose-500'
                 : 'bg-white border-slate-200 hover:border-blue-500'
             }`}
           >
-            <div className="flex items-center justify-between">
-              <span className={`text-[11px] font-bold uppercase ${
-                inquiries.filter((i) => i.status === 'Unread').length > 0 ? 'text-rose-600' : 'text-blue-500'
-              }`}>
-                Inquiries
-              </span>
-              <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                inquiries.filter((i) => i.status === 'Unread').length > 0
-                  ? 'bg-rose-100 text-rose-600'
-                  : 'bg-blue-50 text-blue-600'
-              }`}>
-                <MessageSquare className="w-4 h-4" />
-              </div>
+            <div className="absolute -right-3 -bottom-3 text-rose-500/5 group-hover:text-rose-500/10 transition-colors pointer-events-none">
+              <MessageSquare className="w-20 h-20" />
             </div>
-            <div className="flex items-baseline space-x-2">
-              <div className="text-2xl font-black text-slate-900">{inquiries.length}</div>
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-2 shadow-xs group-hover:scale-105 transition-transform ${
+              inquiries.filter((i) => i.status === 'Unread').length > 0
+                ? 'bg-rose-100 text-rose-600'
+                : 'bg-blue-50 text-blue-600'
+            }`}>
+              <MessageSquare className="w-5 h-5" />
+            </div>
+            <span className={`text-[11px] font-bold uppercase tracking-wider mb-1 ${
+              inquiries.filter((i) => i.status === 'Unread').length > 0 ? 'text-rose-600' : 'text-blue-600'
+            }`}>
+              Inquiries
+            </span>
+            <div className="flex items-center justify-center space-x-1.5 my-0.5">
+              <div className="text-3xl font-black text-slate-900 tracking-tight">{inquiries.length}</div>
               {inquiries.filter((i) => i.status === 'Unread').length > 0 && (
                 <span className="text-[10px] font-extrabold text-rose-600 bg-rose-100 px-1.5 py-0.5 rounded-full">
-                  {inquiries.filter((i) => i.status === 'Unread').length} unread
+                  {inquiries.filter((i) => i.status === 'Unread').length} new
                 </span>
               )}
             </div>
-            <p className="text-[10px] text-slate-500">Patient contact queries</p>
+            <p className="text-[10px] text-slate-400 font-medium">Patient messages</p>
           </Link>
         </div>
 
